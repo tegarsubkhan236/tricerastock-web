@@ -1,1 +1,5 @@
+export { default as MainLayout } from './_Layout'
+export { default as NoMatch } from './_Error/NoMatch'
+export { default as Login } from './Auth/Login'
+export { default as Register } from './Auth/Register'
 export { default as Homepage } from './Homepage'

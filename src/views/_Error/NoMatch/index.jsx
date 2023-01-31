@@ -1,10 +1,9 @@
 import React from 'react';
-import './index.css'
 
 const Index = () => {
     return (
-        <div>
-            <h1>Register Page</h1>
+        <div className="app-container">
+            <h1>No Match</h1>
         </div>
     );
 };

@@ -1,67 +1,35 @@
-import React from 'react';
-import { Row, Col } from "antd";
-import {BulbOutlined} from "@ant-design/icons";
+import React, {useState} from 'react';
+import PanelGroup from './components/PanelGroup'
 import './index.css';
 
+const lineChartDefaultData = {
+    "New Visits": {
+        expectedData: [100, 120, 161, 134, 105, 160, 165],
+        actualData: [120, 82, 91, 154, 162, 140, 145],
+    },
+    Messages: {
+        expectedData: [200, 192, 120, 144, 160, 130, 140],
+        actualData: [180, 160, 151, 106, 145, 150, 130],
+    },
+    Purchases: {
+        expectedData: [80, 100, 121, 104, 105, 90, 100],
+        actualData: [120, 90, 100, 138, 142, 130, 130],
+    },
+    Shoppings: {
+        expectedData: [130, 140, 141, 142, 145, 150, 160],
+        actualData: [120, 82, 91, 154, 162, 140, 130],
+    },
+};
+
 const Index = () => {
+    const [lineChartData, setLineChartData] = useState(
+        lineChartDefaultData["New Visits"]
+    );
+    const handleSetLineChartData = (type) => setLineChartData(lineChartDefaultData[type]);
+
     return (
         <div className="app-container">
-            <div className="panel-group-container">
-                <Row gutter={40} className="panel-group">
-                    <Col className="card-panel-col">
-                        <div className="card-panel">
-                            <div className="card-panel-icon-wrapper">
-                                <BulbOutlined
-                                    className={"Messages"}
-                                    style={{ fontSize: 55, color: "#36a3f7" }}
-                                />
-                            </div>
-                            <div className="card-panel-description">
-                                <p className="card-panel-text">Messages</p>
-                            </div>
-                        </div>
-                    </Col>
-                    <Col className="card-panel-col">
-                        <div className="card-panel">
-                            <div className="card-panel-icon-wrapper">
-                                <BulbOutlined
-                                    className={"Messages"}
-                                    style={{ fontSize: 55, color: "#36a3f7" }}
-                                />
-                            </div>
-                            <div className="card-panel-description">
-                                <p className="card-panel-text">Messages</p>
-                            </div>
-                        </div>
-                    </Col>
-                    <Col className="card-panel-col">
-                        <div className="card-panel">
-                            <div className="card-panel-icon-wrapper">
-                                <BulbOutlined
-                                    className={"Messages"}
-                                    style={{ fontSize: 55, color: "#36a3f7" }}
-                                />
-                            </div>
-                            <div className="card-panel-description">
-                                <p className="card-panel-text">Messages</p>
-                            </div>
-                        </div>
-                    </Col>
-                    <Col className="card-panel-col">
-                        <div className="card-panel">
-                            <div className="card-panel-icon-wrapper">
-                                <BulbOutlined
-                                    className={"Messages"}
-                                    style={{ fontSize: 55, color: "#36a3f7" }}
-                                />
-                            </div>
-                            <div className="card-panel-description">
-                                <p className="card-panel-text">Messages</p>
-                            </div>
-                        </div>
-                    </Col>
-                </Row>
-            </div>
+            <PanelGroup handleSetLineChartData={handleSetLineChartData} />
         </div>
     );
 };

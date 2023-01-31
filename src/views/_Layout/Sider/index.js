@@ -5,9 +5,15 @@ import SiderMenu from "./Menu";
 
 const {Sider} = Layout
 
-const LayoutSider = () => {
+const LayoutSider = (props) => {
+    const { sidebarCollapsed } = props
     return (
-        <Sider style={{ zIndex: 10 }}>
+        <Sider
+            collapsible
+            collapsed={sidebarCollapsed}
+            trigger={null}
+            style={{ zIndex: 10 }}
+        >
             <SiderLogo/>
             <SiderMenu/>
         </Sider>
