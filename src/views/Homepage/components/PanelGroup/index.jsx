@@ -2,7 +2,6 @@ import {Row, Col} from "antd";
 import CountUp from "react-countup";
 import './index.css'
 import {MessageOutlined, PayCircleOutlined, ShopOutlined, UserOutlined} from "@ant-design/icons";
-
 const chartList = [
     {
         type: "New Visits",
@@ -29,7 +28,6 @@ const chartList = [
         color: "#f6ab40",
     },
 ];
-
 const index = (props) => {
     const {handleSetLineChartData} = props;
     return (
@@ -53,12 +51,6 @@ const index = (props) => {
                                     : chart.type === "Shopping" ? <ShopOutlined className={chart.type} style={{fontSize: 55, color: chart.color}} type={chart.icon}/>
                                     : ""
                                 }
-
-                                {/*<Icon*/}
-                                {/*    className={chart.type}*/}
-                                {/*    style={{fontSize: 55, color: chart.color}}*/}
-                                {/*    type={chart.icon}*/}
-                                {/*/>*/}
                             </div>
                             <div className="card-panel-description">
                                 <p className="card-panel-text">{chart.type}</p>
@@ -71,5 +63,4 @@ const index = (props) => {
         </div>
     )
 }
-
 export default index

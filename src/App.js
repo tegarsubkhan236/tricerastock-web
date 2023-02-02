@@ -1,5 +1,5 @@
 import React from 'react';
-import {HashRouter, Routes, Route, BrowserRouter} from "react-router-dom";
+import {Routes, Route, BrowserRouter} from "react-router-dom";
 import {MainLayout, NoMatch, Homepage, Login} from "./views";
 
 const App = () => {
