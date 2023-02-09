@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import './index.css';
 import PanelGroup from './components/PanelGroup'
 import LineChart from "./components/LineChart";
-const Index = () => {
+
+const Index = (props) => {
     const lineChartDefaultData = {
         "New Visits": {
             title: "New Visits Chart",
@@ -31,7 +32,15 @@ const Index = () => {
     const handleSetLineChartData = (type) => setLineChartData(lineChartDefaultData[type]);
     return (
         <div className="app-container">
-            <PanelGroup handleSetLineChartData={handleSetLineChartData} />
+            <PanelGroup handleSetLineChartData={handleSetLineChartData}/>
+            <LineChart
+                chartData={lineChartData}
+                styles={{
+                    padding: 12,
+                    backgroundColor: "#fff",
+                    marginBottom: "25px",
+                }}
+            />
             <LineChart
                 chartData={lineChartData}
                 styles={{

@@ -1,6 +1,6 @@
 {
-  "name": "watch-and-learn",
-  "version": "0.1.0",
+  "name": "rungkad_app",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
@@ -10,20 +10,23 @@
     "@testing-library/user-event": "^13.2.1",
     "antd": "^5.1.6",
     "axios": "^1.2.5",
-    "echarts": "^5.4.1",
-    "echarts-for-react": "^3.0.2",
-    "html-react-parser": "^3.0.8",
+    "chart.js": "^4.2.0",
     "millify": "^5.0.1",
     "moment": "^2.29.4",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-countup": "^6.4.1",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.0",
     "react-scripts": "5.0.1",
     "react-transition-group": "^4.4.5",
     "screenfull": "^6.0.2",
     "web-vitals": "^2.1.0"
+  },
+  "devDependencies": {
+    "react-redux": "^8.0.5",
+    "redux": "^4.2.1"
   },
   "scripts": {
     "start": "react-scripts start",
