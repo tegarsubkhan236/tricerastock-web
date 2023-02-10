@@ -1,5 +1,5 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {Form, Homepage, Login, MainLayout, NoMatch} from "../views";
+import {BasicForm, Homepage, Login, MainLayout, NoMatch, StepForm} from "../views";
 import React from "react";
 
 const index = (props) => {
@@ -12,7 +12,10 @@ const index = (props) => {
                 {hasToken
                     ?   <Route path="/" element={<MainLayout/>}>
                             <Route index element={<Homepage/>}/>
-                            <Route path={"form"} element={<Form/>}/>
+                            <Route path={"form"}>
+                                <Route path={"form-basic"} element={<BasicForm/>}/>
+                                <Route path={"form-step"} element={<StepForm/>}/>
+                            </Route>
                             {/* Using path="*"" means "match anything", so this route
                                 acts like a catch-all for URLs that we don't have explicit
                                 routes for. */}

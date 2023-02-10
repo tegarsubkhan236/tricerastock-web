@@ -1,4 +1,4 @@
-import {HomeOutlined, MoneyCollectOutlined} from "@ant-design/icons";
+import {HomeOutlined, FormOutlined, LineOutlined} from "@ant-design/icons";
 
 function getItem(label, key, icon = null, children = null, type = null) {
     return {
@@ -8,7 +8,10 @@ function getItem(label, key, icon = null, children = null, type = null) {
 
 const menuList = [
     getItem("Dashboard", "/", <HomeOutlined/>),
-    getItem("Form", "/form", <MoneyCollectOutlined/>)
+    getItem("Form", "/form", <FormOutlined/>,[
+        getItem("Basic Form", "/form/form-basic", <LineOutlined />),
+        getItem("Step Form", "/form/form-step", <LineOutlined />)
+    ])
 ]
 
 export default menuList;

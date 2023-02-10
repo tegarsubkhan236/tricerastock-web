@@ -8,13 +8,17 @@ const TypingCard = (props) => {
 
     const sourceEl = useRef();
     const outputEl = useRef();
+    const onceRender = useRef(false);
 
     useEffect(() => {
+        if (onceRender.current) return;
+        onceRender.current = true;
         const typing = new Typing({
             source: sourceEl.current,
             output: outputEl.current,
             delay: 30,
         });
+        console.log('i fire once');
         typing.start();
     }, []);
     return (

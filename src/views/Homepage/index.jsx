@@ -41,14 +41,6 @@ const Index = (props) => {
                     marginBottom: "25px",
                 }}
             />
-            <LineChart
-                chartData={lineChartData}
-                styles={{
-                    padding: 12,
-                    backgroundColor: "#fff",
-                    marginBottom: "25px",
-                }}
-            />
         </div>
     );
 };

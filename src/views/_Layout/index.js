@@ -18,7 +18,7 @@ const MainLayout = () => {
                     left: 0,
                 }}
             />
-            <Layout style={{overflow: 'auto',}}>
+            <Layout style={{overflow: 'auto'}}>
                 <LayoutHeader
                     setSidebarCollapsed={setSidebarCollapsed}
                     sidebarCollapsed={sidebarCollapsed}

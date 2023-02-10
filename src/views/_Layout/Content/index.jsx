@@ -14,15 +14,13 @@ const Index = () => {
             return "Dashboard"
         } else {
             let x = location.pathname.substring(1)
-            return x.charAt(0).toUpperCase() + x.slice(1)
+            let x1 = x.split('/')[0].replace(/-/g, " ")
+            return x1.charAt(0).toUpperCase() + x1.slice(1)
         }
     }
     return (
         <DocumentTitle title={`${subTitle()} - ${title}`}>
-            <Content
-                style={{height: "calc(100% - 100px)"}}
-                // style={{ margin: "24px 16px 0", overflow: "initial" }}
-            >
+            <Content style={{height: "calc(100% - 100px)"}}>
                 <TransitionGroup>
                     <CSSTransition
                         timeout={500}
