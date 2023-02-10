@@ -33,11 +33,9 @@ const LayoutHeader = (props) => {
                 <Fullscreen/>
                 <div className="dropdown-wrap">
                     <Dropdown menu={{items}} trigger={['click']}>
-                        <a href="#" onClick={(e) => e.preventDefault()}>
-                            <Space>
-                                <Avatar shape="square" size="medium" icon={<UserOutlined/>} style={{backgroundColor: '#87d068'}}/>
-                            </Space>
-                        </a>
+                        <Space>
+                            <Avatar shape="square" size="medium" icon={<UserOutlined/>} style={{backgroundColor: '#87d068'}}/>
+                        </Space>
                     </Dropdown>
                 </div>
             </div>
