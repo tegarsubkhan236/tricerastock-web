@@ -1,36 +1,35 @@
-import React from 'react';
-import {CSSTransition, TransitionGroup} from "react-transition-group";
+import React, {useRef} from 'react';
+import {CSSTransition, SwitchTransition} from "react-transition-group";
 import DocumentTitle from "react-document-title";
-import {Outlet, useLocation} from "react-router-dom";
+import {useLocation, useOutlet} from "react-router-dom";
 import {Layout} from "antd";
+import {GetTitle} from "../../../config/helper";
 
 const {Content} = Layout
 
 const Index = () => {
     const location = useLocation()
-    const title = "Rungkad";
-    const subTitle = () => {
-        if (location.pathname === '/'){
-            return "Dashboard"
-        } else {
-            let x = location.pathname.substring(1)
-            let x1 = x.split('/')[0].replace(/-/g, " ")
-            return x1.charAt(0).toUpperCase() + x1.slice(1)
-        }
-    }
+    const currentOutlet = useOutlet()
+    const nodeRef = useRef(null);
+    const {title, subTitle} = GetTitle()
     return (
         <DocumentTitle title={`${subTitle()} - ${title}`}>
             <Content style={{height: "calc(100% - 100px)"}}>
-                <TransitionGroup>
+                <SwitchTransition>
                     <CSSTransition
                         timeout={500}
                         classNames="fade"
                         exit={false}
+                        nodeRef={nodeRef}
                         key={location.pathname}
                     >
-                        <Outlet/>
+                        {() => (
+                            <div ref={nodeRef}>
+                                {currentOutlet}
+                            </div>
+                        )}
                     </CSSTransition>
-                </TransitionGroup>
+                </SwitchTransition>
             </Content>
         </DocumentTitle>
     );

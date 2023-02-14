@@ -18,7 +18,6 @@ const TypingCard = (props) => {
             output: outputEl.current,
             delay: 30,
         });
-        console.log('i fire once');
         typing.start();
     }, []);
     return (
