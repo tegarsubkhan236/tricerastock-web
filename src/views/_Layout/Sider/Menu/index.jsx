@@ -20,10 +20,10 @@ const SiderMenu = () => {
                 theme="dark"
                 onClick={({key}) => navigate(key)}
                 defaultSelectedKeys={[location.pathname]}
+                selectedKeys={[location.pathname]}
                 items={items}
             />
         </div>
     );
 };
-
 export default SiderMenu;

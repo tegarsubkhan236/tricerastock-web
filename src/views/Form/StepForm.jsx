@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, message, Steps, Card } from 'antd';
-import TypingCard from "../../../components/TypingCard";
+import TypingCard from "../../components/TypingCard";
 
-const Index = () => {
+const StepForm = () => {
     const cardContent = `Berikut adalah contoh <strong>STEP FORM</strong>...`
     const steps = [
         {
@@ -61,4 +61,4 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default StepForm;

@@ -11,7 +11,7 @@ const Index = () => {
     const location = useLocation()
     const currentOutlet = useOutlet()
     const nodeRef = useRef(null);
-    const {title, subTitle} = GetTitle()
+    const {title, subTitle} = GetTitle(location)
     return (
         <DocumentTitle title={`${subTitle()} - ${title}`}>
             <Content style={{height: "calc(100% - 100px)"}}>

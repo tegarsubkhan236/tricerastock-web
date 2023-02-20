@@ -1,9 +1,10 @@
 import React from 'react';
 import './index.css'
 import {Layout, Avatar, Dropdown, Space} from "antd";
-import {Fullscreen, Hamburger} from "../../../components";
 import {UserOutlined} from "@ant-design/icons";
 import {Link} from "react-router-dom";
+import {Fullscreen, Hamburger, BreadCrumb} from "../../../components";
+
 const {Header} = Layout
 
 const items = [
@@ -27,14 +28,16 @@ const items = [
 const LayoutHeader = (props) => {
     const {setSidebarCollapsed, sidebarCollapsed} = props
     return (
-        <Header style={{ width: "100%" }}>
+        <Header style={{width: "100%"}}>
             <Hamburger setSidebarCollapsed={setSidebarCollapsed} sidebarCollapsed={sidebarCollapsed}/>
+            <BreadCrumb/>
             <div className="right-menu">
                 <Fullscreen/>
                 <div className="dropdown-wrap">
                     <Dropdown menu={{items}} trigger={['click']}>
                         <Space>
-                            <Avatar shape="square" size="medium" icon={<UserOutlined/>} style={{backgroundColor: '#87d068'}}/>
+                            <Avatar shape="square" size="medium" icon={<UserOutlined/>}
+                                    style={{backgroundColor: '#87d068'}}/>
                         </Space>
                     </Dropdown>
                 </div>

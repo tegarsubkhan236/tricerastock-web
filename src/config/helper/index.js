@@ -1,10 +1,7 @@
-import {useLocation} from "react-router-dom";
-
-export function GetTitle() {
-    const location = useLocation()
+export function GetTitle(location) {
     const title = "Rungkad";
     const subTitle = () => {
-        if (location.pathname === '/'){
+        if (location.pathname === '/') {
             return "Dashboard"
         } else {
             let x = location.pathname.substring(1)

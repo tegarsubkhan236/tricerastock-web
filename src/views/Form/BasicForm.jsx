@@ -1,16 +1,16 @@
 import React from 'react';
 import {Col, Row, Space, Card} from 'antd';
-import TypingCard from "../../../components/TypingCard";
-import BasicForm from "../../../components/Form/BasicForm";
-import FormMethod from "../../../components/Form/FormMethod";
-import FormLayout from "../../../components/Form/FormLayout";
-import FormRequiredMark from "../../../components/Form/FormRequiredMark";
-import FormDisabled from "../../../components/Form/FormDisabled";
-import FormSize from "../../../components/Form/FormSize";
-import FormLabelCanWarp from "../../../components/Form/FormLabelCanWarp";
-import FormNoBlockRule from "../../../components/Form/FormNoBlockRule";
+import TypingCard from "../../components/TypingCard";
+import FormBasic from "../../components/Form/FormBasic";
+import FormMethod from "../../components/Form/FormMethod";
+import FormLayout from "../../components/Form/FormLayout";
+import FormRequiredMark from "../../components/Form/FormRequiredMark";
+import FormDisabled from "../../components/Form/FormDisabled";
+import FormSize from "../../components/Form/FormSize";
+import FormLabelCanWarp from "../../components/Form/FormLabelCanWarp";
+import FormNoBlockRule from "../../components/Form/FormNoBlockRule";
 
-const Index = () => {
+const BasicForm = () => {
     return (
         <div className="app-container">
             <Space direction="vertical" size="middle" style={{display: 'flex'}}>
@@ -18,7 +18,7 @@ const Index = () => {
                 <Row gutter={32}>
                     <Col xs={24} sm={24} lg={12}>
                         <Card title="Basic Usage" extra={"Extra"}>
-                            <BasicForm/>
+                            <FormBasic/>
                         </Card>
                     </Col>
                     <Col xs={24} sm={24} lg={12}>
@@ -66,4 +66,4 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default BasicForm;

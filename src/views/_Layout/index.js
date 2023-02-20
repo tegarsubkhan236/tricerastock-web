@@ -10,7 +10,12 @@ const MainLayout = () => {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
     return (
         <>
-            <FloatButton.Group trigger="click" type="primary" style={{right: 24,}} icon={<CustomerServiceOutlined />}>
+            <FloatButton.Group
+                trigger="click"
+                type="primary"
+                style={{right: 24,}}
+                icon={<CustomerServiceOutlined />}
+            >
                 <FloatButton />
                 <FloatButton icon={<CommentOutlined />} />
             </FloatButton.Group>

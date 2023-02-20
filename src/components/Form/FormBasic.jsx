@@ -1,7 +1,7 @@
 import React from 'react';
-import {Button, Card, Checkbox, Form, Input} from "antd";
+import {Button, Checkbox, Form, Input} from "antd";
 
-const BasicForm = () => {
+const FormBasic = () => {
     return (
         <Form
             name="basic"
@@ -72,4 +72,4 @@ const BasicForm = () => {
     );
 };
 
-export default BasicForm;
+export default FormBasic;

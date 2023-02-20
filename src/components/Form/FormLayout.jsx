@@ -1,4 +1,4 @@
-import {Button, Form, Input, Radio, Card} from 'antd';
+import {Button, Form, Input, Radio} from 'antd';
 import {useState} from 'react';
 
 const FormLayout = () => {
