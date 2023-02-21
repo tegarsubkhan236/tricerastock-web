@@ -1,5 +1,5 @@
 import {createBrowserRouter, Route, createRoutesFromElements} from "react-router-dom";
-import {BasicForm, Homepage, Login, MainLayout, NoMatch, StepForm, BasicTable} from "../views";
+import {BasicForm, Homepage, Login, MainLayout, NoMatch, StepForm, BasicTable, Counter} from "../views";
 import React from "react";
 
 let hasToken = true
@@ -18,6 +18,9 @@ export const router = createBrowserRouter(
                     </Route>
                     <Route path={"table"}>
                         <Route path={"table-basic"} element={<BasicTable/>}/>
+                    </Route>
+                    <Route path={"redux-example"}>
+                        <Route path={"counter"} element={<Counter/>}/>
                     </Route>
                     <Route path="*" element={<NoMatch/>}/>
                 </Route>

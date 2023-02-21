@@ -15,6 +15,9 @@ const menuList = [
     getItem("Table", "/table", <TableOutlined/>,[
         getItem("Basic Table", "/table/table-basic", <LineOutlined />),
     ]),
+    getItem("Redux Example", "/redux-example", <TableOutlined/>,[
+        getItem("Counter", "/redux-example/counter", <LineOutlined />),
+    ]),
 ]
 
 export default menuList;
