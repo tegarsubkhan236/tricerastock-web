@@ -3,7 +3,7 @@ import {CSSTransition, SwitchTransition} from "react-transition-group";
 import DocumentTitle from "react-document-title";
 import {useLocation, useOutlet} from "react-router-dom";
 import {Layout} from "antd";
-import {GetTitle} from "../../../config/helper";
+import {GetTitle} from "../../../../config/helper";
 
 const {Content} = Layout
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Menu} from "antd";
 import {useNavigate, useLocation} from "react-router-dom";
-import menuList from "../../../../router/menuList";
+import menuList from "../../../../../config/router/menuList";
 
 const SiderMenu = () => {
     const navigate = useNavigate()

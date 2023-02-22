@@ -1,10 +1,10 @@
-import React, { useRef, useEffect } from "react";
-import { Card } from "antd";
-import { PropTypes } from "prop-types";
-import Typing from "../../config/utils/typing";
+import React, {useEffect, useRef} from "react";
+import {Card} from "antd";
+import {PropTypes} from "prop-types";
+import Typing from "../../../config/utils/typing";
 
 const TypingCard = (props) => {
-    const { title, source } = props;
+    const {title, source} = props;
 
     const sourceEl = useRef();
     const outputEl = useRef();
@@ -23,11 +23,11 @@ const TypingCard = (props) => {
     return (
         <Card bordered={false} className="card-item" title={title}>
             <div
-                style={{ display: "none" }}
+                style={{display: "none"}}
                 ref={sourceEl}
-                dangerouslySetInnerHTML={{ __html: source }}
+                dangerouslySetInnerHTML={{__html: source}}
             />
-            <div ref={outputEl} />
+            <div ref={outputEl}/>
         </Card>
     );
 };

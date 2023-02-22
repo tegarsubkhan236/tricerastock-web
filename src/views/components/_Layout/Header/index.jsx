@@ -3,7 +3,9 @@ import './index.css'
 import {Layout, Avatar, Dropdown, Space} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 import {Link} from "react-router-dom";
-import {Fullscreen, Hamburger, BreadCrumb} from "../../../components";
+import Hamburger from "./Hamburger";
+import BreadCrumb from "./BreadCrumb";
+import Fullscreen from "./Fullscreen";
 
 const {Header} = Layout
 

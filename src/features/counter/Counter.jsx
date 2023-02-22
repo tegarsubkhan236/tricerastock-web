@@ -3,7 +3,7 @@ import {Button, Card, Col, Input, Row, Space, Typography} from "antd";
 import {decrement, increment, incrementByAmount, reset} from "./counterSlice";
 import {useDispatch, useSelector} from "react-redux";
 
-const CounterFeature = () => {
+const Counter = () => {
     const [incrementAmount, setIncrementAmount] = useState(0)
     const count = useSelector((state) => state.counter.count)
     const dispatch = useDispatch()
@@ -46,4 +46,4 @@ const CounterFeature = () => {
     );
 };
 
-export default CounterFeature;
+export default Counter;

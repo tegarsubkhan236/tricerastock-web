@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.css'
-import logo from "../../../../assets/images/logo.svg";
+import logo from "../../../../../assets/images/logo.svg";
 
 const SiderLogo = () => {
     return (

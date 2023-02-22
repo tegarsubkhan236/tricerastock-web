@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Row, Space, Card} from 'antd';
+import {Space} from 'antd';
 import TableBasic from "../../components/Table/TableBasic";
 import TypingCard from "../../components/TypingCard";
 
