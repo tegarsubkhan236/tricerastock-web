@@ -17,6 +17,7 @@ const menuList = [
     ]),
     getItem("Redux Example", "/redux-example", <TableOutlined/>,[
         getItem("Counter", "/redux-example/counter", <LineOutlined />),
+        getItem("Posts", "/redux-example/posts", <LineOutlined />),
     ]),
 ]
 
