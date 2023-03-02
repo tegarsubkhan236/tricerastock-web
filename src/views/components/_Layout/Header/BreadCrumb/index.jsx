@@ -1,7 +1,7 @@
 import "./index.css";
 import {useLocation, Link} from "react-router-dom";
 import {Breadcrumb} from "antd";
-import menuList from "../../../../../config/router/menuList";
+import menuList from "../../../../../router/menuList";
 
 const getPath = (menuList, pathname) => {
     let temp = [];

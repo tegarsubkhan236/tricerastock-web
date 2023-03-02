@@ -2,10 +2,10 @@ import React from 'react';
 import {Button, Form, Input, Select} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {postAdded} from "./postSlice";
-import {getAllUser} from "../users/userSlice";
+
 const PostForm = () => {
     const [form] = Form.useForm();
-    const user = useSelector(getAllUser)
+    const users = useSelector((state) => state.users.data);
     const dispatch = useDispatch()
     const onFinish = ({title, author, content}) => {
         dispatch(postAdded(title, author, content));
@@ -55,10 +55,10 @@ const PostForm = () => {
                     filterOption={(input, option) =>
                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                     }
-                    options={user.map(v => {
+                    options={users?.data?.results.map(v => {
                         return {
-                            value: v.id,
-                            label: v.value
+                            value: v.ID,
+                            label: v.username
                         }
                     })}
                 />

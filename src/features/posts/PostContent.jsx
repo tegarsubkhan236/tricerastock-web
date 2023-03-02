@@ -3,18 +3,17 @@ import {Avatar, List, Space} from "antd";
 import {LikeOutlined, StarOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {reactionAdded, selectAllPost} from "./postSlice";
-import {getAllUser} from "../users/userSlice";
 import {formatDistanceToNow, parseISO} from "date-fns";
 
 const PostContent = () => {
     const dispatch = useDispatch()
     const data = useSelector(selectAllPost)
-    const users = useSelector(getAllUser)
+    const users = useSelector((state) => state.users.data);
     const orderData = data.slice().sort((a, b) => b.date.localeCompare(a.date))
 
     const findUser = (userId) => {
-        const author = users.find(user => user.id === userId)
-        return author ? author.value : "unknown user";
+        const author = users?.data?.results.find(user => user.ID === userId)
+        return author ? author.username : "unknown user";
     }
 
     const timeAgo = (timestamp) => {
