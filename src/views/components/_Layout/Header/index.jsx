@@ -4,43 +4,49 @@ import {Layout, Avatar, Dropdown, Space} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 import {Link} from "react-router-dom";
 import Hamburger from "./Hamburger";
-import BreadCrumb from "./BreadCrumb";
 import Fullscreen from "./Fullscreen";
+import {useDispatch} from "react-redux";
+import {logout} from "../../../../features/auth/authSlice";
 
 const {Header} = Layout
 
-const items = [
-    {
-        key: 1,
-        label: (
-            <Link to={"/"}>
-                My Profile
-            </Link>
-        )
-    }, {
-        key: 2,
-        label: (
-            <Link to={"/login"}>
-                Logout
-            </Link>
-        )
-    },
-];
-
 const LayoutHeader = (props) => {
+    const dispatch = useDispatch()
+    const items = [
+        {
+            label: (
+                <Link to={"/"} rel={"profile"}>
+                    My Profile
+                </Link>
+            ),
+            key: '1',
+        }, {
+            label: (
+                <p onClick={()=>dispatch(logout())} rel={"logout"}>
+                    Logout
+                </p>
+            ),
+            key: '2',
+        },
+    ];
+
     const {setSidebarCollapsed, sidebarCollapsed} = props
     return (
         <Header style={{width: "100%"}}>
             <Hamburger setSidebarCollapsed={setSidebarCollapsed} sidebarCollapsed={sidebarCollapsed}/>
-            <BreadCrumb/>
             <div className="right-menu">
                 <Fullscreen/>
                 <div className="dropdown-wrap">
                     <Dropdown menu={{items}} trigger={['click']}>
-                        <Space>
-                            <Avatar shape="square" size="medium" icon={<UserOutlined/>}
-                                    style={{backgroundColor: '#87d068'}}/>
-                        </Space>
+                        <a onClick={(e) => e.preventDefault()}>
+                            <Space>
+                                <Avatar shape="square"
+                                        size="medium"
+                                        icon={<UserOutlined/>}
+                                        style={{backgroundColor: '#87d068'}}
+                                />
+                            </Space>
+                        </a>
                     </Dropdown>
                 </div>
             </div>

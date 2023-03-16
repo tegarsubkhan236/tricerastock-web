@@ -3,13 +3,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchUsers, setCurrentPage} from './usersSlice';
 import {Table} from "antd";
 
-const UsersList = () => {
+const UsersList = ({columns}) => {
     const dispatch = useDispatch();
     const {data, isLoading, error, currentPage, perPage} = useSelector((state) => state.users);
-
     useEffect(() => {
         dispatch(fetchUsers({page: currentPage, perPage}));
-    }, [dispatch, currentPage, perPage]);
+    }, [dispatch, currentPage, perPage, data?.data?.total]);
 
     const pagination = {
         current: currentPage,
@@ -17,28 +16,6 @@ const UsersList = () => {
         total: data?.data?.total,
         onChange: (page) => dispatch(setCurrentPage(page)),
     };
-    const columns = [
-        {
-            title: 'ID',
-            dataIndex: 'ID',
-            key: 'ID',
-        },
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Username',
-            dataIndex: 'username',
-            key: 'username',
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-        },
-    ];
     let dataSource = [];
     if (isLoading === false && error === null) {
         data?.data?.results.map((user) => (
@@ -58,6 +35,8 @@ const UsersList = () => {
             dataSource={dataSource}
             columns={columns}
             pagination={pagination}
+            scroll={{ x: true }}
+            bordered
         />
     );
 };

@@ -9,3 +9,4 @@ export { default as Register } from './Auth/Register'
 // Pages
 export { default as Dashboard } from './Dashboard'
 export { default as MasterUser } from './Master/Users'
+export { default as MasterPPOB } from './Master/PPOB'
