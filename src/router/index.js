@@ -1,6 +1,6 @@
 import React from "react";
 import {createBrowserRouter, createRoutesFromElements, Navigate, Route} from "react-router-dom";
-import {Dashboard, Login, MainLayout, MasterPPOB, MasterUser, NoMatch} from "../views/pages";
+import {Dashboard, Login, MainLayout, MasterInventory, MasterUser, NoMatch} from "../views/pages";
 import {useSelector} from "react-redux";
 
 const ProtectedRoute = () => {
@@ -23,7 +23,7 @@ export const router = createBrowserRouter(
                 <Route index element={<Dashboard/>}/>
                 <Route path={"master"}>
                     <Route path={"users"} element={<MasterUser/>}/>
-                    <Route path={"ppob"} element={<MasterPPOB/>}/>
+                    <Route path={"inventory"} element={<MasterInventory/>}/>
                 </Route>
                 <Route path="*" element={<NoMatch/>}/>
             </Route>

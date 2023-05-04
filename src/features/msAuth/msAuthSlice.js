@@ -12,7 +12,7 @@ export const postLogin = createAsyncThunk(
     }
 );
 
-const authSlice = createSlice({
+const msAuthSlice = createSlice({
     name: 'auth',
     initialState: {
         user: null,
@@ -45,6 +45,6 @@ const authSlice = createSlice({
     },
 })
 
-export const {logout} = authSlice.actions;
+export const {logout} = msAuthSlice.actions;
 
-export default authSlice.reducer
+export default msAuthSlice.reducer

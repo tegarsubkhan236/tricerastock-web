@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import './index.css';
 import PanelGroup from './components/PanelGroup'
 import LineChart from "./components/LineChart";
 
-const Index = (props) => {
+const Index = () => {
     const lineChartDefaultData = {
         "New Visits": {
             title: "New Visits Chart",

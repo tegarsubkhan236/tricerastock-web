@@ -1,6 +1,6 @@
 import {Row, Col} from "antd";
 import CountUp from "react-countup";
-import './index.css'
+import styles from './index.module.css'
 import {MessageOutlined, PayCircleOutlined, ShopOutlined, UserOutlined} from "@ant-design/icons";
 const chartList = [
     {
@@ -31,8 +31,8 @@ const chartList = [
 const index = (props) => {
     const {handleSetLineChartData} = props;
     return (
-        <div className="panel-group-container">
-            <Row gutter={40} className="panel-group">
+        <div className={styles.panel_group_container}>
+            <Row gutter={40} className={styles.panel_group}>
                 {chartList.map((chart, i) => (
                     <Col
                         key={i}
@@ -40,10 +40,10 @@ const index = (props) => {
                         sm={12}
                         xs={12}
                         onClick={handleSetLineChartData.bind(this, chart.type)}
-                        className="card-panel-col"
+                        className={styles.card_panel_col}
                     >
-                        <div className="card-panel">
-                            <div className="card-panel-icon-wrapper">
+                        <div className={styles.card_panel}>
+                            <div className={styles.card_panel_icon_wrapper}>
                                 {
                                     chart.type === "New Visits" ? <UserOutlined className={chart.type} style={{fontSize: 55, color: chart.color}} type={chart.icon}/>
                                     : chart.type === "Messages" ? <MessageOutlined className={chart.type} style={{fontSize: 55, color: chart.color}} type={chart.icon}/>
@@ -52,9 +52,9 @@ const index = (props) => {
                                     : ""
                                 }
                             </div>
-                            <div className="card-panel-description">
-                                <p className="card-panel-text">{chart.type}</p>
-                                <CountUp end={chart.num} start={0} className="card-panel-num"/>
+                            <div className={styles.card_panel_description}>
+                                <p className={styles.card_panel_text}>{chart.type}</p>
+                                <CountUp end={chart.num} start={0} className={styles.card_panel_num}/>
                             </div>
                         </div>
                     </Col>

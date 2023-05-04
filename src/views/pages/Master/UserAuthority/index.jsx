@@ -1,10 +1,10 @@
 import React, {useRef, useState} from 'react';
-import UsersList from "../../../../features/users/UsersList";
-import {Button, Card, Col, DatePicker, Form, Input, message, Popconfirm, Row, Space, Switch} from "antd";
-import UsersForm from "../../../../features/users/UsersForm";
+import UsersList from "../../../../features/msUser/MsUsersList";
+import {Button, Card, Col, DatePicker, Form, Input, message, Popconfirm, Row, Space, Switch, Typography} from "antd";
+import UsersForm from "../../../../features/msUser/MsUsersForm";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import {useDispatch} from "react-redux";
-import {deleteUser} from "../../../../features/users/usersSlice";
+import {deleteUser} from "../../../../features/msUser/msUsersSlice";
 
 const Index = () => {
     const dispatch = useDispatch()
@@ -33,8 +33,8 @@ const Index = () => {
     const columns = [
         {
             title: 'ID',
-            dataIndex: 'ID',
-            key: 'ID',
+            dataIndex: 'id',
+            key: 'id',
         },
         {
             title: 'Name',
@@ -57,7 +57,7 @@ const Index = () => {
             title: 'Status',
             key: 'status',
             render: (_, record) => (
-                <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked={record.ID !== 3} />
+                <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked={record.id !== 3} />
             )
         },
         {
@@ -69,7 +69,7 @@ const Index = () => {
                     <Popconfirm
                         title="Delete data"
                         description="Are you sure to delete this data?"
-                        onConfirm={() => handleDelete(record.ID)}
+                        onConfirm={() => handleDelete(record.id)}
                         onCancel={() => console.log("canceled")}
                         okText="Do it"
                         cancelText="Nah"
@@ -83,30 +83,32 @@ const Index = () => {
 
     return (
         <div className="app-container">
-            <Card title="List of User">
-                <Card type={"inner"} bordered={false}>
-                    <Row>
-                        <Col xs={24} sm={24} md={24} lg={12}>
-                            <Button>Clear all</Button>
-                            <DatePicker.RangePicker bordered={false}/>
-                        </Col>
-                        <Col xs={24} sm={24} md={24} lg={{ span: 8, offset: 4}}>
-                            <Space>
-                                <Input.Search
-                                    placeholder="Cari..."
-                                    allowClear
-                                    ref={searchInput}
-                                    size="middle"
-                                    onSearch={(value) => console.log(value)}
-                                />
-                                <Button icon={<PlusOutlined />} type={"primary"} onClick={()=>openAddModal()}>Add Data</Button>
-                            </Space>
-                        </Col>
-                    </Row>
-                </Card>
-                <Card type={"inner"} bordered={false}>
-                    <UsersList columns={columns}/>
-                </Card>
+            <Card
+                type={"inner"}
+                title={<Typography.Title level={4}>User Authority</Typography.Title>}
+                style={{ marginBottom: '16px' }}
+            >
+                <Row>
+                    <Col xs={24} sm={24} md={24} lg={12}>
+                        <Button>Clear all</Button>
+                        <DatePicker.RangePicker bordered={false}/>
+                    </Col>
+                    <Col xs={24} sm={24} md={24} lg={{ span: 8, offset: 4}}>
+                        <Space>
+                            <Input.Search
+                                placeholder="Cari..."
+                                allowClear
+                                ref={searchInput}
+                                size="middle"
+                                onSearch={(value) => console.log(value)}
+                            />
+                            <Button icon={<PlusOutlined />} type={"primary"} onClick={()=>openAddModal()}>Add Data</Button>
+                        </Space>
+                    </Col>
+                </Row>
+            </Card>
+            <Card>
+                <UsersList columns={columns}/>
             </Card>
             <UsersForm formType={formType} form={form} setVisible={setVisible} visible={visible}/>
         </div>

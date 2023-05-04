@@ -38,16 +38,19 @@ export const deleteUser = createAsyncThunk(
     }
 );
 
-const usersSlice = createSlice({
+const msUsersSlice = createSlice({
     name: 'users',
     initialState: {
         data: [],
         isLoading: false,
         error: null,
         currentPage: 1,
-        perPage: 5
+        perPage: 10
     },
     reducers: {
+        setPerPage: (state, action) => {
+            state.perPage = action.payload;
+        },
         setCurrentPage: (state, action) => {
             state.currentPage = action.payload;
         },
@@ -89,7 +92,7 @@ const usersSlice = createSlice({
                 state.isLoading = false;
                 state.error = null;
                 const updatedUser = action.payload.data.user;
-                const index = state.data["data"]["results"].findIndex(user => user.ID === updatedUser.ID);
+                const index = state.data["data"]["results"].findIndex(user => user.id === updatedUser.id);
                 state.data["data"]["results"][index] = updatedUser;
             })
             .addCase(updateUser.rejected, (state, action) => {
@@ -103,7 +106,7 @@ const usersSlice = createSlice({
             .addCase(deleteUser.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.error = null;
-                state.data = state.data["data"]["results"].filter(user => user.ID !== action.payload);
+                state.data = state.data["data"]["results"].filter(user => user.id !== action.payload);
             })
             .addCase(deleteUser.rejected, (state, action) => {
                 state.isLoading = false;
@@ -112,6 +115,6 @@ const usersSlice = createSlice({
     },
 });
 
-export const {setCurrentPage} = usersSlice.actions;
+export const {setCurrentPage, setPerPage} = msUsersSlice.actions;
 
-export default usersSlice.reducer;
+export default msUsersSlice.reducer;

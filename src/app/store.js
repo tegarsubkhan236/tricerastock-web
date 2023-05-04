@@ -2,14 +2,14 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {persistReducer, persistStore} from 'redux-persist';
 import thunk from 'redux-thunk';
 import storage from 'redux-persist/lib/storage';
-import authReducer from "../features/auth/authSlice";
-import usersReducer from "../features/users/usersSlice";
-import postsReducer from "../features/posts/postSlice";
+import msAuthReducer from "../features/msAuth/msAuthSlice";
+import msUsersReducer from "../features/msUser/msUsersSlice";
+import msPPOBReducer from "../features/msPPOB/msPPOBSlice";
 
 const rootReducer = combineReducers({
-    auth: authReducer,
-    users: usersReducer,
-    posts: postsReducer
+    auth: msAuthReducer,
+    users: msUsersReducer,
+    ppob: msPPOBReducer,
 });
 
 const persistConfig = {

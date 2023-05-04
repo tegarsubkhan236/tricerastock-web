@@ -1,0 +1,40 @@
+.panel_group_container .panel_group .card_panel_col {
+    margin-bottom: 20px;
+}
+.panel_group_container .panel_group .card_panel {
+    height: 108px;
+    cursor: pointer;
+    font-size: 12px;
+    position: relative;
+    overflow: hidden;
+    color: #666;
+    background: #fff;
+    box-shadow: 4px 4px 40px rgba(0,0,0,0.05);
+    border-color: rgba(0,0,0,0.05);
+}
+.panel_group_container .panel_group .card_panel:hover .card_panel_icon_wrapper {
+    background: #ccc;
+}
+.panel_group_container .panel_group .card_panel .card_panel_icon_wrapper {
+    float: left;
+    margin: 14px 0 0 2px;
+    padding: 16px;
+    transition: all 0.38s ease-out;
+    border-radius: 6px;
+}
+.panel_group_container .panel_group .card_panel .card_panel_icon_wrapper .card_panel_icon {
+    float: left;
+    font-size: 48px;
+}
+.panel_group_container .panel_group .card_panel .card_panel_description {
+    float: left;
+    font-weight: bold;
+    margin: 26px 0 26px 0;
+}
+.panel_group_container .panel_group .card_panel .card_panel_description .card_panel_text {
+    color: rgba(0,0,0,0.45);
+    font-size: 15px;
+    padding: 10px;
+    margin: auto;
+    width: 50%;
+}

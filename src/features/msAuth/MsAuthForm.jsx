@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 import {Button, Form, Input} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {postLogin} from './authSlice';
+import {postLogin} from './msAuthSlice';
 import {useNavigate} from "react-router-dom";
 
-const AuthForm = () => {
+const MsAuthForm = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const {isLoading, user} = useSelector((state) => state.auth);
@@ -61,4 +61,4 @@ const AuthForm = () => {
     );
 };
 
-export default AuthForm;
+export default MsAuthForm;

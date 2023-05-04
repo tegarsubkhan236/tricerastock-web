@@ -1,7 +1,7 @@
-.panel-group-container .panel-group .card-panel-col {
+.panel_group_container .panel_group .card_panel_col {
     margin-bottom: 20px;
 }
-.panel-group-container .panel-group .card-panel {
+.panel_group_container .panel_group .card_panel {
     height: 108px;
     cursor: pointer;
     font-size: 12px;
@@ -12,32 +12,32 @@
     box-shadow: 4px 4px 40px rgba(0,0,0,0.05);
     border-color: rgba(0,0,0,0.05);
 }
-.panel-group-container .panel-group .card-panel:hover .card-panel-icon-wrapper {
+.panel_group_container .panel_group .card_panel:hover .card_panel_icon_wrapper {
     background: #ccc;
 }
-.panel-group-container .panel-group .card-panel .card-panel-icon-wrapper {
+.panel_group_container .panel_group .card_panel .card_panel_icon_wrapper {
     float: left;
     margin: 14px 0 0 14px;
     padding: 16px;
     transition: all 0.38s ease-out;
     border-radius: 6px;
 }
-.panel-group-container .panel-group .card-panel .card-panel-icon {
+.panel_group_container .panel_group .card_panel .card_panel_icon {
     float: left;
     font-size: 48px;
 }
-.panel-group-container .panel-group .card-panel .card-panel-description {
+.panel_group_container .panel_group .card_panel .card_panel_description {
     float: right;
     font-weight: bold;
     margin: 26px;
     margin-left: 0px;
 }
-.panel-group-container .panel-group .card-panel .card-panel-description .card-panel-text {
+.panel_group_container .panel_group .card_panel .card_panel_description .card_panel_text {
     line-height: 18px;
     color: rgba(0,0,0,0.45);
     font-size: 16px;
     margin-bottom: 12px;
 }
-.panel-group-container .panel-group .card-panel .card-panel-description .card-panel-num {
+.panel_group_container .panel_group .card_panel .card_panel_description .card_panel_num {
     font-size: 20px;
 }

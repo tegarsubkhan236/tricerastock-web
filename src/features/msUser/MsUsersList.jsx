@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchUsers, setCurrentPage} from './usersSlice';
+import {fetchUsers, setCurrentPage, setPerPage} from './msUsersSlice';
 import {Table} from "antd";
 
-const UsersList = ({columns}) => {
+const MsUsersList = ({columns}) => {
     const dispatch = useDispatch();
     const {data, isLoading, error, currentPage, perPage} = useSelector((state) => state.users);
     useEffect(() => {
@@ -14,14 +14,16 @@ const UsersList = ({columns}) => {
         current: currentPage,
         pageSize: perPage,
         total: data?.data?.total,
+        showSizeChanger: true,
+        onShowSizeChange: (current, size) => dispatch(setPerPage(size)),
         onChange: (page) => dispatch(setCurrentPage(page)),
     };
     let dataSource = [];
     if (isLoading === false && error === null) {
         data?.data?.results.map((user) => (
             dataSource = [...dataSource, {
-                key: user.ID,
-                ID: user.ID,
+                key: user.id,
+                id: user.id,
                 name: user.username,
                 username: user.username,
                 email: user.username,
@@ -41,4 +43,4 @@ const UsersList = ({columns}) => {
     );
 };
 
-export default UsersList;
+export default MsUsersList;

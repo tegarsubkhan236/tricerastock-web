@@ -1,0 +1,25 @@
+.prevent-select {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+td.ant-table-cell.ant-table-cell-with-append {
+    display: flex;
+    flex-wrap: nowrap;
+}
+td.ant-table-cell.ant-table-cell-with-append div {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+td.ant-table-cell.ant-table-cell-with-append button.ant-table-row-expand-icon.ant-table-row-expand-icon-collapsed, td.ant-table-cell.ant-table-cell-with-append button.ant-table-row-expand-icon.ant-table-row-expand-icon-expanded {
+    flex-shrink: 0;
+}
+td.ant-table-cell.ant-table-cell-with-append span.anticon {
+    overflow: visible;
+    padding-top: 2px;
+    padding-right: 10px;
+}
+td.ant-table-cell.ant-table-cell-with-append span.anticon svg {
+    transform: scaleX(-1);
+}

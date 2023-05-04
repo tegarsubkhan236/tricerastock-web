@@ -1,9 +1,9 @@
 import React from 'react';
 import {Col, Form, Input, message, Modal, Row} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {postUser, updateUser} from "./usersSlice";
+import {postUser, updateUser} from "./msUsersSlice";
 
-const UsersForm = ({formType, form, visible, setVisible}) => {
+const MsUsersForm = ({formType, form, visible, setVisible}) => {
     const dispatch = useDispatch();
     const {isLoading} = useSelector((state) => state.users);
 
@@ -17,7 +17,7 @@ const UsersForm = ({formType, form, visible, setVisible}) => {
                 })
             }
             if (formType === "EDIT_FORM") {
-                await dispatch(updateUser({id: values.ID, updatedData: values})).then(() => {
+                await dispatch(updateUser({id: values.id, updatedData: values})).then(() => {
                     setVisible(false)
                     return message.success("done")
                 })
@@ -35,7 +35,7 @@ const UsersForm = ({formType, form, visible, setVisible}) => {
             confirmLoading={isLoading}
         >
             <Form form={form}>
-                <Form.Item name="ID" hidden>
+                <Form.Item name="id" hidden>
                     <Input/>
                 </Form.Item>
                 <Row gutter={24}>
@@ -85,4 +85,4 @@ const UsersForm = ({formType, form, visible, setVisible}) => {
     );
 };
 
-export default UsersForm;
+export default MsUsersForm;
