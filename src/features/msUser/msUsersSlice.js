@@ -45,7 +45,7 @@ const msUsersSlice = createSlice({
         isLoading: false,
         error: null,
         currentPage: 1,
-        perPage: 10
+        perPage: 5
     },
     reducers: {
         setPerPage: (state, action) => {
