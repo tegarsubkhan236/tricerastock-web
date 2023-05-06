@@ -9,7 +9,6 @@ import {CSSTransition, SwitchTransition} from "react-transition-group";
 
 const Index = () => {
     const nodeRef = useRef(null);
-
     const listCurrentData = {
         "Supplier": {
             type: "Supplier",

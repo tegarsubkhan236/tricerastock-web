@@ -124,7 +124,7 @@ const Index = () => {
         <div className="app-container">
             <Row gutter={5}>
                 <Col span={18}>
-                    <Card type={"inner"} title={"List of Product"}>
+                    <Card type={"inner"} title={<Typography.Title level={4}>Sell Transaction</Typography.Title>}>
                         <Row>
                             <Col span={6}>
                                 <Tree
@@ -141,7 +141,7 @@ const Index = () => {
                     </Card>
                 </Col>
                 <Col span={6}>
-                    <Card  type={"inner"} title={"Checkout"} style={{minHeight: '500px'}}>
+                    <Card  type={"inner"} title={"  "} style={{minHeight: '500px'}}>
                         <List
                             itemLayout="horizontal"
                             dataSource={data}
