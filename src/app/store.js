@@ -4,11 +4,15 @@ import thunk from 'redux-thunk';
 import storage from 'redux-persist/lib/storage';
 import msAuthReducer from "../features/msAuth/msAuthSlice";
 import msUsersReducer from "../features/msUser/msUsersSlice";
+import msInvProductCategoriesReducer from "../features/msInvProductCategory/msInvProductCategorySlice";
+import msInvSupplierReducer from "../features/msInvSupplier/msInvSupplierSlice";
 import msPPOBReducer from "../features/msPPOB/msPPOBSlice";
 
 const rootReducer = combineReducers({
     auth: msAuthReducer,
     users: msUsersReducer,
+    suppliers: msInvSupplierReducer,
+    productCategories: msInvProductCategoriesReducer,
     ppob: msPPOBReducer,
 });
 

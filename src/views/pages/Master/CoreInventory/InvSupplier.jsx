@@ -1,20 +1,33 @@
-import React, {useRef} from 'react';
-import {Button, Col, DatePicker, Input, Popconfirm, Row, Space, Switch, Table} from "antd";
+import React, {useRef, useState} from 'react';
+import {Button, Col, Form, Input, message, Popconfirm, Row, Space, Switch} from "antd";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
+import MsInvSupplierList from "../../../../features/msInvSupplier/MsInvSupplierList";
+import {useDispatch} from "react-redux";
+import {deleteSupplier} from "../../../../features/msInvSupplier/msInvSupplierSlice";
+import MsInvSupplierForm from "../../../../features/msInvSupplier/MsInvSupplierForm";
 
 const InvSupplier = () => {
+    const dispatch = useDispatch()
+    const [form] = Form.useForm();
     const searchInput = useRef(null);
+    const [visible, setVisible] = useState(false);
+    const [formType, setFormType] = useState("");
 
     const openAddModal = () => {
-        console.log("ADD_FORM")
+        form.resetFields();
+        setFormType("ADD_FORM")
+        setVisible(true);
     };
 
     const openEditModal = (record) => {
-        console.log("EDIT_FORM")
+        form.setFieldsValue(record);
+        setFormType("EDIT_FORM")
+        setVisible(true);
     };
 
     const handleDelete = async (id) => {
-        console.log(id)
+        await dispatch(deleteSupplier({id: id}));
+        return message.success('Data deleted successfully')
     }
 
     const columns = [
@@ -38,13 +51,13 @@ const InvSupplier = () => {
           children: [
               {
                   title: 'Contact Person',
-                  dataIndex: 'cperson',
-                  key: 'cperson'
+                  dataIndex: 'contact_person',
+                  key: 'contact_person'
               },
               {
                   title: 'Contact Number',
-                  dataIndex: 'contact',
-                  key: 'contact'
+                  dataIndex: 'contact_number',
+                  key: 'contact_number'
               }
           ]
         },
@@ -76,40 +89,27 @@ const InvSupplier = () => {
         },
     ];
 
-    const data = [
-        {
-            id: 1,
-            name: "tegar subkhan fauzi",
-            cperson: "fauzi",
-            address : "Jl Klayar rt 05 rw 06",
-            contact : "08966288087",
-            status : 1
-        }
-    ]
-
     return (
-        <Row>
-            <Col xs={24} sm={24} md={24} lg={{span: 8, offset: 16}} style={{paddingBottom: '15px'}}>
-                <Space>
-                    <Input.Search
-                        placeholder="Cari..."
-                        allowClear
-                        ref={searchInput}
-                        size="middle"
-                        onSearch={(value) => console.log(value)}
-                    />
-                    <Button icon={<PlusOutlined/>} type={"primary"} onClick={() => openAddModal()}>Add Data</Button>
-                </Space>
-            </Col>
-            <Col span={24}>
-                <Table
-                    dataSource={data}
-                    columns={columns}
-                    scroll={{ x: true }}
-                    bordered
-                />
-            </Col>
-        </Row>
+        <>
+            <Row>
+                <Col xs={24} sm={24} md={24} lg={{span: 8, offset: 16}} style={{paddingBottom: '15px'}}>
+                    <Space>
+                        <Input.Search
+                            placeholder="Cari..."
+                            allowClear
+                            ref={searchInput}
+                            size="middle"
+                            onSearch={(value) => console.log(value)}
+                        />
+                        <Button icon={<PlusOutlined/>} type={"primary"} onClick={() => openAddModal()}>Add Data</Button>
+                    </Space>
+                </Col>
+                <Col span={24}>
+                    <MsInvSupplierList columns={columns}/>
+                </Col>
+            </Row>
+            <MsInvSupplierForm form={form} formType={formType} setVisible={setVisible} visible={visible} />
+        </>
     );
 };
 
