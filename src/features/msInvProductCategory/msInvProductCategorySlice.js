@@ -58,7 +58,6 @@ const msInvProductCategory = createSlice({
     name: 'product_categories',
     initialState: {
         data: [],
-        total: 0,
         status: 'idle',
         currentPage: 1,
         perPage: 5
@@ -80,7 +79,6 @@ const msInvProductCategory = createSlice({
             [fetchProductCategory.fulfilled]: (state, action) => {
                 state.status = 'succeeded';
                 state.data = action.payload.data.results;
-                state.total = action.payload.data.total;
             },
             [postProductCategory.pending]: (state) => {
                 state.status = 'loading';

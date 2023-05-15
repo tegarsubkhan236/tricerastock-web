@@ -9,30 +9,21 @@ const MsInvSupplierForm = ({formType, form, visible, setVisible}) => {
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault()
-        form.validateFields().then((values) => {
-            if (formType === "ADD_FORM") {
-                dispatch(postProductCategory({parent_id: values.id ?? null,name: values.children_name,})).unwrap()
-                    .then(() => {
-                        setVisible(false)
-                        dispatch(setCurrentPage(1))
-                        return message.success('Operation executed')
-                    }).catch((error) => {
-                        setVisible(false)
-                        dispatch(setCurrentPage(1))
-                        return message.error(error.message)
-                    })
-            }
-            if (formType === "EDIT_FORM") {
-                dispatch(updateProductCategory({id: values.id, updatedData: {name: values.children_name}})).unwrap()
-                    .then(() => {
-                        setVisible(false)
-                        dispatch(setCurrentPage(1))
-                        return message.success('Operation executed')
-                    }).catch((error) => {
-                        setVisible(false)
-                        dispatch(setCurrentPage(1))
-                        return message.error(error.message)
-                    })
+        form.validateFields().then(async (values) => {
+            try {
+                if (formType === "ADD_FORM") {
+                    await dispatch(postProductCategory({parent_id: values.id ?? null, name: values.children_name,})).unwrap()
+                }
+                if (formType === "EDIT_FORM") {
+                    await dispatch(updateProductCategory({id: values.id, updatedData: {name: values.children_name}})).unwrap()
+                }
+                setVisible(false)
+                dispatch(setCurrentPage(1))
+                return message.success('Operation executed')
+            } catch (e) {
+                setVisible(false)
+                dispatch(setCurrentPage(1))
+                return message.error(e.message)
             }
         })
     },[dispatch, form, formType, setVisible]);

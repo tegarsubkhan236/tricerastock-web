@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {Button, Col, Form, Input, message, Popconfirm, Row, Space, Switch} from "antd";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import MsInvSupplierList from "../../../../features/msInvSupplier/MsInvSupplierList";
@@ -25,10 +25,14 @@ const InvSupplier = () => {
         setVisible(true);
     };
 
-    const handleDelete = async (id) => {
-        await dispatch(deleteSupplier({id: id}));
-        return message.success('Data deleted successfully')
-    }
+    const handleDelete = useCallback( async (id) => {
+        await dispatch(deleteSupplier({id: id})).unwrap()
+            .then(() => {
+                return message.success('Operation executed')
+            }).catch((error) => {
+                return message.error(error.message)
+            })
+    },[dispatch])
 
     const columns = [
         {
@@ -90,26 +94,24 @@ const InvSupplier = () => {
     ];
 
     return (
-        <>
-            <Row>
-                <Col xs={24} sm={24} md={24} lg={{span: 8, offset: 16}} style={{paddingBottom: '15px'}}>
-                    <Space>
-                        <Input.Search
-                            placeholder="Cari..."
-                            allowClear
-                            ref={searchInput}
-                            size="middle"
-                            onSearch={(value) => console.log(value)}
-                        />
-                        <Button icon={<PlusOutlined/>} type={"primary"} onClick={() => openAddModal()}>Add Data</Button>
-                    </Space>
-                </Col>
-                <Col span={24}>
-                    <MsInvSupplierList columns={columns}/>
-                </Col>
-            </Row>
+        <Row>
+            <Col xs={24} sm={24} md={24} lg={{span: 8, offset: 16}} style={{paddingBottom: '15px'}}>
+                <Space>
+                    <Input.Search
+                        placeholder="Cari..."
+                        allowClear
+                        ref={searchInput}
+                        size="middle"
+                        onSearch={(value) => console.log(value)}
+                    />
+                    <Button icon={<PlusOutlined/>} type={"primary"} onClick={() => openAddModal()}>Add Data</Button>
+                </Space>
+            </Col>
+            <Col span={24}>
+                <MsInvSupplierList columns={columns}/>
+            </Col>
             <MsInvSupplierForm form={form} formType={formType} setVisible={setVisible} visible={visible} />
-        </>
+        </Row>
     );
 };
 

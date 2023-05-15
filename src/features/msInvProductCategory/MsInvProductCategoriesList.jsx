@@ -5,7 +5,7 @@ import {Table} from "antd";
 
 const MsInvProductCategories = ({columns, expandedRowKeys, setExpandedRowKeys}) => {
     const dispatch = useDispatch();
-    const {data, total, status, currentPage, perPage} = useSelector((state) => state.productCategories);
+    const {data, status, currentPage, perPage} = useSelector((state) => state.productCategories);
 
     useEffect(() => {
         if (status === 'idle') {
@@ -16,7 +16,7 @@ const MsInvProductCategories = ({columns, expandedRowKeys, setExpandedRowKeys}) 
     const pagination = {
         current: currentPage,
         pageSize: perPage,
-        total: total,
+        total: data?.data?.total,
         showSizeChanger: true,
         onShowSizeChange: (current, size) => dispatch(setPerPage(size)),
         onChange: (page) => dispatch(setCurrentPage(page)),

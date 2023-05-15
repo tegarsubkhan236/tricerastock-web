@@ -3,38 +3,54 @@ import instance from "../../config/lib/axios";
 
 export const fetchSupplier = createAsyncThunk(
     'supplier/fetch',
-    async ({page, perPage}) => {
-        const response = await instance.get('/supplier', {
-            params: {
-                page: page,
-                limit: perPage,
-            }
-        });
-        return response.data;
+    async ({page, perPage}, thunkAPI) => {
+        try {
+            const response = await instance.get('/supplier', {
+                params: {
+                    page: page,
+                    limit: perPage,
+                }
+            });
+            return response.data;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e.response.data)
+        }
     }
 );
 
 export const postSupplier = createAsyncThunk(
     'supplier/post',
-    async (postData) => {
-        const response = await instance.post('/supplier', postData);
-        return response.data
+    async (postData, thunkAPI) => {
+        try {
+            const response = await instance.post('/supplier', postData);
+            return response.data
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e.response.data)
+        }
     }
 )
 
 export const updateSupplier = createAsyncThunk(
     'supplier/update',
-    async ({id, updatedData}) => {
-        const response = await instance.put(`/supplier/${id}`, updatedData);
-        return response.data;
+    async ({id, updatedData}, thunkAPI) => {
+        try {
+            const response = await instance.put(`/supplier/${id}`, updatedData);
+            return response.data;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e.response.data)
+        }
     }
 );
 
 export const deleteSupplier = createAsyncThunk(
     'supplier/delete',
-    async ({id}) => {
-        await instance.delete(`/supplier/${id}`, id);
-        return id;
+    async ({id}, thunkAPI) => {
+        try {
+            await instance.delete(`/supplier/${id}`, id);
+            return id;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e.response.data)
+        }
     }
 );
 
@@ -55,64 +71,61 @@ const msInvSupplier = createSlice({
             state.currentPage = action.payload;
         },
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchSupplier.pending, (state) => {
+    extraReducers: {
+            [fetchSupplier.pending]: (state) => {
                 state.isLoading = true;
                 state.error = null;
-            })
-            .addCase(fetchSupplier.fulfilled, (state, action) => {
+            },
+            [fetchSupplier.fulfilled]: (state, action) => {
                 state.isLoading = false;
                 state.error = null;
                 state.data = action.payload;
-            })
-            .addCase(fetchSupplier.rejected, (state, action) => {
+            },
+            [fetchSupplier.rejected]: (state, action) => {
                 state.isLoading = false;
-                state.error = action.error.message;
-            })
-            .addCase(postSupplier.pending, (state) => {
+                state.error = action.payload.message;
+            },
+            [postSupplier.pending]: (state) => {
                 state.isLoading = true;
                 state.error = null;
-            })
-            .addCase(postSupplier.fulfilled, (state, action) => {
+            },
+            [postSupplier.fulfilled]: (state, action) => {
                 state.isLoading = false;
                 state.error = null;
-                console.log("POST DATA", action)
                 state.data["data"]["results"].unshift(action.payload.data)
-            })
-            .addCase(postSupplier.rejected, (state, action) => {
+            },
+            [postSupplier.rejected]: (state, action) => {
                 state.isLoading = false;
-                state.error = action.error.message;
-            })
-            .addCase(updateSupplier.pending, (state) => {
+                state.error = action.payload.message;
+            },
+            [updateSupplier.pending]: (state) => {
                 state.isLoading = true;
                 state.error = null;
-            })
-            .addCase(updateSupplier.fulfilled, (state, action) => {
+            },
+            [updateSupplier.fulfilled]: (state, action) => {
                 state.isLoading = false;
                 state.error = null;
-                console.log("UPDATE DATA", action)
                 const updatedItem = action.payload.data.item;
                 const index = state.data["data"]["results"].findIndex(item => item.id === updatedItem.id);
                 state.data["data"]["results"][index] = updatedItem;
-            })
-            .addCase(updateSupplier.rejected, (state, action) => {
+            },
+            [updateSupplier.rejected]: (state, action) => {
                 state.isLoading = false;
-                state.error = action.error.message;
-            })
-            .addCase(deleteSupplier.pending, (state) => {
+                state.error = action.payload.message;
+            },
+            [deleteSupplier.pending]: (state) => {
                 state.isLoading = true;
                 state.error = null;
-            })
-            .addCase(deleteSupplier.fulfilled, (state, action) => {
+            },
+            [deleteSupplier.fulfilled]: (state, action) => {
                 state.isLoading = false;
                 state.error = null;
                 state.data = state.data["data"]["results"].filter(user => user.id !== action.payload);
-            })
-            .addCase(deleteSupplier.rejected, (state, action) => {
+            },
+            [deleteSupplier.rejected]: (state, action) => {
                 state.isLoading = false;
-                state.error = action.error.message;
-            })
+                state.error = action.payload.message;
+            },
     },
 });
 
