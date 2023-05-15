@@ -1,8 +1,8 @@
 import React, {useCallback, useState} from 'react';
+import {useDispatch} from "react-redux";
 import {Button, Col, Form, message, Popconfirm, Row, Space} from "antd";
 import {DeleteOutlined, EditOutlined, EnterOutlined, PlusOutlined} from "@ant-design/icons";
 import MsInvProductCategoriesList from "../../../../features/msInvProductCategory/MsInvProductCategoriesList";
-import {useDispatch} from "react-redux";
 import MsInvProductCategoriesForm from "../../../../features/msInvProductCategory/MsInvProductCategoriesForm";
 import {deleteProductCategory, setCurrentPage} from "../../../../features/msInvProductCategory/msInvProductCategorySlice";
 
@@ -32,11 +32,15 @@ const InvProductCategory = () => {
         setVisible(true);
     },[form]);
 
-    const handleDelete = useCallback(async (id) => {
-        await dispatch(deleteProductCategory({id: id})).then(() => {
-            dispatch(setCurrentPage(1))
-        });
-        return message.success('Data deleted successfully')
+    const handleDelete = useCallback( async (id) => {
+        await dispatch(deleteProductCategory({id: id})).unwrap()
+            .then(() => {
+                dispatch(setCurrentPage(1))
+                return message.success('Operation executed')
+            }).catch((error) => {
+                dispatch(setCurrentPage(1))
+                return message.error(error.message)
+            })
     },[dispatch])
 
     const columns = [

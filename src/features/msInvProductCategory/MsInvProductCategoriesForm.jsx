@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {Col, Form, Input, message, Modal, Row} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {postProductCategory, updateProductCategory} from "./msInvProductCategorySlice";
+import {postProductCategory, setCurrentPage, updateProductCategory} from "./msInvProductCategorySlice";
 
 const MsInvSupplierForm = ({formType, form, visible, setVisible}) => {
     const dispatch = useDispatch();
@@ -9,23 +9,30 @@ const MsInvSupplierForm = ({formType, form, visible, setVisible}) => {
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault()
-        form.validateFields().then(async (values) => {
-            const data = {
-                parent_id: values.id ?? null,
-                name: values.children_name,
-            }
-            const id = values.id
+        form.validateFields().then((values) => {
             if (formType === "ADD_FORM") {
-                await dispatch(postProductCategory(data)).then(() => {
-                    setVisible(false)
-                    message.success("done")
-                })
+                dispatch(postProductCategory({parent_id: values.id ?? null,name: values.children_name,})).unwrap()
+                    .then(() => {
+                        setVisible(false)
+                        dispatch(setCurrentPage(1))
+                        return message.success('Operation executed')
+                    }).catch((error) => {
+                        setVisible(false)
+                        dispatch(setCurrentPage(1))
+                        return message.error(error.message)
+                    })
             }
             if (formType === "EDIT_FORM") {
-                await dispatch(updateProductCategory({id: id, updatedData: data})).then(() => {
-                    setVisible(false)
-                    return message.success("done")
-                })
+                dispatch(updateProductCategory({id: values.id, updatedData: {name: values.children_name}})).unwrap()
+                    .then(() => {
+                        setVisible(false)
+                        dispatch(setCurrentPage(1))
+                        return message.success('Operation executed')
+                    }).catch((error) => {
+                        setVisible(false)
+                        dispatch(setCurrentPage(1))
+                        return message.error(error.message)
+                    })
             }
         })
     },[dispatch, form, formType, setVisible]);

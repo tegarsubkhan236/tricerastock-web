@@ -5,7 +5,7 @@ import {Table} from "antd";
 
 const MsInvProductCategories = ({columns, expandedRowKeys, setExpandedRowKeys}) => {
     const dispatch = useDispatch();
-    const {data, total, status, error, currentPage, perPage} = useSelector((state) => state.productCategories);
+    const {data, total, status, currentPage, perPage} = useSelector((state) => state.productCategories);
 
     useEffect(() => {
         if (status === 'idle') {
@@ -22,7 +22,7 @@ const MsInvProductCategories = ({columns, expandedRowKeys, setExpandedRowKeys}) 
         onChange: (page) => dispatch(setCurrentPage(page)),
     };
     let dataSource = [];
-    if (status === 'succeeded' && error === null) {
+    if (status === 'succeeded') {
         data.map((item) => (
             dataSource = [...dataSource, {
                 key: item.id,
