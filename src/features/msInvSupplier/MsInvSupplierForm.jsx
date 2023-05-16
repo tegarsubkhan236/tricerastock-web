@@ -33,9 +33,10 @@ const MsInvSupplierForm = ({formType, form, visible, setVisible}) => {
             centered
             onCancel={() => setVisible(false)}
             onOk={handleSubmit}
+            okButtonProps={{form:'editor-form', key: 'submit', htmlType: 'submit'}}
             confirmLoading={isLoading}
         >
-            <Form form={form}>
+            <Form id='editor-form' form={form} layout={"vertical"}>
                 <Form.Item name="id" hidden>
                     <Input/>
                 </Form.Item>

@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {Button, Form, Input} from "antd";
+import React, {useCallback, useEffect} from 'react';
+import {Button, Form, Input, message} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {postLogin} from './msAuthSlice';
 import {useNavigate} from "react-router-dom";
@@ -15,14 +15,28 @@ const MsAuthForm = () => {
         }
     }, [navigate, user])
 
-    const handleLogin = async (values) => {
-        await dispatch(postLogin(values))
-        navigate("/")
-    }
+    const handleLogin = useCallback(async (values) => {
+        try {
+            await dispatch(postLogin(values)).unwrap()
+            navigate("/")
+        } catch (e) {
+            return message.error(e.message)
+        }
+    },[dispatch, navigate])
+
+    const handleLoginFailed = useCallback(async (errorInfo) => {
+        try {
+            errorInfo.errorFields.map((v) => (
+                message.error(v.errors)
+            ))
+        } catch (e) {
+            console.log(e)
+        }
+    },[])
 
     return (
         <Form onFinish={(values) => handleLogin(values)}
-              onFinishFailed={(errorInfo) => console.log('Failed:', errorInfo)}
+              onFinishFailed={(errorInfo) => handleLoginFailed(errorInfo)}
               autoComplete="off"
               className="content"
         >
