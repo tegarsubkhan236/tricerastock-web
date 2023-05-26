@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect} from 'react';
 import {Button, Form, Input, message} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {postLogin} from './msAuthSlice';
+import {postLogin} from './coreAuthSlice';
 import {useNavigate} from "react-router-dom";
 
-const MsAuthForm = () => {
+const CoreAuthForm = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const {isLoading, user} = useSelector((state) => state.auth);
@@ -75,4 +75,4 @@ const MsAuthForm = () => {
     );
 };
 
-export default MsAuthForm;
+export default CoreAuthForm;

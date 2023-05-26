@@ -1,42 +1,40 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {Col, Form, Input, message, Modal, Row} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {postSupplier, updateSupplier} from "./msInvSupplierSlice";
+import {postUser, updateUser} from "./coreUsersSlice";
 
-const MsInvSupplierForm = ({formType, form, visible, setVisible}) => {
+const CoreUsersForm = ({formType, form, visible, setVisible}) => {
     const dispatch = useDispatch();
-    const {isLoading} = useSelector((state) => state.suppliers);
+    const {isLoading} = useSelector((state) => state.users);
 
-    const handleSubmit = useCallback((e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
         form.validateFields().then(async (values) => {
-            try {
-                if (formType === "ADD_FORM") {
-                    await dispatch(postSupplier(values)).unwrap()
-                }
-                if (formType === "EDIT_FORM") {
-                    await dispatch(updateSupplier({id: values.id, updatedData: values})).unwrap()
-                }
-                setVisible(false)
-                return message.success('Operation executed')
-            } catch (e) {
-                setVisible(false)
-                return message.error(e.message)
+            if (formType === "ADD_FORM") {
+                await dispatch(postUser(values)).then(() => {
+                    setVisible(false)
+                    return message.success("done")
+                })
+            }
+            if (formType === "EDIT_FORM") {
+                await dispatch(updateUser({id: values.id, updatedData: values})).then(() => {
+                    setVisible(false)
+                    return message.success("done")
+                })
             }
         })
-    }, [dispatch, form, formType, setVisible])
+    }
 
     return (
         <Modal
-            title={formType === "EDIT_FORM" ? "Edit Supplier" : "Add Supplier"}
+            title={formType === "EDIT_FORM" ? "Edit Form" : "Add Form"}
             open={visible}
             centered
             onCancel={() => setVisible(false)}
             onOk={handleSubmit}
-            okButtonProps={{form:'editor-form', key: 'submit', htmlType: 'submit'}}
             confirmLoading={isLoading}
         >
-            <Form id='editor-form' form={form} layout={"vertical"}>
+            <Form form={form}>
                 <Form.Item name="id" hidden>
                     <Input/>
                 </Form.Item>
@@ -52,33 +50,33 @@ const MsInvSupplierForm = ({formType, form, visible, setVisible}) => {
                         </Form.Item>
                     </Col>
                     <Col xs={24} sm={24} md={24} lg={24}>
-                        <Form.Item name="address"
+                        <Form.Item name="username"
                                    rules={[{
-                                       required: true, message: 'Please input your address',
+                                       required: true, message: 'Please input your username',
                                    },]}
-                                   label="Address"
-                        >
-                            <Input.TextArea/>
-                        </Form.Item>
-                    </Col>
-                    <Col xs={24} sm={24} md={24} lg={24}>
-                        <Form.Item name="contact_person"
-                                   rules={[{
-                                       required: true, message: 'Please input your contact person',
-                                   },]}
-                                   label="Contact Person"
+                                   label="Username"
                         >
                             <Input/>
                         </Form.Item>
                     </Col>
                     <Col xs={24} sm={24} md={24} lg={24}>
-                        <Form.Item name="contact_number"
+                        <Form.Item name="email"
                                    rules={[{
-                                       required: true, message: 'Please input your contact number',
+                                       required: true, message: 'Please input your email!',
                                    },]}
-                                   label="Contact Number"
+                                   label="Email"
                         >
                             <Input/>
+                        </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={24} md={24} lg={24}>
+                        <Form.Item name="password"
+                                   rules={[{
+                                       required: true, message: 'Please input your password',
+                                   },]}
+                                   label="Password"
+                        >
+                            <Input.Password/>
                         </Form.Item>
                     </Col>
                 </Row>
@@ -87,4 +85,4 @@ const MsInvSupplierForm = ({formType, form, visible, setVisible}) => {
     );
 };
 
-export default MsInvSupplierForm;
+export default CoreUsersForm;

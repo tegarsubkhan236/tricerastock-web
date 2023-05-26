@@ -18,6 +18,23 @@ export const fetchSupplier = createAsyncThunk(
     }
 );
 
+export const fetchSupplierByColumn = createAsyncThunk(
+    'supplier/fetch_by_name',
+    async ({page, perPage, column}, thunkAPI) => {
+        try {
+            const response = await instance.post('/supplier/search/',column, {
+                params: {
+                    page: page,
+                    limit: perPage,
+                },
+            });
+            return response.data;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e.response.data)
+        }
+    }
+);
+
 export const postSupplier = createAsyncThunk(
     'supplier/post',
     async (postData, thunkAPI) => {
@@ -82,6 +99,19 @@ const msInvSupplier = createSlice({
                 state.data = action.payload;
             },
             [fetchSupplier.rejected]: (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload.message;
+            },
+            [fetchSupplierByColumn.pending]: (state) => {
+                state.isLoading = true;
+                state.error = null;
+            },
+            [fetchSupplierByColumn.fulfilled]: (state, action) => {
+                state.isLoading = false;
+                state.error = null;
+                state.data = action.payload;
+            },
+            [fetchSupplierByColumn.rejected]: (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload.message;
             },

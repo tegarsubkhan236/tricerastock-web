@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchUsers, setCurrentPage, setPerPage} from './msUsersSlice';
+import {fetchUsers, setCurrentPage, setPerPage} from './coreUsersSlice';
 import {Table} from "antd";
 
-const MsUsersList = ({columns}) => {
+const CoreUsersList = ({columns}) => {
     const dispatch = useDispatch();
     const {data, isLoading, error, currentPage, perPage} = useSelector((state) => state.users);
     useEffect(() => {
@@ -43,4 +43,4 @@ const MsUsersList = ({columns}) => {
     );
 };
 
-export default MsUsersList;
+export default CoreUsersList;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MsPPOBListPasca = () => {
+const InvPPOBListPasca = () => {
     return (
         <div>
             <h1>HALLO WORLD</h1>
@@ -8,4 +8,4 @@ const MsPPOBListPasca = () => {
     );
 };
 
-export default MsPPOBListPasca;
+export default InvPPOBListPasca;

@@ -38,7 +38,7 @@ export const deleteUser = createAsyncThunk(
     }
 );
 
-const msUsersSlice = createSlice({
+const coreUsersSlice = createSlice({
     name: 'users',
     initialState: {
         data: [],
@@ -115,6 +115,6 @@ const msUsersSlice = createSlice({
     },
 });
 
-export const {setCurrentPage, setPerPage} = msUsersSlice.actions;
+export const {setCurrentPage, setPerPage} = coreUsersSlice.actions;
 
-export default msUsersSlice.reducer;
+export default coreUsersSlice.reducer;

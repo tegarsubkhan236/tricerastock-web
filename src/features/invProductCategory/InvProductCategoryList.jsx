@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchProductCategory, setCurrentPage, setPerPage} from './msInvProductCategorySlice';
+import {fetchProductCategory, setCurrentPage, setPerPage} from './invProductCategorySlice';
 import {Table} from "antd";
 
 const MsInvProductCategories = ({columns, expandedRowKeys, setExpandedRowKeys}) => {

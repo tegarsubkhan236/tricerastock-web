@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.css'
 import DocumentTitle from "react-document-title";
-import AuthForm from "../../../../features/msAuth/MsAuthForm";
+import AuthForm from "../../../../features/coreAuth/CoreAuthForm";
 
 const Index = () => {
     return (

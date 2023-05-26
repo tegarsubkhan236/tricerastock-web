@@ -1,5 +1,5 @@
 import axios from "axios";
-import {logout} from "../../features/msAuth/msAuthSlice";
+import {logout} from "../../features/coreAuth/coreAuthSlice";
 
 let store
 

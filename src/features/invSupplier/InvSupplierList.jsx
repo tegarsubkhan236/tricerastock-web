@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchSupplier, setCurrentPage, setPerPage} from './msInvSupplierSlice';
+import {fetchSupplier, setCurrentPage, setPerPage} from './invSupplierSlice';
 import {Table} from "antd";
 
-const MsInvSupplierList = ({columns}) => {
+const InvSupplierList = ({columns}) => {
     const dispatch = useDispatch();
     const {data, isLoading, error, currentPage, perPage} = useSelector((state) => state.suppliers);
     useEffect(() => {
@@ -45,4 +45,4 @@ const MsInvSupplierList = ({columns}) => {
     );
 };
 
-export default MsInvSupplierList;
+export default InvSupplierList;

@@ -1,10 +1,10 @@
 import React, {useRef, useState} from 'react';
-import UsersList from "../../../../features/msUser/MsUsersList";
-import {Button, Card, Col, DatePicker, Form, Input, message, Popconfirm, Row, Space, Switch, Typography} from "antd";
-import UsersForm from "../../../../features/msUser/MsUsersForm";
-import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import {useDispatch} from "react-redux";
-import {deleteUser} from "../../../../features/msUser/msUsersSlice";
+import {Button, Card, Col, DatePicker, Form, Input, message, Popconfirm, Row, Space, Switch, Typography} from "antd";
+import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
+import UsersList from "../../../../features/coreUser/CoreUsersList";
+import UsersForm from "../../../../features/coreUser/CoreUsersForm";
+import {deleteUser} from "../../../../features/coreUser/coreUsersSlice";
 
 const Index = () => {
     const dispatch = useDispatch()

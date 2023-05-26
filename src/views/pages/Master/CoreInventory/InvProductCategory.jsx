@@ -2,9 +2,9 @@ import React, {useCallback, useState} from 'react';
 import {useDispatch} from "react-redux";
 import {Button, Col, Form, message, Popconfirm, Row, Space} from "antd";
 import {DeleteOutlined, EditOutlined, EnterOutlined, PlusOutlined} from "@ant-design/icons";
-import MsInvProductCategoriesList from "../../../../features/msInvProductCategory/MsInvProductCategoriesList";
-import MsInvProductCategoriesForm from "../../../../features/msInvProductCategory/MsInvProductCategoriesForm";
-import {deleteProductCategory, setCurrentPage} from "../../../../features/msInvProductCategory/msInvProductCategorySlice";
+import MsInvProductCategoriesList from "../../../../features/invProductCategory/InvProductCategoryList";
+import MsInvProductCategoriesForm from "../../../../features/invProductCategory/InvProductCategoryForm";
+import {deleteProductCategory, setCurrentPage} from "../../../../features/invProductCategory/invProductCategorySlice";
 
 const InvProductCategory = () => {
     const dispatch = useDispatch()

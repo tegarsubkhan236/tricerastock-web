@@ -1,10 +1,10 @@
 import React, {useCallback, useRef, useState} from 'react';
+import {useDispatch} from "react-redux";
 import {Button, Col, Form, Input, message, Popconfirm, Row, Space, Switch} from "antd";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
-import MsInvSupplierList from "../../../../features/msInvSupplier/MsInvSupplierList";
-import {useDispatch} from "react-redux";
-import {deleteSupplier} from "../../../../features/msInvSupplier/msInvSupplierSlice";
-import MsInvSupplierForm from "../../../../features/msInvSupplier/MsInvSupplierForm";
+import InvSupplierList from "../../../../features/invSupplier/InvSupplierList";
+import {deleteSupplier} from "../../../../features/invSupplier/invSupplierSlice";
+import InvSupplierForm from "../../../../features/invSupplier/InvSupplierForm";
 
 const InvSupplier = () => {
     const dispatch = useDispatch()
@@ -108,9 +108,9 @@ const InvSupplier = () => {
                 </Space>
             </Col>
             <Col span={24}>
-                <MsInvSupplierList columns={columns}/>
+                <InvSupplierList columns={columns}/>
             </Col>
-            <MsInvSupplierForm form={form} formType={formType} setVisible={setVisible} visible={visible} />
+            <InvSupplierForm form={form} formType={formType} setVisible={setVisible} visible={visible} />
         </Row>
     );
 };

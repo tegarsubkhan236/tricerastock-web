@@ -2,17 +2,19 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {persistReducer, persistStore} from 'redux-persist';
 import thunk from 'redux-thunk';
 import storage from 'redux-persist/lib/storage';
-import msAuthReducer from "../features/msAuth/msAuthSlice";
-import msUsersReducer from "../features/msUser/msUsersSlice";
-import msInvProductCategoriesReducer from "../features/msInvProductCategory/msInvProductCategorySlice";
-import msInvSupplierReducer from "../features/msInvSupplier/msInvSupplierSlice";
-import msPPOBReducer from "../features/msPPOB/msPPOBSlice";
+import msAuthReducer from "../features/coreAuth/coreAuthSlice";
+import msUsersReducer from "../features/coreUser/coreUsersSlice";
+import msInvSupplierReducer from "../features/invSupplier/invSupplierSlice";
+import msInvProductCategoriesReducer from "../features/invProductCategory/invProductCategorySlice";
+import msInvProductsReducer from "../features/invProduct/invProductSlice";
+import msPPOBReducer from "../features/invPPOB/invPPOBSlice";
 
 const rootReducer = combineReducers({
     auth: msAuthReducer,
     users: msUsersReducer,
     suppliers: msInvSupplierReducer,
     productCategories: msInvProductCategoriesReducer,
+    products: msInvProductsReducer,
     ppob: msPPOBReducer,
 });
 
@@ -31,8 +33,8 @@ const store = configureStore({
     ]
 })
 
-const persistor = persistStore(store, null, () => {
-    persistor.purge().then(() => console.log("Application ready to run"));
+const persistor = persistStore(store, null, async () => {
+    await persistor.purge()
 });
 
 export { store, persistor };

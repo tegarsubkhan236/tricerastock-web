@@ -1,9 +1,9 @@
 import React from 'react';
 import {Tabs} from "antd";
-import PPOBListPrepaid from "./MsPPOBListPrepaid";
-import MsPPOBListPasca from "./MsPPOBListPasca";
+import PPOBListPrepaid from "./InvPPOBListPrepaid";
+import InvPPOBListPasca from "./InvPPOBListPasca";
 
-const MsPPOBList = () => {
+const InvPPOBList = () => {
     const items = [
         {
             key: '1',
@@ -13,7 +13,7 @@ const MsPPOBList = () => {
         {
             key: '2',
             label: `Pasca`,
-            children: <MsPPOBListPasca/>,
+            children: <InvPPOBListPasca/>,
         },
     ];
 
@@ -30,4 +30,4 @@ const MsPPOBList = () => {
     );
 };
 
-export default MsPPOBList;
+export default InvPPOBList;

@@ -1,9 +1,9 @@
 import React, {useCallback} from 'react';
 import {Col, Form, Input, message, Modal, Row} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {postProductCategory, setCurrentPage, updateProductCategory} from "./msInvProductCategorySlice";
+import {postProductCategory, setCurrentPage, updateProductCategory} from "./invProductCategorySlice";
 
-const MsInvSupplierForm = ({formType, form, visible, setVisible}) => {
+const MsInvProductCategoryForm = ({formType, form, visible, setVisible}) => {
     const dispatch = useDispatch();
     const {status} = useSelector((state) => state.productCategories);
 
@@ -30,7 +30,7 @@ const MsInvSupplierForm = ({formType, form, visible, setVisible}) => {
 
     return (
         <Modal
-            title={formType === "EDIT_FORM" ? "Edit Supplier" : "Add Supplier"}
+            title={formType === "EDIT_FORM" ? "Edit ProductCategory" : "Add ProductCategory"}
             open={visible}
             centered
             onCancel={() => setVisible(false)}
@@ -65,4 +65,4 @@ const MsInvSupplierForm = ({formType, form, visible, setVisible}) => {
     );
 };
 
-export default MsInvSupplierForm;
+export default MsInvProductCategoryForm;
