@@ -1,68 +1,123 @@
 import React, {useCallback} from 'react';
-import {Col, Form, Input, message, Modal, Row} from "antd";
+import {Col, Form, Input, InputNumber, message, Modal, Row, Space, Tag} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {postProductCategory, setCurrentPage, updateProductCategory} from "./msInvProductCategorySlice";
+import {postProduct, setModalVisible} from "./invProductSlice";
+import {currencyFormatter, currencyParser} from "../../config/utils/currency";
 
-const InvProductForm = ({formType, form, visible, setVisible}) => {
+const InvProductForm = ({form}) => {
     const dispatch = useDispatch();
-    const {status} = useSelector((state) => state.products());
+    const {status, modalVisible, modalType, filter} = useSelector((state) => state.products);
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault()
         form.validateFields().then(async (values) => {
             try {
-                if (formType === "ADD_FORM") {
-                    await dispatch(postProductCategory({parent_id: values.id ?? null, name: values.children_name,})).unwrap()
+                const supplier_id = filter.suppliers.key
+                let test = []
+                const product_category_id = filter.categories.map(value => test.push({id: value.key}))
+                console.log("filter", filter)
+                console.log("supplier_id", supplier_id)
+                console.log("product_category_id", product_category_id)
+                console.log("test", test)
+
+                if (modalType === "ADD_FORM") {
+                    console.log("ADD_FORM", values)
+                    await dispatch(postProduct({
+                        name: values.name,
+                        cost: values.initial_cost,
+                        description: values.description,
+                        inv_supplier_id: supplier_id,
+                        inv_product_category: test
+                    })).unwrap()
                 }
-                if (formType === "EDIT_FORM") {
-                    await dispatch(updateProductCategory({id: values.id, updatedData: {name: values.children_name}})).unwrap()
+                if (modalType === "EDIT_FORM") {
+                    console.log("EDIT_FORM", values)
                 }
-                setVisible(false)
-                dispatch(setCurrentPage(1))
+
+                dispatch(setModalVisible(false))
                 return message.success('Operation executed')
             } catch (e) {
-                setVisible(false)
-                dispatch(setCurrentPage(1))
+                dispatch(setModalVisible(false))
                 return message.error(e.message)
             }
         })
-    },[dispatch, form, formType, setVisible]);
+    }, [dispatch, filter, form, modalType]);
 
-    return (
-        <Modal
-            title={formType === "EDIT_FORM" ? "Edit Product" : "Add Product"}
-            open={visible}
-            centered
-            onCancel={() => setVisible(false)}
-            onOk={handleSubmit}
-            okButtonProps={{form:'editor-form', key: 'submit', htmlType: 'submit'}}
-            confirmLoading={status === 'loading'}
-            destroyOnClose={true}
-        >
-            <Form id='editor-form' form={form} layout={"vertical"}>
-                <Form.Item name="id" hidden>
-                    <Input/>
-                </Form.Item>
-                <Row gutter={24}>
-                    <Col xs={24} sm={24} md={24} lg={24}>
-                        <Form.Item name="name" label="Parent Category">
-                            <Input disabled/>
-                        </Form.Item>
-                    </Col>
-                    <Col xs={24} sm={24} md={24} lg={24}>
-                        <Form.Item name="children_name"
-                                   rules={[{
-                                       required: true, message: 'Please input your category name',
-                                   },]}
-                                   label="Category Name"
-                        >
-                            <Input/>
-                        </Form.Item>
-                    </Col>
-                </Row>
-            </Form>
-        </Modal>
-    );
+    const handleClose = useCallback((e) => {
+        e.preventDefault()
+        dispatch(setModalVisible(false))
+    }, [dispatch])
+
+    return (<Modal
+        destroyOnClose
+        centered
+        open={modalVisible}
+        onOk={handleSubmit}
+        onCancel={handleClose}
+        confirmLoading={status === 'loading'}
+        okButtonProps={{form: 'editor-form', key: 'submit', htmlType: 'submit'}}
+        title={modalType === "EDIT_FORM" ? "Edit Product" : "Add Product"}
+    >
+        <Form id='editor-form' form={form} layout={"vertical"}>
+            <Form.Item name="id" hidden>
+                <Input/>
+            </Form.Item>
+            <Row gutter={24}>
+                <Col xs={24} sm={24} md={24} lg={24}>
+                    <Form.Item name="supplier_name" label="Supplier" initialValue={filter.suppliers?.label}>
+                        <Input disabled/>
+                    </Form.Item>
+                </Col>
+                <Col xs={24} sm={24} md={24} lg={24}>
+                    <Form.Item label="Product Category">
+                        <Space size={[0, 8]} wrap>
+                            {filter.categories && filter.categories.map((v) => (
+                                <Tag key={v.key} color="#108ee9">{v.title}</Tag>))}
+                        </Space>
+                    </Form.Item>
+                </Col>
+                <Col xs={24} sm={24} md={24} lg={24}>
+                    <Form.Item name="name"
+                               rules={[{
+                                   required: true, message: 'Please input your Product Name',
+                               }]}
+                               label="Product Name"
+                    >
+                        <Input/>
+                    </Form.Item>
+                </Col>
+                <Col xs={24} sm={24} md={24} lg={24}>
+                    <Form.Item name="description"
+                               rules={[{
+                                   required: true, message: 'Please input your Product Description',
+                               }]}
+                               label="Product Description"
+                    >
+                        <Input.TextArea autoSize
+                                        showCount
+                                        maxLength={100}
+                        />
+                    </Form.Item>
+                </Col>
+                <Col xs={24} sm={24} md={24} lg={24}>
+                    <Form.Item name="initial_cost"
+                               rules={[{
+                                   required: true, message: 'Please input your initial Sell Price',
+                               }]}
+                               label="Sell Price"
+                    >
+                        <InputNumber formatter={(value) => currencyFormatter(value)}
+                                     parser={(value) => currencyParser(value)}
+                                     prefix={"Rp"}
+                                     style={{
+                                         width: '100%',
+                                     }}
+                        />
+                    </Form.Item>
+                </Col>
+            </Row>
+        </Form>
+    </Modal>);
 };
 
 export default InvProductForm;

@@ -22,8 +22,7 @@ export const postProduct = createAsyncThunk(
     'Product/post',
     async (postData, thunkAPI) => {
         try {
-            const response = await instance.post('/product', postData);
-            return response.data
+            return await instance.post('/product', postData)
         } catch (e) {
             return thunkAPI.rejectWithValue(e.response.data)
         }
@@ -58,7 +57,13 @@ const msInvProduct = createSlice({
     name: 'products',
     initialState: {
         data: [],
-        filter: [],
+        filter: {
+            suppliers : null,
+            categories : null,
+            search_text : null
+        },
+        modalVisible: false,
+        modalType: '',
         status: 'idle',
         currentPage: 1,
         perPage: 5
@@ -74,7 +79,13 @@ const msInvProduct = createSlice({
         },
         setFilter: (state, action) => {
             state.filter = action.payload
-        }
+        },
+        setModalVisible: (state, action) => {
+            state.modalVisible = action.payload
+        },
+        setModalType: (state, action) => {
+            state.modalType = action.payload
+        },
     },
     extraReducers: {
         [fetchProduct.pending]: (state) => {
@@ -87,12 +98,18 @@ const msInvProduct = createSlice({
         [postProduct.pending]: (state) => {
             state.status = 'loading';
         },
+        [postProduct.fulfilled]: (state) => {
+            state.status = 'succeeded';
+        },
+        [postProduct.rejected]: (state) => {
+            state.status = 'failed';
+        },
         [updateProduct.pending]: (state) => {
             state.status = 'loading';
         },
     },
 });
 
-export const {setCurrentPage, setPerPage, setFilter} = msInvProduct.actions;
+export const {setCurrentPage, setPerPage, setFilter, setModalType, setModalVisible} = msInvProduct.actions;
 
 export default msInvProduct.reducer;

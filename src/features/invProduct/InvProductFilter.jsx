@@ -8,10 +8,10 @@ import {setFilter} from "./invProductSlice";
 
 const InvProductFilter = () => {
     const dispatch = useDispatch()
-    const [checkedKeys, setCheckedKeys] = useState([]);
-    const [value, setValue] = useState([]);
     const {data, status, currentPage, perPage} = useSelector((state) => state.productCategories);
     const {filter} = useSelector((state) => state.products);
+    const [checkedNodes, setCheckedNodes] = useState([]);
+    const [value, setValue] = useState([]);
 
     useEffect(() => {
         if (status === 'idle') {
@@ -38,20 +38,21 @@ const InvProductFilter = () => {
         ))
     }
 
-    const onCheck = (checkedKeysValue) => {
-        setCheckedKeys(checkedKeysValue);
+    const onCheck = (_, info) => {
+        const newArray = info.checkedNodes.map(({children, ...keepAttrs}) => keepAttrs)
+        setCheckedNodes(newArray)
     };
 
     const onFinish = async (values) => {
         try {
-            if (checkedKeys.length === 0) {
+            if (checkedNodes.length === 0) {
                 return message.error("Category cannot be null")
             }
             await dispatch(setFilter({
                 ...filter,
-                "supplier_id" : values.supplier !== undefined ? values.supplier.value : null,
-                "category_id" : checkedKeys,
-                "search_text" : null
+                suppliers : values.supplier !== undefined ? values.supplier : null,
+                categories : checkedNodes,
+                search_text : null
             }))
             await console.log(filter)
         } catch (e) {
@@ -93,10 +94,12 @@ const InvProductFilter = () => {
             </Form.Item>
             <Form.Item label="Product Category">
                 <Tree
-                    showLine={true}
-                    height={233}
+                    showLine
                     checkable
+                    height={233}
+                    selectable={false}
                     onCheck={onCheck}
+                    onSelect={onCheck}
                     treeData={dataSource}
                 />
             </Form.Item>
