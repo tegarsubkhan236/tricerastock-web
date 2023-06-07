@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, current} from "@reduxjs/toolkit";
 import instance from "../../config/lib/axios";
 
 export const fetchProduct = createAsyncThunk(
@@ -13,7 +13,27 @@ export const fetchProduct = createAsyncThunk(
             });
             return response.data;
         } catch (e) {
-            return thunkAPI.rejectWithValue(e.response.data)
+            return thunkAPI.rejectWithValue(e)
+        }
+    }
+);
+
+export const fetchProductByFilter = createAsyncThunk(
+    'Product/fetch_by_filter',
+    async ({page, perPage, supplier_id, category_id, search_text}, thunkAPI) => {
+        try {
+            const response = await instance.get('/product/search', {
+                params: {
+                    page: page,
+                    limit: perPage,
+                    supplier_id: supplier_id,
+                    product_category: category_id,
+                    search_text: search_text,
+                }
+            });
+            return response.data;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e)
         }
     }
 );
@@ -24,7 +44,7 @@ export const postProduct = createAsyncThunk(
         try {
             return await instance.post('/product', postData)
         } catch (e) {
-            return thunkAPI.rejectWithValue(e.response.data)
+            return thunkAPI.rejectWithValue(e)
         }
     }
 )
@@ -36,7 +56,7 @@ export const updateProduct = createAsyncThunk(
             const response = await instance.put(`/product/${id}`, updatedData);
             return response.data;
         } catch (e) {
-            return thunkAPI.rejectWithValue(e.response.data)
+            return thunkAPI.rejectWithValue(e)
         }
     }
 );
@@ -48,7 +68,7 @@ export const deleteProduct = createAsyncThunk(
             await instance.delete(`/product/${id}`, id);
             return id;
         } catch (e) {
-            return thunkAPI.rejectWithValue(e.response.data)
+            return thunkAPI.rejectWithValue(e)
         }
     }
 );
@@ -93,13 +113,26 @@ const msInvProduct = createSlice({
         },
         [fetchProduct.fulfilled]: (state, action) => {
             state.status = 'succeeded';
-            state.data = action.payload.data.results;
+            state.data = action.payload.data;
+            console.log("fulfilled", action.payload.data)
+        },
+        [fetchProductByFilter.pending]: (state) => {
+            state.status = 'loading';
+        },
+        [fetchProductByFilter.fulfilled]: (state, action) => {
+            state.status = 'succeeded';
+            state.data = action.payload.data;
+            console.log("fulfilled", action.payload.data)
         },
         [postProduct.pending]: (state) => {
             state.status = 'loading';
         },
-        [postProduct.fulfilled]: (state) => {
+        [postProduct.fulfilled]: (state, action) => {
+            console.log(current(state.data))
+            console.log(action)
+            console.log(action.payload.data.data)
             state.status = 'succeeded';
+            state.data.unshift(action.payload.data.data)
         },
         [postProduct.rejected]: (state) => {
             state.status = 'failed';

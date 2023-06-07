@@ -77,7 +77,6 @@ const coreUsersSlice = createSlice({
             .addCase(postUser.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.error = null;
-                console.log(state.data)
                 state.data["data"]["results"].unshift(action.payload.data)
             })
             .addCase(postUser.rejected, (state, action) => {

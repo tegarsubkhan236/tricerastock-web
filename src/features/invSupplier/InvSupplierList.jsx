@@ -1,25 +1,68 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchSupplier, setCurrentPage, setPerPage} from './invSupplierSlice';
-import {Table} from "antd";
+import {message, Switch, Table} from "antd";
+import {ColumnConfig, PaginationConfig} from "../../config/utils/tableConfig";
+import {deleteSupplier, fetchSupplier, setCurrentPage, setPerPage, setModalType, setModalVisible} from './invSupplierSlice';
 
-const InvSupplierList = ({columns}) => {
+const InvSupplierList = ({form}) => {
     const dispatch = useDispatch();
-    const {data, isLoading, error, currentPage, perPage} = useSelector((state) => state.suppliers);
-    useEffect(() => {
-        dispatch(fetchSupplier({page: currentPage, perPage}));
-    }, [dispatch, currentPage, perPage, data?.data?.total]);
+    const {data, status, currentPage, perPage} = useSelector((state) => state.suppliers);
 
-    const pagination = {
-        current: currentPage,
-        pageSize: perPage,
-        total: data?.data?.total,
-        showSizeChanger: true,
-        onShowSizeChange: (current, size) => dispatch(setPerPage(size)),
-        onChange: (page) => dispatch(setCurrentPage(page)),
-    };
+    useEffect(() => {
+        try {
+            dispatch(fetchSupplier({
+                page: currentPage,
+                perPage: perPage
+            })).unwrap();
+        } catch (e) {
+            return message.error(e)
+        }
+    }, [dispatch, currentPage, perPage]);
+
+    const columnData = [
+        {
+            title: 'ID',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'Name',
+            key: 'name',
+            dataIndex: 'name',
+        },
+        {
+            title: 'Address',
+            dataIndex: 'address',
+            key: 'address',
+        },
+        {
+            title: 'Contact',
+            children: [
+                {
+                    title: 'Contact Person',
+                    dataIndex: 'contact_person',
+                    key: 'contact_person'
+                },
+                {
+                    title: 'Contact Number',
+                    dataIndex: 'contact_number',
+                    key: 'contact_number'
+                }
+            ]
+        },
+        {
+            title: 'Status',
+            key: 'status',
+            render: (_, record) => (
+                <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked={record.status === 1}/>
+            )
+        }
+    ];
+    const columns = ColumnConfig(columnData, form, setModalType, setModalVisible, deleteSupplier, setCurrentPage)
+    const pagination = PaginationConfig(currentPage, perPage, data?.data?.total, setPerPage, setCurrentPage);
+
     let dataSource = [];
-    if (isLoading === false && error === null) {
+    if (status === 'succeeded') {
         data?.data?.results.map((item) => (
             dataSource = [...dataSource, {
                 key: item.id,
@@ -35,7 +78,7 @@ const InvSupplierList = ({columns}) => {
 
     return (
         <Table
-            loading={isLoading}
+            loading={status === "loading"}
             dataSource={dataSource}
             columns={columns}
             pagination={pagination}

@@ -11,7 +11,7 @@ export const postLogin = createAsyncThunk(
             });
             return response.data
         } catch (e) {
-            return thunkAPI.rejectWithValue(e.response.data)
+            return thunkAPI.rejectWithValue(e)
         }
     }
 );

@@ -20,18 +20,14 @@ const CoreAuthForm = () => {
             await dispatch(postLogin(values)).unwrap()
             navigate("/")
         } catch (e) {
-            return message.error(e.message)
+            return message.error(e?.response?.data?.message ?? e.message)
         }
     },[dispatch, navigate])
 
-    const handleLoginFailed = useCallback(async (errorInfo) => {
-        try {
-            errorInfo.errorFields.map((v) => (
-                message.error(v.errors)
-            ))
-        } catch (e) {
-            console.log(e)
-        }
+    const handleLoginFailed = useCallback((errorInfo) => {
+        errorInfo.errorFields.map((v) => (
+            message.error(v.errors)
+        ))
     },[])
 
     return (

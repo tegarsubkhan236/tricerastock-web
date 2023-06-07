@@ -12,22 +12,13 @@ const InvProductForm = ({form}) => {
         e.preventDefault()
         form.validateFields().then(async (values) => {
             try {
-                const supplier_id = filter.suppliers.key
-                let test = []
-                const product_category_id = filter.categories.map(value => test.push({id: value.key}))
-                console.log("filter", filter)
-                console.log("supplier_id", supplier_id)
-                console.log("product_category_id", product_category_id)
-                console.log("test", test)
-
                 if (modalType === "ADD_FORM") {
-                    console.log("ADD_FORM", values)
                     await dispatch(postProduct({
                         name: values.name,
                         cost: values.initial_cost,
                         description: values.description,
-                        inv_supplier_id: supplier_id,
-                        inv_product_category: test
+                        inv_supplier_id: filter.suppliers.key,
+                        inv_product_category: filter.categories.map(({key}) => ({id: key}))
                     })).unwrap()
                 }
                 if (modalType === "EDIT_FORM") {
@@ -38,7 +29,7 @@ const InvProductForm = ({form}) => {
                 return message.success('Operation executed')
             } catch (e) {
                 dispatch(setModalVisible(false))
-                return message.error(e.message)
+                return message.error(e?.response?.data?.message ?? e.message)
             }
         })
     }, [dispatch, filter, form, modalType]);

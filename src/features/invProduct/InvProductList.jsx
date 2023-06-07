@@ -1,32 +1,28 @@
-import React, {useCallback} from 'react';
-import {Avatar, Button, message, Popconfirm, Space, Switch, Table, Tag} from "antd";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-import {deleteProduct, setModalType, setModalVisible} from "./invProductSlice";
-import {setCurrentPage} from "../invProductCategory/invProductCategorySlice";
+import React, {useEffect} from 'react';
+import {Avatar, message, Space, Table, Tag} from "antd";
+import {deleteProduct, setModalType, setModalVisible, setCurrentPage, setPerPage, fetchProductByFilter} from "./invProductSlice";
 import {useDispatch, useSelector} from "react-redux";
+import {ColumnConfig, PaginationConfig} from "../../config/utils/tableConfig";
 
 const InvProductList = ({form}) => {
     const dispatch = useDispatch()
-    const {data} = useSelector(state => state.products)
+    const {data, status, filter, currentPage, perPage} = useSelector(state => state.products)
 
-    const openEditModal = useCallback((record) => {
-        form.setFieldsValue(record);
-        dispatch(setModalType("EDIT_FORM"))
-        dispatch(setModalVisible(true))
-    },[dispatch, form]);
-
-    const handleDelete = useCallback( async (id) => {
+    useEffect(() => {
         try {
-            await dispatch(deleteProduct({id: id})).unwrap()
-            await dispatch(setCurrentPage(1))
-            return message.success('Operation executed')
+            dispatch(fetchProductByFilter({
+                page: currentPage,
+                perPage: perPage,
+                supplier_id: filter.suppliers?.key,
+                category_id: filter.categories?.map(({key}) => `${key}`).join(','),
+                search_text: filter.search_text
+            })).unwrap()
         } catch (e) {
-            await dispatch(setCurrentPage(1))
-            return message.error(e.message)
+            return message.error(e)
         }
-    },[dispatch])
+    }, [dispatch, currentPage, perPage, filter])
 
-    const columns = [
+    const columnData = [
         {
             title: 'Product',
             children: [
@@ -49,6 +45,7 @@ const InvProductList = ({form}) => {
                     title: 'Name',
                     key: 'name',
                     dataIndex: 'name',
+                    width: "35%"
                 },
             ]
         },
@@ -59,8 +56,8 @@ const InvProductList = ({form}) => {
                 <Space size={[0, 8]} wrap>
                     {categories.map((category) => {
                         return (
-                            <Tag color={"geekblue"} key={category}>
-                                {category.toUpperCase()}
+                            <Tag color={"geekblue"} key={category.id}>
+                                {category.name.toUpperCase()}
                             </Tag>
                         );
                     })}
@@ -68,43 +65,37 @@ const InvProductList = ({form}) => {
             ),
         },
         {
-            title: 'Status',
-            key: 'status',
-            render: (_, {status}) => (
-                <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked={status === 1}/>
-            )
-        },
-        {
             title: 'Supplier',
             key: 'supplier',
-            dataIndex: 'supplier',
-        },
-        {
-            title: "Actions",
-            key: "actions",
-            render: (_, record) => (
-                <Space size="middle">
-                    <Button icon={<EditOutlined/>} shape={"circle"} onClick={() => openEditModal(record)}/>
-                    <Popconfirm
-                        title="Delete data"
-                        description="Are you sure to delete this data?"
-                        onConfirm={() => handleDelete(record.id)}
-                        onCancel={() => console.log("canceled")}
-                        okText="Do it"
-                        cancelText="Nah"
-                    >
-                        <Button icon={<DeleteOutlined/>} shape={"circle"} danger/>
-                    </Popconfirm>
-                </Space>
-            ),
+            width: "15%",
+            render: (_, {supplier}) => (
+                supplier.name
+            )
         },
     ];
+    const columns = ColumnConfig(columnData, form, setModalType, setModalVisible, deleteProduct, setCurrentPage)
+    const pagination = PaginationConfig(currentPage, perPage, data?.total, setPerPage, setCurrentPage)
 
+    let dataSource = [];
+    if (status === 'succeeded') {
+        data?.results.map((item) => (
+            dataSource = [...dataSource, {
+                key: item.id,
+                id: item.id,
+                name: item.name,
+                supplier: item.inv_supplier,
+                categories: item.inv_product_category
+            }]
+        ))
+    }
+    
     return (
         <Table
-            dataSource={data}
+            loading={status === 'loading'}
+            dataSource={dataSource}
+            pagination={pagination}
             columns={columns}
-            scroll={{x: true}}
+            scroll={{x: true, y: 350}}
             bordered
         />
     );

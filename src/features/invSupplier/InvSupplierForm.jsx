@@ -1,40 +1,40 @@
 import React, {useCallback} from 'react';
 import {Col, Form, Input, message, Modal, Row} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {postSupplier, updateSupplier} from "./invSupplierSlice";
+import {postSupplier, setModalVisible, updateSupplier} from "./invSupplierSlice";
 
-const InvSupplierForm = ({formType, form, visible, setVisible}) => {
+const InvSupplierForm = ({form}) => {
     const dispatch = useDispatch();
-    const {isLoading} = useSelector((state) => state.suppliers);
+    const {status, modalType, modalVisible} = useSelector((state) => state.suppliers);
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault()
         form.validateFields().then(async (values) => {
             try {
-                if (formType === "ADD_FORM") {
+                if (modalType === "ADD_FORM") {
                     await dispatch(postSupplier(values)).unwrap()
                 }
-                if (formType === "EDIT_FORM") {
+                if (modalType === "EDIT_FORM") {
                     await dispatch(updateSupplier({id: values.id, updatedData: values})).unwrap()
                 }
-                setVisible(false)
+                dispatch(setModalVisible(false))
                 return message.success('Operation executed')
             } catch (e) {
-                setVisible(false)
-                return message.error(e.message)
+                dispatch(setModalVisible(false))
+                return message.error(e?.response?.data?.message ?? e.message)
             }
         })
-    }, [dispatch, form, formType, setVisible])
+    }, [dispatch, form, modalType])
 
     return (
         <Modal
-            title={formType === "EDIT_FORM" ? "Edit Supplier" : "Add Supplier"}
-            open={visible}
+            title={modalType === "EDIT_FORM" ? "Edit Supplier" : "Add Supplier"}
+            open={modalVisible}
             centered
-            onCancel={() => setVisible(false)}
+            onCancel={() => dispatch(setModalVisible(false))}
             onOk={handleSubmit}
             okButtonProps={{form:'editor-form', key: 'submit', htmlType: 'submit'}}
-            confirmLoading={isLoading}
+            confirmLoading={status === 'loading'}
         >
             <Form id='editor-form' form={form} layout={"vertical"}>
                 <Form.Item name="id" hidden>

@@ -75,8 +75,9 @@ const msInvSupplier = createSlice({
     name: 'suppliers',
     initialState: {
         data: [],
-        isLoading: false,
-        error: null,
+        modalVisible: false,
+        modalType: '',
+        status: 'idle',
         currentPage: 1,
         perPage: 5
     },
@@ -87,78 +88,69 @@ const msInvSupplier = createSlice({
         setCurrentPage: (state, action) => {
             state.currentPage = action.payload;
         },
+        setModalVisible: (state, action) => {
+            state.modalVisible = action.payload
+        },
+        setModalType: (state, action) => {
+            state.modalType = action.payload
+        },
     },
     extraReducers: {
             [fetchSupplier.pending]: (state) => {
-                state.isLoading = true;
-                state.error = null;
+                state.status = 'loading';
             },
             [fetchSupplier.fulfilled]: (state, action) => {
-                state.isLoading = false;
-                state.error = null;
+                state.status = 'succeeded';
                 state.data = action.payload;
             },
-            [fetchSupplier.rejected]: (state, action) => {
-                state.isLoading = false;
-                state.error = action.payload.message;
+            [fetchSupplier.rejected]: (state) => {
+                state.status = 'failed';
             },
             [fetchSupplierByColumn.pending]: (state) => {
-                state.isLoading = true;
-                state.error = null;
+                state.status = 'loading';
             },
             [fetchSupplierByColumn.fulfilled]: (state, action) => {
-                state.isLoading = false;
-                state.error = null;
+                state.status = 'succeeded';
                 state.data = action.payload;
             },
-            [fetchSupplierByColumn.rejected]: (state, action) => {
-                state.isLoading = false;
-                state.error = action.payload.message;
+            [fetchSupplierByColumn.rejected]: (state) => {
+                state.status = 'failed';
             },
             [postSupplier.pending]: (state) => {
-                state.isLoading = true;
-                state.error = null;
+                state.status = 'loading';
             },
             [postSupplier.fulfilled]: (state, action) => {
-                state.isLoading = false;
-                state.error = null;
+                state.status = 'succeeded';
                 state.data["data"]["results"].unshift(action.payload.data)
             },
-            [postSupplier.rejected]: (state, action) => {
-                state.isLoading = false;
-                state.error = action.payload.message;
+            [postSupplier.rejected]: (state) => {
+                state.status = 'failed';
             },
             [updateSupplier.pending]: (state) => {
-                state.isLoading = true;
-                state.error = null;
+                state.status = 'loading';
             },
             [updateSupplier.fulfilled]: (state, action) => {
-                state.isLoading = false;
-                state.error = null;
+                state.status = 'succeeded';
                 const updatedItem = action.payload.data.item;
                 const index = state.data["data"]["results"].findIndex(item => item.id === updatedItem.id);
                 state.data["data"]["results"][index] = updatedItem;
             },
-            [updateSupplier.rejected]: (state, action) => {
-                state.isLoading = false;
-                state.error = action.payload.message;
+            [updateSupplier.rejected]: (state) => {
+                state.status = 'failed';
             },
             [deleteSupplier.pending]: (state) => {
-                state.isLoading = true;
-                state.error = null;
+                state.status = 'loading';
             },
             [deleteSupplier.fulfilled]: (state, action) => {
-                state.isLoading = false;
-                state.error = null;
+                state.status = 'succeeded';
                 state.data = state.data["data"]["results"].filter(user => user.id !== action.payload);
             },
-            [deleteSupplier.rejected]: (state, action) => {
-                state.isLoading = false;
-                state.error = action.payload.message;
+            [deleteSupplier.rejected]: (state) => {
+                state.status = 'failed';
             },
     },
 });
 
-export const {setCurrentPage, setPerPage} = msInvSupplier.actions;
+export const {setCurrentPage, setPerPage, setModalVisible, setModalType} = msInvSupplier.actions;
 
 export default msInvSupplier.reducer;

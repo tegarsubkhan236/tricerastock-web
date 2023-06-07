@@ -8,22 +8,22 @@ import {setFilter} from "./invProductSlice";
 
 const InvProductFilter = () => {
     const dispatch = useDispatch()
-    const {data, status, currentPage, perPage} = useSelector((state) => state.productCategories);
+    const {data, status} = useSelector((state) => state.productCategories);
     const {filter} = useSelector((state) => state.products);
     const [checkedNodes, setCheckedNodes] = useState([]);
     const [value, setValue] = useState([]);
 
     useEffect(() => {
         if (status === 'idle') {
-            dispatch(fetchProductCategory({page: currentPage, perPage}));
+            dispatch(fetchProductCategory({page: 1, perPage: 999}));
         }
-    }, [currentPage, dispatch, perPage, status]);
+    }, [dispatch, status]);
 
-    let dataSource = [];
+    let treeData = [];
 
     if (status === 'succeeded') {
         data.map((item) => (
-            dataSource = [...dataSource, {
+            treeData = [...treeData, {
                 key: item.id,
                 title: item.name,
                 children: item.children?.length && item.children?.map((firstChild) => ({
@@ -52,11 +52,9 @@ const InvProductFilter = () => {
                 ...filter,
                 suppliers : values.supplier !== undefined ? values.supplier : null,
                 categories : checkedNodes,
-                search_text : null
             }))
-            await console.log(filter)
         } catch (e) {
-            return console.log("error ",e)
+            console.log(e)
         }
     };
 
@@ -100,7 +98,9 @@ const InvProductFilter = () => {
                     selectable={false}
                     onCheck={onCheck}
                     onSelect={onCheck}
-                    treeData={dataSource}
+                    treeData={treeData}
+                    defaultCheckedKeys={filter.categories?.map(value => value.key)}
+                    defaultExpandedKeys={filter.categories?.map(value => value.key)}
                 />
             </Form.Item>
             <Form.Item wrapperCol={{offset: 8, span: 16}}>

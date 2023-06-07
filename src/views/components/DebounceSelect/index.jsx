@@ -13,8 +13,8 @@ const Index = ({ fetchOptions, ...props }) => {
             setOptions([]);
             setFetching(true);
             fetchOptions(value).then((newOptions) => {
-                console.log("value", value)
-                console.log("newOptions", newOptions)
+                // console.log("value", value)
+                // console.log("newOptions", newOptions)
                 if (fetchId !== fetchRef.current) {
                     // for fetch callback order
                     return;

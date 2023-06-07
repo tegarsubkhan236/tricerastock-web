@@ -12,7 +12,7 @@ export function GetTitle(location) {
     return {title, subTitle}
 }
 
-export const Debounce = (func) => {
+export const Debounce = (func, timeout = 500) => {
     let timer;
     return function (...args) {
         const context = this;
@@ -20,6 +20,6 @@ export const Debounce = (func) => {
         timer = setTimeout(() => {
             timer = null;
             func.apply(context, args);
-        }, 500);
+        }, timeout);
     };
 };

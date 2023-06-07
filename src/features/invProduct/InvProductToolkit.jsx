@@ -1,12 +1,13 @@
 import React, {useCallback, useMemo} from 'react';
-import {Dropdown, Input, Space} from "antd";
+import {Dropdown, Input, message, Space} from "antd";
 import {PlusOutlined, UserOutlined} from "@ant-design/icons";
-import {setFilter, setModalType, setModalVisible} from "./invProductSlice";
+import {fetchProductByFilter, setFilter, setModalType, setModalVisible} from "./invProductSlice";
 import {useDispatch, useSelector} from "react-redux";
+import {Debounce} from "../../config/helper";
 
 const InvProductToolkit = ({form}) => {
     const dispatch = useDispatch()
-    const {filter} = useSelector(state => state.products)
+    const {filter, perPage} = useSelector(state => state.products)
 
     const openAddModal = useCallback(() => {
         form.resetFields();
@@ -16,11 +17,18 @@ const InvProductToolkit = ({form}) => {
 
     const handleSearch = useCallback(async (value) => {
         try {
-            await dispatch(setFilter({...filter, "search_text": value}))
+            await dispatch(setFilter({...filter, "search_text": value?.target?.value ?? value}))
+            await dispatch(fetchProductByFilter({
+                page: 1,
+                perPage: perPage,
+                supplier_id: filter.suppliers?.key,
+                category_id: filter.categories?.map(({key}) => `${key}`).join(','),
+                search_text: value?.target?.value ?? value
+            })).unwrap()
         } catch (e) {
-            return console.log("error ", e)
+            return message.error(e)
         }
-    }, [dispatch, filter])
+    }, [dispatch, filter, perPage])
 
     const items = useMemo(() => [
         {
@@ -41,6 +49,7 @@ const InvProductToolkit = ({form}) => {
                 allowClear
                 size="middle"
                 onSearch={handleSearch}
+                onChange={Debounce(handleSearch,1000)}
             />
             <Dropdown.Button disabled={filter.suppliers === null && (filter.categories == null || true)}
                              menu={menuProps}
