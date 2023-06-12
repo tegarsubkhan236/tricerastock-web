@@ -18,12 +18,12 @@ const Index = () => {
             type: "Product Category",
             component: <InvProductCategory/>
         },
-        "Product": {
-            type: "Product",
+        "Store Product": {
+            type: "Store Product",
             component: <InvProduct/>
         },
-        "Stock": {
-            type: "Stock",
+        "PPOB Product": {
+            type: "PPOB Product",
             component: <InvStock/>
         },
     };

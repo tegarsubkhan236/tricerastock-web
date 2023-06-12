@@ -16,11 +16,13 @@ const InvProduct = () => {
 
             <Col span={19}>
                 <Row>
-                    <Col xs={24} sm={24} md={24} lg={{span: 10, offset: 14}} style={{paddingBottom: '15px'}}>
+                    <Col span={24} style={{display: 'flex', justifyContent: 'flex-end', paddingBottom: '15px'}}>
                         <InvProductToolkit form={form}/>
                     </Col>
+                </Row>
+                <Row>
                     <Col span={24}>
-                        <InvProductList form={form}/>
+                        <InvProductList/>
                         <InvProductForm form={form}/>
                     </Col>
                 </Row>

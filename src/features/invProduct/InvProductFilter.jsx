@@ -8,35 +8,18 @@ import {setFilter} from "./invProductSlice";
 
 const InvProductFilter = () => {
     const dispatch = useDispatch()
-    const {data, status} = useSelector((state) => state.productCategories);
+    const {treeData} = useSelector((state) => state.productCategories);
     const {filter} = useSelector((state) => state.products);
     const [checkedNodes, setCheckedNodes] = useState([]);
     const [value, setValue] = useState([]);
 
     useEffect(() => {
-        if (status === 'idle') {
-            dispatch(fetchProductCategory({page: 1, perPage: 999}));
+        try {
+            dispatch(fetchProductCategory({ page: 1, perPage: 999 })).unwrap();
+        } catch (e) {
+            return message.error(e)
         }
-    }, [dispatch, status]);
-
-    let treeData = [];
-
-    if (status === 'succeeded') {
-        data.map((item) => (
-            treeData = [...treeData, {
-                key: item.id,
-                title: item.name,
-                children: item.children?.length && item.children?.map((firstChild) => ({
-                    key: firstChild.id,
-                    title: firstChild.name,
-                    children: firstChild.children?.length && firstChild.children?.map((secondChild) => ({
-                        key: secondChild.id,
-                        title: secondChild.name,
-                    }))
-                }))
-            }]
-        ))
-    }
+    }, [dispatch]);
 
     const onCheck = (_, info) => {
         const newArray = info.checkedNodes.map(({children, ...keepAttrs}) => keepAttrs)

@@ -77,6 +77,7 @@ const msInvProduct = createSlice({
     name: 'products',
     initialState: {
         data: [],
+        totalData: 0,
         filter: {
             suppliers : null,
             categories : null,
@@ -84,6 +85,7 @@ const msInvProduct = createSlice({
         },
         modalVisible: false,
         modalType: '',
+        selectedRow: [],
         status: 'idle',
         currentPage: 1,
         perPage: 5
@@ -106,6 +108,9 @@ const msInvProduct = createSlice({
         setModalType: (state, action) => {
             state.modalType = action.payload
         },
+        setSelectedRow: (state, action) => {
+            state.selectedRow = action.payload
+        },
     },
     extraReducers: {
         [fetchProduct.pending]: (state) => {
@@ -113,26 +118,44 @@ const msInvProduct = createSlice({
         },
         [fetchProduct.fulfilled]: (state, action) => {
             state.status = 'succeeded';
-            state.data = action.payload.data;
-            console.log("fulfilled", action.payload.data)
+            state.data = action.payload.data.results.map((item) => ({
+                key: item.id,
+                id: item.id,
+                name: item.name,
+                supplier: item.inv_supplier,
+                categories: item.inv_product_category,
+            }));
+            state.totalData = action.payload.data.total;
         },
         [fetchProductByFilter.pending]: (state) => {
             state.status = 'loading';
         },
         [fetchProductByFilter.fulfilled]: (state, action) => {
             state.status = 'succeeded';
-            state.data = action.payload.data;
-            console.log("fulfilled", action.payload.data)
+            state.data = action.payload.data.results.map((item) => ({
+                key: item.id,
+                id: item.id,
+                name: item.name,
+                supplier: item.inv_supplier,
+                categories: item.inv_product_category,
+            }));
+            state.totalData = action.payload.data.total;
         },
         [postProduct.pending]: (state) => {
             state.status = 'loading';
         },
         [postProduct.fulfilled]: (state, action) => {
-            console.log(current(state.data))
-            console.log(action)
-            console.log(action.payload.data.data)
             state.status = 'succeeded';
-            state.data.unshift(action.payload.data.data)
+            const item = action.payload.data.data
+            const newItem = {
+                key: item.id,
+                id: item.id,
+                name: item.name,
+                supplier: item.inv_supplier,
+                categories: item.inv_product_category,
+            }
+            state.data.unshift(newItem)
+            state.totalData++
         },
         [postProduct.rejected]: (state) => {
             state.status = 'failed';
@@ -143,6 +166,6 @@ const msInvProduct = createSlice({
     },
 });
 
-export const {setCurrentPage, setPerPage, setFilter, setModalType, setModalVisible} = msInvProduct.actions;
+export const {setCurrentPage, setPerPage, setFilter, setModalType, setModalVisible, setSelectedRow} = msInvProduct.actions;
 
 export default msInvProduct.reducer;

@@ -15,7 +15,7 @@ const MsInvProductCategoryForm = ({formType, form, visible, setVisible}) => {
                     await dispatch(postProductCategory({parent_id: values.id ?? null, name: values.children_name,})).unwrap()
                 }
                 if (formType === "EDIT_FORM") {
-                    await dispatch(updateProductCategory({id: values.id, updatedData: {name: values.children_name}})).unwrap()
+                    await dispatch(updateProductCategory({id: values.id, name: values.children_name})).unwrap()
                 }
                 setVisible(false)
                 dispatch(setCurrentPage(1))

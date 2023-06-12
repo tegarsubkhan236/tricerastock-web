@@ -1,19 +1,37 @@
 import React, {useCallback, useMemo} from 'react';
-import {Dropdown, Input, message, Space} from "antd";
-import {PlusOutlined, UserOutlined} from "@ant-design/icons";
-import {fetchProductByFilter, setFilter, setModalType, setModalVisible} from "./invProductSlice";
+import {Button, Dropdown, Input, message, Space} from "antd";
+import {DeleteOutlined, DownloadOutlined, EditOutlined, ImportOutlined, PlusOutlined,} from "@ant-design/icons";
+import {deleteProduct, fetchProductByFilter, setCurrentPage, setFilter, setModalType, setModalVisible} from "./invProductSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {Debounce} from "../../config/helper";
 
 const InvProductToolkit = ({form}) => {
     const dispatch = useDispatch()
-    const {filter, perPage} = useSelector(state => state.products)
+
+    const {filter, perPage, selectedRow} = useSelector(state => state.products)
 
     const openAddModal = useCallback(() => {
         form.resetFields();
         dispatch(setModalType("ADD_FORM"))
         dispatch(setModalVisible(true))
     }, [dispatch, form]);
+
+    const openEditModal = useCallback((record) => {
+        form.setFieldsValue(record);
+        dispatch(setModalType("EDIT_FORM"))
+        dispatch(setModalVisible(true))
+    },[dispatch, form, setModalType, setModalVisible]);
+
+    const handleDelete = useCallback( async (id) => {
+        try {
+            await dispatch(deleteProduct({id: id})).unwrap()
+            await dispatch(setCurrentPage(1))
+            return message.success('Operation executed')
+        } catch (e) {
+            await dispatch(setCurrentPage(1))
+            return message.error(e?.response?.data?.message ?? e.message)
+        }
+    },[deleteProduct, dispatch, setCurrentPage])
 
     const handleSearch = useCallback(async (value) => {
         try {
@@ -30,16 +48,26 @@ const InvProductToolkit = ({form}) => {
         }
     }, [dispatch, filter, perPage])
 
-    const items = useMemo(() => [
-        {
-            label: "Download Template", key: "download_template", icon: <UserOutlined/>,
-        }, {
-            label: "Import Data", key: "import_data", icon: <UserOutlined/>,
-        },
-    ], []);
+    const addMenuProps = {
+        items: useMemo(() => [
+            {
+                label: "Download Template", key: "download_add_template", icon: <DownloadOutlined/>,
+            }, {
+                label: "Add Batch Data", key: "add_batch_data", icon: <ImportOutlined/>,
+            },
+        ], []),
+        onClick: (e) => console.log(e),
+    };
 
-    const menuProps = {
-        items, onClick: (e) => console.log(e),
+    const editMenuProps = {
+        items: useMemo(() => [
+            {
+                label: "Download Template", key: "download_edit_template", icon: <DownloadOutlined/>,
+            }, {
+                label: "Edit Batch Data", key: "edit_batch_data", icon: <ImportOutlined/>,
+            },
+        ], []),
+        onClick: (e) => console.log(e),
     };
 
     return (
@@ -51,13 +79,23 @@ const InvProductToolkit = ({form}) => {
                 onSearch={handleSearch}
                 onChange={Debounce(handleSearch,1000)}
             />
-            <Dropdown.Button disabled={filter.suppliers === null && (filter.categories == null || true)}
-                             menu={menuProps}
-                             icon={<PlusOutlined/>}
-                             type={"primary"}
+            <Button icon={<DeleteOutlined/>}
+                    danger
+                    disabled={selectedRow.length <= 0}
+                    onClick={handleDelete}
+            >
+                Delete {selectedRow.length > 0 ? `${selectedRow.length} items` : ''}
+            </Button>
+            <Dropdown.Button disabled={selectedRow.length !== 1 || filter.suppliers === null}
+                             menu={editMenuProps}
+                             onClick={openEditModal}
+            >
+                <EditOutlined/> Update Single Data
+            </Dropdown.Button>
+            <Dropdown.Button menu={addMenuProps}
                              onClick={openAddModal}
             >
-                Add Data
+                <PlusOutlined/> Add Single Data
             </Dropdown.Button>
         </Space>
     );

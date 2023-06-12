@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {message, Switch, Table} from "antd";
-import {ColumnConfig, PaginationConfig} from "../../config/utils/tableConfig";
-import {deleteSupplier, fetchSupplier, setCurrentPage, setPerPage, setModalType, setModalVisible} from './invSupplierSlice';
+import {PaginationConfig} from "../../config/utils/tableConfig";
+import {fetchSupplier, setCurrentPage, setPerPage} from './invSupplierSlice';
 
-const InvSupplierList = ({form}) => {
+const InvSupplierList = () => {
     const dispatch = useDispatch();
     const {data, status, currentPage, perPage} = useSelector((state) => state.suppliers);
 
@@ -19,7 +19,7 @@ const InvSupplierList = ({form}) => {
         }
     }, [dispatch, currentPage, perPage]);
 
-    const columnData = [
+    const columns = [
         {
             title: 'ID',
             dataIndex: 'id',
@@ -58,7 +58,6 @@ const InvSupplierList = ({form}) => {
             )
         }
     ];
-    const columns = ColumnConfig(columnData, form, setModalType, setModalVisible, deleteSupplier, setCurrentPage)
     const pagination = PaginationConfig(currentPage, perPage, data?.data?.total, setPerPage, setCurrentPage);
 
     let dataSource = [];

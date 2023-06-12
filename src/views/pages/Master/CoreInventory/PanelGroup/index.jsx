@@ -1,6 +1,6 @@
 import {Row, Col} from "antd";
 import styles from './index.module.css'
-import {TagOutlined, TagsOutlined, TeamOutlined, ShopOutlined} from "@ant-design/icons";
+import {TagOutlined, TagsOutlined, TeamOutlined, ShopOutlined, AppstoreOutlined} from "@ant-design/icons";
 
 const index = (props) => {
     const {handleSetCurrentData, currentType} = props;
@@ -14,11 +14,11 @@ const index = (props) => {
             color: "#36a3f7",
         },
         {
-            type: "Product",
+            type: "Store Product",
             color: "#f4516c",
         },
         {
-            type: "Stock",
+            type: "PPOB Product",
             color: "#f6ab40",
         },
     ];
@@ -39,9 +39,9 @@ const index = (props) => {
                             <div className={styles.card_panel_icon_wrapper} style={currentType === chart.type ? {backgroundColor:"#ccc"} : {}}>
                                 {
                                     chart.type === "Supplier" ? <TeamOutlined style={{color: chart.color}} className={styles.card_panel_icon} />
-                                    : chart.type === "Product" ? <TagOutlined style={{color: chart.color}} className={styles.card_panel_icon} />
                                     : chart.type === "Product Category" ? <TagsOutlined style={{color: chart.color}} className={styles.card_panel_icon} />
-                                    : chart.type === "Stock" ? <ShopOutlined style={{color: chart.color}} className={styles.card_panel_icon} />
+                                    : chart.type === "Store Product" ? <AppstoreOutlined style={{color: chart.color}} className={styles.card_panel_icon} />
+                                    : chart.type === "PPOB Product" ? <AppstoreOutlined style={{color: chart.color}} className={styles.card_panel_icon} />
                                     : ""
                                 }
                             </div>

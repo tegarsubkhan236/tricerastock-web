@@ -13,7 +13,7 @@ const InvSupplier = () => {
                 <InvSupplierToolkit form={form}/>
             </Col>
             <Col span={24}>
-                <InvSupplierList form={form}/>
+                <InvSupplierList/>
             </Col>
             <InvSupplierForm form={form}/>
         </Row>

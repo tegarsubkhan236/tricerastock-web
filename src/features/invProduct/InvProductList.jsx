@@ -1,12 +1,13 @@
-import React, {useEffect} from 'react';
-import {Avatar, message, Space, Table, Tag} from "antd";
-import {deleteProduct, setModalType, setModalVisible, setCurrentPage, setPerPage, fetchProductByFilter} from "./invProductSlice";
+import React, {useEffect, useState} from 'react';
+import {Avatar, Button, message, Space, Table, Tag} from "antd";
+import {setCurrentPage, setPerPage, fetchProductByFilter, setSelectedRow} from "./invProductSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {ColumnConfig, PaginationConfig} from "../../config/utils/tableConfig";
+import {PaginationConfig} from "../../config/utils/tableConfig";
 
-const InvProductList = ({form}) => {
+const InvProductList = () => {
     const dispatch = useDispatch()
-    const {data, status, filter, currentPage, perPage} = useSelector(state => state.products)
+    const {data, totalData, status, filter, currentPage, perPage} = useSelector(state => state.products)
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
     useEffect(() => {
         try {
@@ -18,11 +19,12 @@ const InvProductList = ({form}) => {
                 search_text: filter.search_text
             })).unwrap()
         } catch (e) {
+            console.log(e)
             return message.error(e)
         }
     }, [dispatch, currentPage, perPage, filter])
 
-    const columnData = [
+    const columns = [
         {
             title: 'Product',
             children: [
@@ -46,6 +48,15 @@ const InvProductList = ({form}) => {
                     key: 'name',
                     dataIndex: 'name',
                     width: "35%"
+                },
+                {
+                    title: 'Price',
+                    key: 'price',
+                    render: (_, {name}) => (
+                        <Button onClick={() => console.log('cek')}>
+                            23.000
+                        </Button>
+                    )
                 },
             ]
         },
@@ -73,30 +84,40 @@ const InvProductList = ({form}) => {
             )
         },
     ];
-    const columns = ColumnConfig(columnData, form, setModalType, setModalVisible, deleteProduct, setCurrentPage)
-    const pagination = PaginationConfig(currentPage, perPage, data?.total, setPerPage, setCurrentPage)
+    const pagination = PaginationConfig(currentPage, perPage, totalData, setPerPage, setCurrentPage)
 
-    let dataSource = [];
-    if (status === 'succeeded') {
-        data?.results.map((item) => (
-            dataSource = [...dataSource, {
-                key: item.id,
-                id: item.id,
-                name: item.name,
-                supplier: item.inv_supplier,
-                categories: item.inv_product_category
-            }]
-        ))
-    }
-    
     return (
         <Table
             loading={status === 'loading'}
-            dataSource={dataSource}
-            pagination={pagination}
-            columns={columns}
             scroll={{x: true, y: 350}}
             bordered
+            rowKey={record => record.key}
+            rowSelection={{
+                preserveSelectedRowKeys: true,
+                selectedRowKeys,
+                onChange: (selectedRowKeys) => {
+                    setSelectedRowKeys(selectedRowKeys);
+                    dispatch(setSelectedRow(selectedRowKeys))
+                }
+            }}
+            columns={columns}
+            dataSource={data}
+            pagination={pagination}
+            onRow={(record) => {
+                return {
+                    onClick: () => {
+                        const selectedKeys = [...selectedRowKeys];
+                        const index = selectedKeys.indexOf(record.key);
+                        if (index > -1) {
+                            selectedKeys.splice(index, 1);
+                        } else {
+                            selectedKeys.push(record.key);
+                        }
+                        setSelectedRowKeys(selectedKeys)
+                        dispatch(setSelectedRow(selectedKeys))
+                    },
+                };
+            }}
         />
     );
 };
