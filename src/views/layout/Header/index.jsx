@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import Hamburger from "./Hamburger";
 import Fullscreen from "./Fullscreen";
 import {useDispatch} from "react-redux";
-import {logout} from "../../../../features/coreAuth/coreAuthSlice";
+import {logout} from "../../../features/coreAuth/coreAuthSlice";
 
 const {Header} = Layout
 
@@ -22,9 +22,10 @@ const LayoutHeader = (props) => {
             key: '1',
         }, {
             label: (
-                <p onClick={()=>dispatch(logout())} rel={"logout"}>
+                // eslint-disable-next-line
+                <a onClick={()=>dispatch(logout())} rel={"logout"}>
                     Logout
-                </p>
+                </a>
             ),
             key: '2',
         },
@@ -38,7 +39,7 @@ const LayoutHeader = (props) => {
                 <Fullscreen/>
                 <div className="dropdown-wrap">
                     <Dropdown menu={{items}} trigger={['click']}>
-                        <a onClick={(e) => e.preventDefault()}>
+                        <a href="/#" onClick={(e) => e.preventDefault()}>
                             <Space>
                                 <Avatar shape="square"
                                         size="medium"
