@@ -1,6 +1,6 @@
 import React, {useMemo, useRef, useState} from 'react';
 import {Select, Spin} from "antd";
-import {Debounce} from "../../../config/helper";
+import {Debounce} from "../../../config/helper/debounce";
 
 const Index = ({ fetchOptions, ...props }) => {
     const [fetching, setFetching] = useState(false);

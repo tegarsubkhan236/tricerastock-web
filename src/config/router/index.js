@@ -11,7 +11,7 @@ import {
     TransactionSell,
     TransactionSpecial,
     UserAuthority
-} from "../views/pages";
+} from "../../views/pages";
 import {useSelector} from "react-redux";
 
 const ProtectedRoute = () => {

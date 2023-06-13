@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Avatar, Button, message, Space, Table, Tag} from "antd";
 import {setCurrentPage, setPerPage, fetchProductByFilter, setSelectedRow} from "./invProductSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {PaginationConfig} from "../../config/utils/tableConfig";
+import {PaginationConfig} from "../../config/helper/tableConfig";
 
 const InvProductList = () => {
     const dispatch = useDispatch()

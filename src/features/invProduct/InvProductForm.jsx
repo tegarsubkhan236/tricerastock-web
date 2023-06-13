@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react';
 import {Col, Form, Input, InputNumber, message, Modal, Row, Space, Tag, TreeSelect} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {postProduct, setModalVisible} from "./invProductSlice";
-import {currencyFormatter, currencyParser} from "../../config/utils/currency";
+import {currencyFormatter, currencyParser} from "../../config/helper/currency";
 import DebounceSelect from "../../views/components/DebounceSelect";
 import {fetchSupplierByColumn} from "../invSupplier/invSupplierSlice";
 

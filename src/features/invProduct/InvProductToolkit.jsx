@@ -3,7 +3,7 @@ import {Button, Dropdown, Input, message, Space} from "antd";
 import {DeleteOutlined, DownloadOutlined, EditOutlined, ImportOutlined, PlusOutlined,} from "@ant-design/icons";
 import {deleteProduct, fetchProductByFilter, setCurrentPage, setFilter, setModalType, setModalVisible} from "./invProductSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {Debounce} from "../../config/helper";
+import {Debounce} from "../../config/helper/debounce";
 
 const InvProductToolkit = ({form}) => {
     const dispatch = useDispatch()

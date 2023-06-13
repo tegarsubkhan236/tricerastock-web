@@ -3,7 +3,7 @@ import {CSSTransition, SwitchTransition} from "react-transition-group";
 import DocumentTitle from "react-document-title";
 import {useLocation, useOutlet} from "react-router-dom";
 import {Layout} from "antd";
-import {GetTitle} from "../../../config/helper";
+import {AppSubTitle, AppTitle} from "../../../config";
 
 const {Content} = Layout
 
@@ -11,9 +11,10 @@ const Index = () => {
     const location = useLocation()
     const currentOutlet = useOutlet()
     const nodeRef = useRef(null);
-    const {title, subTitle} = GetTitle(location)
+    const appTitle = AppTitle()
+    const appSubTitle = AppSubTitle(location)
     return (
-        <DocumentTitle title={`${subTitle()} - ${title}`}>
+        <DocumentTitle title={`${appSubTitle} - ${appTitle}`}>
             <Content style={{height: "calc(100% - 100px)"}}>
                 <SwitchTransition>
                     <CSSTransition

@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import instance from "../../config/lib/axios";
-import {decodeToken} from "../../config/utils/decodeToken";
+import {decodeToken} from "../../config/helper/decodeToken";
 
 export const postLogin = createAsyncThunk(
     'auth/postLogin',

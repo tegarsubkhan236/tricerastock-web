@@ -3,7 +3,7 @@ import {Button, Input, message, Space} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {setModalType, setModalVisible} from "../invProduct/invProductSlice";
-import {Debounce} from "../../config/helper";
+import {Debounce} from "../../config/helper/debounce";
 
 const InvSupplierToolkit = ({form}) => {
     const dispatch = useDispatch()

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchProductCategory, setCurrentPage, setPerPage} from './invProductCategorySlice';
-import {PaginationConfig} from "../../config/utils/tableConfig";
+import {PaginationConfig} from "../../config/helper/tableConfig";
 import {message, Table} from "antd";
 
 const MsInvProductCategories = ({columns, expandedRowKeys, setExpandedRowKeys}) => {

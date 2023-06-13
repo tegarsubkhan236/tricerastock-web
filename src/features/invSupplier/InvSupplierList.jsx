@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {message, Switch, Table} from "antd";
-import {PaginationConfig} from "../../config/utils/tableConfig";
+import {PaginationConfig} from "../../config/helper/tableConfig";
 import {fetchSupplier, setCurrentPage, setPerPage} from './invSupplierSlice';
 
 const InvSupplierList = () => {

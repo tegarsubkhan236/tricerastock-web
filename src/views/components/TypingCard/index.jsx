@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react";
 import {Card} from "antd";
 import {PropTypes} from "prop-types";
-import Typing from "../../../config/utils/typing";
+import Typing from "../../../config/helper/typing";
 
 const TypingCard = (props) => {
     const {title, source} = props;
