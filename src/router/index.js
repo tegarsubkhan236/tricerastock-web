@@ -1,5 +1,5 @@
 import React from "react";
-import {createBrowserRouter, createRoutesFromElements, Navigate, Route} from "react-router-dom";
+import {createBrowserRouter, createRoutesFromElements, Navigate, Route, useRouteError} from "react-router-dom";
 import {
     CoreInventory,
     Dashboard,
@@ -26,11 +26,17 @@ const ProtectedRoute = () => {
     return <MainLayout/>;
 };
 
+const ErrorBoundary = () => {
+    const error = useRouteError();
+    console.log("errorBoundary", error)
+    return <div>{error.message}</div>
+}
+
 export const router = createBrowserRouter(
     createRoutesFromElements(
         <Route>
             <Route path="login" element={<Login/>}/>
-            <Route element={<ProtectedRoute/>}>
+            <Route element={<ProtectedRoute/>} errorElement={<ErrorBoundary/>}>
                 <Route index element={<Dashboard/>}/>
                 <Route path={"master"}>
                     <Route path={"users"} element={<UserAuthority/>}/>
