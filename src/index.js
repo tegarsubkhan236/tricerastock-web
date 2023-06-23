@@ -6,7 +6,7 @@ import "./assets/css/App.css"
 import {Provider} from "react-redux";
 import {persistor, store} from "./app/store";
 import {PersistGate} from "redux-persist/integration/react";
-import {injectStore} from "./config/lib/axios";
+import {injectStore} from "./config/helper/storeInjector";
 
 injectStore(store)
 

@@ -1,28 +1,29 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Avatar, Button, message, Space, Table, Tag} from "antd";
-import {setCurrentPage, setPerPage, fetchProductByFilter, setSelectedRow} from "./invProductSlice";
+import {fetchProducts, setCurrentPage, setPerPage, setSelectedRow} from "./invProductSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {PaginationConfig} from "../../config/helper/tableConfig";
 
 const InvProductList = () => {
     const dispatch = useDispatch()
-    const {data, totalData, status, filter, currentPage, perPage} = useSelector(state => state.products)
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const {data, totalData, status, filter, currentPage, perPage, selectedRow} = useSelector(state => state.products)
 
     useEffect(() => {
         try {
-            dispatch(fetchProductByFilter({
-                page: currentPage,
-                perPage: perPage,
-                supplier_id: filter.suppliers?.key,
-                category_id: filter.categories?.map(({key}) => `${key}`).join(','),
-                search_text: filter.search_text
-            })).unwrap()
+            if (status === "idle") {
+                dispatch(fetchProducts({
+                    page: currentPage,
+                    perPage: perPage,
+                    supplier_id: filter.suppliers?.key,
+                    category_id: filter.categories?.map(({key}) => `${key}`).join(','),
+                    search_text: filter.search_text
+                })).unwrap()
+            }
         } catch (e) {
             console.log(e)
             return message.error(e)
         }
-    }, [dispatch, currentPage, perPage, filter])
+    }, [status])
 
     const columns = [
         {
@@ -94,9 +95,8 @@ const InvProductList = () => {
             rowKey={record => record.key}
             rowSelection={{
                 preserveSelectedRowKeys: true,
-                selectedRowKeys,
+                selectedRowKeys : selectedRow,
                 onChange: (selectedRowKeys) => {
-                    setSelectedRowKeys(selectedRowKeys);
                     dispatch(setSelectedRow(selectedRowKeys))
                 }
             }}
@@ -106,14 +106,13 @@ const InvProductList = () => {
             onRow={(record) => {
                 return {
                     onClick: () => {
-                        const selectedKeys = [...selectedRowKeys];
+                        const selectedKeys = [...selectedRow];
                         const index = selectedKeys.indexOf(record.key);
                         if (index > -1) {
                             selectedKeys.splice(index, 1);
                         } else {
                             selectedKeys.push(record.key);
                         }
-                        setSelectedRowKeys(selectedKeys)
                         dispatch(setSelectedRow(selectedKeys))
                     },
                 };

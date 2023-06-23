@@ -9,12 +9,14 @@
     "axios": "^1.2.5",
     "chart.js": "^4.2.0",
     "date-fns": "^2.29.3",
+    "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
     "jwt-decode": "^3.1.2",
     "millify": "^5.0.1",
     "moment": "^2.29.4",
     "nprogress": "^0.2.0",
     "prop-types": "^15.8.1",
+    "rc-menu": "^9.9.2",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-countup": "^6.4.1",
@@ -27,8 +29,7 @@
     "react-transition-group": "4.4.1",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
-    "screenfull": "^6.0.2",
-    "sheetjs-style": "^0.15.8"
+    "screenfull": "^6.0.2"
   },
   "devDependencies": {},
   "scripts": {

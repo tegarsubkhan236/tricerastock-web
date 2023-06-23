@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import instance from "../../config/lib/axios";
-import {decodeToken} from "../../config/helper/decodeToken";
+import jwtDecode from "jwt-decode";
 
 export const postLogin = createAsyncThunk(
     'auth/postLogin',
@@ -48,6 +48,14 @@ const coreAuthSlice = createSlice({
     },
 })
 
+export const decodeToken = (token) => {
+    try {
+        return jwtDecode(token);
+    } catch (error) {
+        console.error(`Error decoding token: ${error.message}`);
+        return null;
+    }
+};
 export const {logout} = coreAuthSlice.actions;
 
 export default coreAuthSlice.reducer

@@ -1,11 +1,6 @@
 import axios from "axios";
 import {logout} from "../../features/coreAuth/coreAuthSlice";
-
-let store
-
-export const injectStore = _store => {
-    store = _store
-}
+import {getStore} from "../helper/storeInjector";
 
 const instance = axios.create({
     baseURL: 'http://localhost:4000/api',
@@ -16,7 +11,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     (config) => {
-        const token = store.getState().auth.token;
+        const token = getStore().getState().auth.token;
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -31,7 +26,7 @@ instance.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response && error.response.status === 401) {
-            store.dispatch(logout());
+            getStore().dispatch(logout());
         }
         return Promise.reject(error);
     }
