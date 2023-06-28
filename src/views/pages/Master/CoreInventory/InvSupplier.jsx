@@ -9,7 +9,7 @@ const InvSupplier = () => {
 
     return (
         <Row>
-            <Col xs={24} sm={24} md={24} lg={{span: 8, offset: 16}} style={{paddingBottom: '15px'}}>
+            <Col span={24} style={{display: 'flex', justifyContent: 'flex-end', paddingBottom: '15px'}}>
                 <InvSupplierToolkit form={form}/>
             </Col>
             <Col span={24}>

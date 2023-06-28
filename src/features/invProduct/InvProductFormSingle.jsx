@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {Col, Form, Input, InputNumber, message, Row, TreeSelect} from "antd";
-import {fetchSupplierByColumn} from "../invSupplier/invSupplierSlice";
+import {fetchSupplier} from "../invSupplier/invSupplierSlice";
 import {useDispatch, useSelector} from "react-redux";
 import DebounceSelect from "../../views/components/DebounceSelect";
 import {currencyFormatter, currencyParser} from "../../config/helper/currency";
@@ -15,7 +15,7 @@ const InvProductFormSingle = ({form}) => {
 
     const fetchSupplierList = async (name) => {
         try {
-            return await dispatch(fetchSupplierByColumn({page: 1, perPage: 5, column: {name: name}})).unwrap()
+            return await dispatch(fetchSupplier({page: 1, perPage: 5, column: {name: name}})).unwrap()
                 .then((body) => body.data.results.map((item) => ({
                     label: `${item.name}`, value: item.id,
                 })))

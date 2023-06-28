@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Form, message, Tree} from "antd";
 import DebounceSelect from "../../views/components/DebounceSelect";
-import {fetchSupplierByColumn} from "../invSupplier/invSupplierSlice";
+import {fetchSupplier} from "../invSupplier/invSupplierSlice";
 import {fetchProductCategory} from "../invProductCategory/invProductCategorySlice";
 import {setFilter} from "./invProductSlice";
 
@@ -43,7 +43,7 @@ const InvProductFilter = () => {
 
     const fetchSupplierList = async (name) => {
         try {
-            return await dispatch(fetchSupplierByColumn({page: 1, perPage: 5, column: {name: name}})).unwrap()
+            return await dispatch(fetchSupplier({page: 1, perPage: 5, column: {name: name}})).unwrap()
                 .then((body) => body.data.results.map((item) => ({
                     label: `${item.name}`,
                     value: item.id,

@@ -1,90 +1,92 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {message, Switch, Table} from "antd";
+import {Switch, Table} from "antd";
 import {PaginationConfig} from "../../config/helper/tableConfig";
-import {fetchSupplier, setCurrentPage, setPerPage} from './invSupplierSlice';
+import {fetchSupplier, setSupplierCurrentPage, setSupplierPerPage, setSupplierSelectedRow} from './invSupplierSlice';
 
 const InvSupplierList = () => {
     const dispatch = useDispatch();
-    const {data, status, currentPage, perPage} = useSelector((state) => state.suppliers);
+    const {
+        supplierData,
+        supplierTotalData,
+        supplierSelectedRow,
+        supplierFilter,
+        supplierStatus,
+        supplierCurrentPage,
+        supplierPerPage
+    } = useSelector((state) => state.suppliers);
 
     useEffect(() => {
         try {
-            dispatch(fetchSupplier({
-                page: currentPage,
-                perPage: perPage
-            })).unwrap();
+            if (supplierStatus === "idle") {
+                dispatch(fetchSupplier({
+                    page: supplierCurrentPage,
+                    perPage: supplierPerPage,
+                    column: {...supplierFilter},
+                })).unwrap();
+            }
         } catch (e) {
-            return message.error(e)
+            return console.log(e)
         }
-    }, [dispatch, currentPage, perPage]);
+    }, [supplierStatus]);
 
-    const columns = [
-        {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
-        },
-        {
-            title: 'Name',
-            key: 'name',
-            dataIndex: 'name',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-        },
-        {
-            title: 'Contact',
-            children: [
-                {
-                    title: 'Contact Person',
-                    dataIndex: 'contact_person',
-                    key: 'contact_person'
-                },
-                {
-                    title: 'Contact Number',
-                    dataIndex: 'contact_number',
-                    key: 'contact_number'
-                }
-            ]
-        },
-        {
-            title: 'Status',
-            key: 'status',
-            render: (_, record) => (
-                <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked={record.status === 1}/>
-            )
-        }
-    ];
-    const pagination = PaginationConfig(currentPage, perPage, data?.data?.total, setPerPage, setCurrentPage);
-
-    let dataSource = [];
-    if (status === 'succeeded') {
-        data?.data?.results.map((item) => (
-            dataSource = [...dataSource, {
-                key: item.id,
-                id: item.id,
-                name: item.name,
-                address: item.address,
-                contact_person: item.contact_person,
-                contact_number: item.contact_number,
-                status: item.status,
-            }]
-        ))
-    }
-
-    return (
-        <Table
-            loading={status === "loading"}
-            dataSource={dataSource}
-            columns={columns}
-            pagination={pagination}
-            scroll={{ x: true }}
-            bordered
-        />
+    const pagination = PaginationConfig(
+        supplierCurrentPage,
+        supplierPerPage,
+        supplierTotalData,
+        (current, size) => dispatch(setSupplierPerPage(size)),
+        (page) => dispatch(setSupplierCurrentPage(page))
     );
+
+    const columns = [{
+        title: 'ID', dataIndex: 'id', key: 'id',
+    }, {
+        title: 'Name', key: 'name', dataIndex: 'name',
+    }, {
+        title: 'Address', dataIndex: 'address', key: 'address',
+    }, {
+        title: 'Contact', children: [{
+            title: 'Contact Person', dataIndex: 'contact_person', key: 'contact_person'
+        }, {
+            title: 'Contact Number', dataIndex: 'contact_number', key: 'contact_number'
+        }]
+    }, {
+        title: 'Status',
+        key: 'status',
+        render: (_, record) => (
+            <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked={record.status === 1}/>)
+    }];
+
+    return (<Table
+        loading={supplierStatus === "loading"}
+        dataSource={supplierData}
+        columns={columns}
+        pagination={pagination}
+        scroll={{x: true}}
+        bordered
+        rowKey={record => record.key}
+        rowSelection={{
+            preserveSelectedRowKeys: true,
+            selectedRowKeys : supplierSelectedRow,
+            onChange: (selectedRowKeys) => {
+                dispatch(setSupplierSelectedRow(selectedRowKeys))
+            }
+        }}
+        onRow={(record) => {
+            return {
+                onClick: () => {
+                    const selectedKeys = [...supplierSelectedRow];
+                    const index = selectedKeys.indexOf(record.key);
+                    if (index > -1) {
+                        selectedKeys.splice(index, 1);
+                    } else {
+                        selectedKeys.push(record.key);
+                    }
+                    dispatch(setSupplierSelectedRow(selectedKeys))
+                },
+            };
+        }}
+    />);
 };
 
 export default InvSupplierList;
