@@ -1,6 +1,6 @@
 // Main
 export { default as MainLayout } from '../layout'
-export { default as NoMatch } from '../error/NoMatch'
+export { default as NoMatch } from './Error/NoMatch'
 
 // Auth
 export { default as Login } from './Auth/Login'
