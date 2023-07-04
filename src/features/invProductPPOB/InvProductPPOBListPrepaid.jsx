@@ -1,9 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {hitPriceList} from "./invPPOBSlice";
+import {hitPriceList} from "./invProductPPOBSlice";
 import {Badge, Button, Card, DatePicker, Form, Input, Select, Space, Table} from "antd";
 
-const InvPPOBListPrepaid = () => {
+const InvProductPPOBListPrepaid = () => {
     const dispatch = useDispatch();
     const [category, setCategory] = useState("pulsa")
     const searchInput = useRef()
@@ -84,4 +84,4 @@ const InvPPOBListPrepaid = () => {
     );
 };
 
-export default InvPPOBListPrepaid;
+export default InvProductPPOBListPrepaid;

@@ -61,30 +61,42 @@ export const deleteProductCategory = createAsyncThunk(
 const msInvProductCategory = createSlice({
     name: 'product_categories',
     initialState: {
-        treeData: [],
-        totalData: 0,
-        status: 'idle',
-        currentPage: 1,
-        perPage: 5
+        productCategoryData: [],
+        productCategoryTotalData: 0,
+        productCategoryModalVisible: false,
+        productCategoryModalType: '',
+        productCategorySelectedRow: [],
+        productCategoryStatus: 'idle',
+        productCategoryCurrentPage: 1,
+        productCategoryPerPage: 5
     },
     reducers: {
-        setPerPage: (state, action) => {
-            state.status = 'idle';
-            state.perPage = action.payload;
+        setProductCategoryPerPage: (state, action) => {
+            state.productCategoryStatus = 'idle';
+            state.productCategoryPerPage = action.payload;
         },
-        setCurrentPage: (state, action) => {
-            state.status = 'idle';
-            state.currentPage = action.payload;
+        setProductCategoryCurrentPage: (state, action) => {
+            state.productCategoryStatus = 'idle';
+            state.productCategoryCurrentPage = action.payload;
+        },
+        setProductCategoryModalVisible: (state, action) => {
+            state.productCategoryModalVisible = action.payload
+        },
+        setProductCategoryModalType: (state, action) => {
+            state.productCategoryModalType = action.payload
+        },
+        setProductCategorySelectedRow: (state, action) => {
+            state.productCategorySelectedRow = action.payload
         },
     },
     extraReducers: {
             [fetchProductCategory.pending]: (state) => {
-                state.status = 'loading';
+                state.productCategoryStatus = 'loading';
             },
             [fetchProductCategory.fulfilled]: (state, action) => {
-                state.status = 'succeeded';
-                state.totalData = action.payload.data.total;
-                state.treeData = action.payload.data.results.map((item) => ({
+                state.productCategoryStatus = 'succeeded';
+                state.productCategoryTotalData = action.payload.data.total;
+                state.productCategoryData = action.payload.data.results.map((item) => ({
                     key: item.id,
                     value: item.id,
                     id: item.id,
@@ -110,14 +122,26 @@ const msInvProductCategory = createSlice({
                 }));
             },
             [postProductCategory.pending]: (state) => {
-                state.status = 'loading';
+                state.productCategoryStatus = 'loading';
+            },
+            [postProductCategory.fulfilled]: (state) => {
+                state.productCategoryStatus = 'idle';
             },
             [updateProductCategory.pending]: (state) => {
-                state.status = 'loading';
+                state.productCategoryStatus = 'loading';
+            },
+            [updateProductCategory.fulfilled]: (state) => {
+                state.productCategoryStatus = 'idle';
             },
     },
 });
 
-export const {setCurrentPage, setPerPage} = msInvProductCategory.actions;
+export const {
+    setProductCategoryCurrentPage,
+    setProductCategoryPerPage,
+    setProductCategoryModalVisible,
+    setProductCategoryModalType,
+    setProductCategorySelectedRow,
+} = msInvProductCategory.actions;
 
 export default msInvProductCategory.reducer;

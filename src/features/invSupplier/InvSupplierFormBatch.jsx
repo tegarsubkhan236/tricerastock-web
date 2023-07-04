@@ -69,7 +69,8 @@ const InvSupplierFormBatch = ({form}) => {
         >
             <Form.Item name="batch_Supplier_data"
                        rules={[{required: true, message: 'Please input your File'}]}
-                       label="Batch Supplier Data"
+                       valuePropName= 'fileList'
+                       noStyle
             >
                 <Upload.Dragger {...UploadConfig}>
                     <p className="ant-upload-drag-icon">

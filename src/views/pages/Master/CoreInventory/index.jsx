@@ -4,7 +4,6 @@ import PanelGroup from "./PanelGroup";
 import InvSupplier from "./InvSupplier";
 import InvProduct from "./InvProduct";
 import InvProductCategory from "./InvProductCategory";
-import InvStock from "./InvStock";
 import {CSSTransition, SwitchTransition} from "react-transition-group";
 
 const Index = () => {
@@ -24,7 +23,7 @@ const Index = () => {
         },
         "PPOB Product": {
             type: "PPOB Product",
-            component: <InvStock/>
+            component: <InvProduct/>
         },
     };
     const [currentData, setCurrentData] = useState(

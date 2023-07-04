@@ -3,7 +3,7 @@ import {InboxOutlined} from "@ant-design/icons";
 import {Form, message, Upload} from "antd";
 import {importExcel} from "../../config/lib/importExcel";
 import {useDispatch} from "react-redux";
-import {postProduct, setModalVisible, setStatus} from "./invProductSlice";
+import {postProduct, setProductModalVisible, setProductStatus} from "./invProductSlice";
 
 const InvProductFormBatch = ({form}) => {
     const dispatch = useDispatch()
@@ -16,12 +16,11 @@ const InvProductFormBatch = ({form}) => {
                     return message.error("Please input data")
                 }
                 await dispatch(postProduct(batchData)).unwrap()
-                await dispatch(setStatus("idle"))
-                await dispatch(setModalVisible(false))
+                await dispatch(setProductStatus("idle"))
+                await dispatch(setProductModalVisible(false))
                 return message.success('Excel file uploaded successfully.');
             } catch (e) {
-                console.log("handleSubmit")
-                console.log(e)
+                console.log("handleSubmit",e)
             }
         })
     }
@@ -36,7 +35,6 @@ const InvProductFormBatch = ({form}) => {
                 inv_product_category: [{id : obj[3]}],
                 inv_supplier_id: obj[4],
             }));
-            console.log(updatedData)
             setBatchData(updatedData)
         } catch (error) {
             console.log("handleFileUpload")
@@ -47,7 +45,7 @@ const InvProductFormBatch = ({form}) => {
     const UploadConfig = {
         name:"file",
         multiple:false,
-        // showUploadList: false,
+        showUploadList: false,
         maxCount:1,
         customRequest: ({ file, onSuccess }) => {
             setTimeout(() => {
@@ -73,7 +71,8 @@ const InvProductFormBatch = ({form}) => {
         >
             <Form.Item name="batch_product_data"
                        rules={[{required: true, message: 'Please input your File'}]}
-                       label="Batch Product Data"
+                       valuePropName= 'fileList'
+                       noStyle
             >
                 <Upload.Dragger {...UploadConfig}>
                     <p className="ant-upload-drag-icon">

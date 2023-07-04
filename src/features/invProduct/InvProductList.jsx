@@ -1,29 +1,37 @@
 import React, {useEffect} from 'react';
 import {Avatar, Button, message, Space, Table, Tag} from "antd";
-import {fetchProducts, setCurrentPage, setPerPage, setSelectedRow} from "./invProductSlice";
+import {fetchProducts, setProductCurrentPage, setProductPerPage, setProductSelectedRow} from "./invProductSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {PaginationConfig} from "../../config/helper/tableConfig";
 
 const InvProductList = () => {
     const dispatch = useDispatch()
-    const {data, totalData, status, filter, currentPage, perPage, selectedRow} = useSelector(state => state.products)
+    const {
+        productData,
+        productTotalData,
+        productStatus,
+        productFilter,
+        productCurrentPage,
+        productPerPage,
+        productSelectedRow
+    } = useSelector(state => state.products)
 
     useEffect(() => {
         try {
-            if (status === "idle") {
+            if (productStatus === "idle") {
                 dispatch(fetchProducts({
-                    page: currentPage,
-                    perPage: perPage,
-                    supplier_id: filter.suppliers?.key,
-                    category_id: filter.categories?.map(({key}) => `${key}`).join(','),
-                    search_text: filter.search_text
+                    page: productCurrentPage,
+                    perPage: productPerPage,
+                    supplier_id: productFilter.suppliers?.key,
+                    category_id: productFilter.categories?.map(({key}) => `${key}`).join(','),
+                    search_text: productFilter.search_text
                 })).unwrap()
             }
         } catch (e) {
             console.log(e)
             return message.error(e)
         }
-    }, [status])
+    }, [productStatus])
 
     const columns = [
         {
@@ -85,35 +93,42 @@ const InvProductList = () => {
             )
         },
     ];
-    const pagination = PaginationConfig(currentPage, perPage, totalData, setPerPage, setCurrentPage)
+
+    const pagination = PaginationConfig(
+        productCurrentPage,
+        productPerPage,
+        productTotalData,
+        (current, size) => dispatch(setProductPerPage(size)),
+        (page) => dispatch(setProductCurrentPage(page))
+    )
 
     return (
         <Table
-            loading={status === 'loading'}
+            loading={productStatus === 'loading'}
             scroll={{x: true, y: 350}}
             bordered
             rowKey={record => record.key}
             rowSelection={{
                 preserveSelectedRowKeys: true,
-                selectedRowKeys : selectedRow,
+                selectedRowKeys : productSelectedRow,
                 onChange: (selectedRowKeys) => {
-                    dispatch(setSelectedRow(selectedRowKeys))
+                    dispatch(setProductSelectedRow(selectedRowKeys))
                 }
             }}
             columns={columns}
-            dataSource={data}
+            dataSource={productData}
             pagination={pagination}
             onRow={(record) => {
                 return {
                     onClick: () => {
-                        const selectedKeys = [...selectedRow];
+                        const selectedKeys = [...productSelectedRow];
                         const index = selectedKeys.indexOf(record.key);
                         if (index > -1) {
                             selectedKeys.splice(index, 1);
                         } else {
                             selectedKeys.push(record.key);
                         }
-                        dispatch(setSelectedRow(selectedKeys))
+                        dispatch(setProductSelectedRow(selectedKeys))
                     },
                 };
             }}

@@ -60,70 +60,70 @@ export const deleteProduct = createAsyncThunk(
 const msInvProduct = createSlice({
     name: 'products',
     initialState: {
-        data: [],
-        totalData: 0,
-        filter: {
+        productData: [],
+        productTotalData: 0,
+        productFilter: {
             suppliers : null,
             categories : null,
             search_text : null
         },
-        modalVisible: false,
-        modalType: '',
-        selectedRow: [],
-        status: 'idle',
-        currentPage: 1,
-        perPage: 5
+        productModalVisible: false,
+        productNodalType: '',
+        productSelectedRow: [],
+        productStatus: 'idle',
+        productCurrentPage: 1,
+        productPerPage: 5
     },
     reducers: {
-        setStatus: (state, action) => {
-            state.status = action.payload
+        setProductStatus: (state, action) => {
+            state.productStatus = action.payload
         },
-        setPerPage: (state, action) => {
-            state.status = "idle"
-            state.perPage = action.payload;
+        setProductPerPage: (state, action) => {
+            state.productStatus = "idle"
+            state.productPerPage = action.payload;
         },
-        setCurrentPage: (state, action) => {
-            state.status = "idle"
-            state.currentPage = action.payload;
+        setProductCurrentPage: (state, action) => {
+            state.productStatus = "idle"
+            state.productCurrentPage = action.payload;
         },
-        setFilter: (state, action) => {
-            state.status = "idle"
-            state.filter = action.payload
+        setProductFilter: (state, action) => {
+            state.productStatus = "idle"
+            state.productFilter = action.payload
         },
-        setModalVisible: (state, action) => {
-            state.modalVisible = action.payload
+        setProductModalVisible: (state, action) => {
+            state.productModalVisible = action.payload
         },
-        setModalType: (state, action) => {
-            state.modalType = action.payload
+        setProductModalType: (state, action) => {
+            state.productModalType = action.payload
         },
-        setSelectedRow: (state, action) => {
-            state.selectedRow = action.payload
+        setProductSelectedRow: (state, action) => {
+            state.productSelectedRow = action.payload
         },
     },
     extraReducers: {
         [fetchProducts.pending]: (state) => {
-            state.status = 'loading';
+            state.productStatus = 'loading';
         },
         [fetchProducts.fulfilled]: (state, action) => {
-            state.status = 'succeeded';
-            state.data = action.payload.data.results.map((item) => ({
+            state.productStatus = 'succeeded';
+            state.productData = action.payload.data.results.map((item) => ({
                 key: item.id,
                 id: item.id,
                 name: item.name,
                 supplier: item.inv_supplier,
                 categories: item.inv_product_category,
             }));
-            state.totalData = action.payload.data.total;
+            state.productTotalData = action.payload.data.total;
         },
         [fetchProducts.rejected]: (state) => {
-            state.status = 'failed';
+            state.productStatus = 'failed';
         },
 
         [postProduct.pending]: (state) => {
-            state.status = 'loading';
+            state.productStatus = 'loading';
         },
         [postProduct.fulfilled]: (state, action) => {
-            state.status = 'succeeded';
+            state.productStatus = 'succeeded';
             if (action.payload.data.data.length === 1) {
                 const item = action.payload.data.data
                 const newItem = {
@@ -133,30 +133,39 @@ const msInvProduct = createSlice({
                     supplier: item.inv_supplier,
                     categories: item.inv_product_category,
                 }
-                state.data.unshift(newItem)
-                state.totalData++
+                state.productData.unshift(newItem)
+                state.productTotalData++
             }
         },
         [postProduct.rejected]: (state) => {
-            state.status = 'failed';
+            state.productStatus = 'failed';
         },
 
         [updateProduct.pending]: (state) => {
-            state.status = 'loading';
+            state.productStatus = 'loading';
         },
 
-        [deleteProduct.fulfilled]: (state) => {
-            state.status = 'succeeded';
-        },
         [deleteProduct.pending]: (state) => {
-            state.status = 'loading';
+            state.productStatus = 'loading';
+        },
+        [deleteProduct.fulfilled]: (state) => {
+            state.productStatus = 'idle';
+            state.productSelectedRow = [];
         },
         [deleteProduct.rejected]: (state) => {
-            state.status = 'failed';
+            state.productStatus = 'failed';
         },
     },
 });
 
-export const {setStatus, setCurrentPage, setPerPage, setFilter, setModalType, setModalVisible, setSelectedRow} = msInvProduct.actions;
+export const {
+    setProductStatus,
+    setProductCurrentPage,
+    setProductPerPage,
+    setProductFilter,
+    setProductModalType,
+    setProductModalVisible,
+    setProductSelectedRow
+} = msInvProduct.actions;
 
 export default msInvProduct.reducer;

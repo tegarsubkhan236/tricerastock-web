@@ -1,4 +1,4 @@
-import {Button, Dropdown, Input, message, Space} from "antd";
+import {Button, Dropdown, Input, message, Popconfirm, Space} from "antd";
 import {DeleteOutlined, DownloadOutlined, EditOutlined, ImportOutlined, PlusOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {Debounce} from "../../config/helper/debounce";
@@ -115,9 +115,16 @@ const InvSupplierToolkit = ({form}) => {
     return (
         <Space>
             <Input.Search placeholder="Cari..." allowClear size="middle" onSearch={handleSearch} onChange={Debounce(handleSearch,1000)}/>
-            <Button icon={<DeleteOutlined/>} danger loading={supplierSelectedRow.length <= 0} onClick={handleDelete}>
-                Delete {supplierSelectedRow.length > 0 ? `${supplierSelectedRow.length} items` : ''}
-            </Button>
+            <Popconfirm title="Delete data"
+                        description="Are you sure to delete this data?"
+                        onConfirm={() => handleDelete()}
+                        okText="Do it"
+                        cancelText="No"
+            >
+                <Button icon={<DeleteOutlined/>} danger loading={supplierSelectedRow.length <= 0}>
+                    Delete {supplierSelectedRow.length > 0 ? `${supplierSelectedRow.length} items` : ''}
+                </Button>
+            </Popconfirm>
             <Dropdown.Button icon={<EditOutlined/>} loading={supplierSelectedRow.length !== 1} menu={editMenuProps} onClick={() => openModal("EDIT_FORM")}>
                 Update Single Data
             </Dropdown.Button>

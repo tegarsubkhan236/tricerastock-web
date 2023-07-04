@@ -4,12 +4,12 @@ import {fetchSupplier} from "../invSupplier/invSupplierSlice";
 import {useDispatch, useSelector} from "react-redux";
 import DebounceSelect from "../../views/components/DebounceSelect";
 import {currencyFormatter, currencyParser} from "../../config/helper/currency";
-import {postProduct, setModalVisible} from "./invProductSlice";
+import {postProduct, setProductModalVisible} from "./invProductSlice";
 
 const InvProductFormSingle = ({form}) => {
     const dispatch = useDispatch();
-    const {treeData} = useSelector((state) => state.productCategories);
-    const {modalType} = useSelector((state) => state.products);
+    const {productCategoryData} = useSelector((state) => state.productCategories);
+    const {productModalType} = useSelector((state) => state.products);
     const [supplierID, setSupplierID] = useState([]);
     const [categoryID, setCategoryID] = useState([]);
 
@@ -27,7 +27,7 @@ const InvProductFormSingle = ({form}) => {
     const handleSubmit = useCallback(() => {
         form.validateFields().then(async (values) => {
             try {
-                if (modalType === "ADD_FORM") {
+                if (productModalType === "ADD_FORM") {
                     const payload = [{
                         name: values.name,
                         cost: values.initial_cost,
@@ -37,18 +37,18 @@ const InvProductFormSingle = ({form}) => {
                     }]
                     await dispatch(postProduct(payload)).unwrap()
                 }
-                if (modalType === "EDIT_FORM") {
+                if (productModalType === "EDIT_FORM") {
                     console.log("EDIT_FORM", values)
                 }
 
-                dispatch(setModalVisible(false))
+                dispatch(setProductModalVisible(false))
                 return message.success('Operation executed')
             } catch (e) {
-                dispatch(setModalVisible(false))
+                dispatch(setProductModalVisible(false))
                 return message.error(e?.response?.data?.message ?? e.message)
             }
         })
-    }, [dispatch, form, modalType])
+    }, [dispatch, form, productModalType])
 
     return (
         <Form id='myForm'
@@ -87,7 +87,7 @@ const InvProductFormSingle = ({form}) => {
                                 maxHeight: 400, overflow: 'auto',
                             }}
                             multiple
-                            treeData={treeData}
+                            treeData={productCategoryData}
                             placeholder="Please select Category"
                             treeDefaultExpandAll
                             onChange={(newValue) => setCategoryID(newValue)}

@@ -4,12 +4,12 @@ import {Button, Form, message, Tree} from "antd";
 import DebounceSelect from "../../views/components/DebounceSelect";
 import {fetchSupplier} from "../invSupplier/invSupplierSlice";
 import {fetchProductCategory} from "../invProductCategory/invProductCategorySlice";
-import {setFilter} from "./invProductSlice";
+import {setProductFilter} from "./invProductSlice";
 
 const InvProductFilter = () => {
     const dispatch = useDispatch()
-    const {treeData} = useSelector((state) => state.productCategories);
-    const {filter} = useSelector((state) => state.products);
+    const {productCategoryData} = useSelector((state) => state.productCategories);
+    const {productFilter} = useSelector((state) => state.products);
     const [checkedNodes, setCheckedNodes] = useState([]);
     const [value, setValue] = useState([]);
 
@@ -31,8 +31,8 @@ const InvProductFilter = () => {
             if (checkedNodes.length === 0) {
                 return message.error("Category cannot be null")
             }
-            await dispatch(setFilter({
-                ...filter,
+            await dispatch(setProductFilter({
+                ...productFilter,
                 suppliers : values.supplier !== undefined ? values.supplier : null,
                 categories : checkedNodes,
             }))
@@ -81,9 +81,9 @@ const InvProductFilter = () => {
                     selectable={false}
                     onCheck={onCheck}
                     onSelect={onCheck}
-                    treeData={treeData}
-                    defaultCheckedKeys={filter.categories?.map(value => value.key)}
-                    defaultExpandedKeys={filter.categories?.map(value => value.key)}
+                    treeData={productCategoryData}
+                    defaultCheckedKeys={productFilter.categories?.map(value => value.key)}
+                    defaultExpandedKeys={productFilter.categories?.map(value => value.key)}
                 />
             </Form.Item>
             <Form.Item wrapperCol={{offset: 8, span: 16}}>

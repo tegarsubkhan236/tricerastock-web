@@ -1,45 +1,70 @@
-import React, {useCallback} from 'react';
-import {Col, Form, Input, message, Modal, Row} from "antd";
+import React from 'react';
+import {Button, Col, Form, Input, message, Modal, Row, Space} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {postProductCategory, setCurrentPage, updateProductCategory} from "./invProductCategorySlice";
+import {
+    postProductCategory,
+    updateProductCategory,
+    setProductCategoryModalVisible,
+} from "./invProductCategorySlice";
 
-const MsInvProductCategoryForm = ({formType, form, visible, setVisible}) => {
+const MsInvProductCategoryForm = ({form}) => {
     const dispatch = useDispatch();
-    const {status} = useSelector((state) => state.productCategories);
+    const {
+        productCategoryStatus,
+        productCategoryModalVisible,
+        productCategoryModalType,
+    } = useSelector((state) => state.productCategories);
 
-    const handleSubmit = useCallback((e) => {
-        e.preventDefault()
+    const getModalTitle = () => {
+        if (productCategoryModalType === "EDIT_FORM") {
+            return "Edit ProductCategory"
+        } else if (productCategoryModalType === "ADD_FORM") {
+            return "Add ProductCategory"
+        }else {
+            return "Undefined"
+        }
+    }
+
+    const handleSubmit = () => {
         form.validateFields().then(async (values) => {
             try {
-                if (formType === "ADD_FORM") {
+                if (productCategoryModalType === "ADD_FORM") {
                     await dispatch(postProductCategory({parent_id: values.id ?? null, name: values.children_name,})).unwrap()
                 }
-                if (formType === "EDIT_FORM") {
+                if (productCategoryModalType === "EDIT_FORM") {
                     await dispatch(updateProductCategory({id: values.id, name: values.children_name})).unwrap()
                 }
-                setVisible(false)
-                dispatch(setCurrentPage(1))
+                await dispatch(setProductCategoryModalVisible(false))
                 return message.success('Operation executed')
             } catch (e) {
-                setVisible(false)
-                dispatch(setCurrentPage(1))
+                await dispatch(setProductCategoryModalVisible(false))
                 return message.error(e.message)
             }
         })
-    },[dispatch, form, formType, setVisible]);
+    };
+
+    const modalProps = {
+        destroyOnClose: true,
+        centered : true,
+        onCancel: () => dispatch(setProductCategoryModalVisible(false)),
+        open : productCategoryModalVisible,
+        confirmLoading : productCategoryStatus === 'loading',
+        title : getModalTitle(),
+        footer : [
+            <Space key="button-group">
+                <Button type="primary" key="cancel" onClick={() => dispatch(setProductCategoryModalVisible(false))}>
+                    Cancel
+                </Button>
+                <Button form="myForm" key="submit" htmlType="submit">
+                    Submit
+                </Button>
+            </Space>
+        ]
+    }
 
     return (
-        <Modal
-            title={formType === "EDIT_FORM" ? "Edit ProductCategory" : "Add ProductCategory"}
-            open={visible}
-            centered
-            onCancel={() => setVisible(false)}
-            onOk={handleSubmit}
-            okButtonProps={{form:'editor-form', key: 'submit', htmlType: 'submit'}}
-            confirmLoading={status === 'loading'}
-            destroyOnClose={true}
-        >
-            <Form id='editor-form' form={form} layout={"vertical"}>
+        <Modal {...modalProps}>
+            <Form id="myForm" form={form} layout={"vertical"} onFinish={handleSubmit}>
                 <Form.Item name="id" hidden>
                     <Input/>
                 </Form.Item>

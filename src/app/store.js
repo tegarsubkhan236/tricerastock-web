@@ -7,7 +7,6 @@ import msUsersReducer from "../features/coreUser/coreUsersSlice";
 import msInvSupplierReducer from "../features/invSupplier/invSupplierSlice";
 import msInvProductCategoriesReducer from "../features/invProductCategory/invProductCategorySlice";
 import msInvProductsReducer from "../features/invProduct/invProductSlice";
-import msPPOBReducer from "../features/invPPOB/invPPOBSlice";
 
 const rootReducer = combineReducers({
     auth: msAuthReducer,
@@ -15,7 +14,6 @@ const rootReducer = combineReducers({
     suppliers: msInvSupplierReducer,
     productCategories: msInvProductCategoriesReducer,
     products: msInvProductsReducer,
-    ppob: msPPOBReducer,
 });
 
 const persistConfig = {

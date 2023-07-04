@@ -1,35 +1,131 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchProductCategory, setCurrentPage, setPerPage} from './invProductCategorySlice';
+import {Button, message, Popconfirm, Space, Table} from "antd";
 import {PaginationConfig} from "../../config/helper/tableConfig";
-import {message, Table} from "antd";
+import {
+    deleteProductCategory,
+    fetchProductCategory,
+    setProductCategoryCurrentPage,
+    setProductCategoryModalType,
+    setProductCategoryModalVisible,
+    setProductCategoryPerPage,
+    setProductCategorySelectedRow
+} from './invProductCategorySlice';
+import {DeleteOutlined, EditOutlined, EnterOutlined, PlusOutlined} from "@ant-design/icons";
 
-const MsInvProductCategories = ({columns, expandedRowKeys, setExpandedRowKeys}) => {
+const MsInvProductCategories = ({form}) => {
     const dispatch = useDispatch();
-    const {treeData, totalData, status, currentPage, perPage} = useSelector((state) => state.productCategories);
+    const {
+        productCategoryData,
+        productCategoryTotalData,
+        productCategoryStatus,
+        productCategorySelectedRow,
+        productCategoryCurrentPage,
+        productCategoryPerPage
+    } = useSelector((state) => state.productCategories);
 
     useEffect(() => {
         try {
-            dispatch(fetchProductCategory({ page: currentPage, perPage: perPage })).unwrap();
+            if (productCategoryStatus === "idle") {
+                dispatch(fetchProductCategory({
+                    page: productCategoryCurrentPage,
+                    perPage: productCategoryPerPage
+                })).unwrap();
+            }
         } catch (e) {
             return message.error(e)
         }
-    }, [dispatch, currentPage, perPage]);
+    }, [productCategoryStatus]);
 
-    const pagination = PaginationConfig(currentPage, perPage, totalData, setPerPage, setCurrentPage)
+    const openAddChildrenModal = (record) => {
+        form.setFieldsValue(record);
+        dispatch(setProductCategorySelectedRow(new Set([...productCategorySelectedRow, record.key])));
+        dispatch(setProductCategoryModalType("ADD_FORM"))
+        dispatch(setProductCategoryModalVisible(true))
+    }
+
+    const openEditModal = (record) => {
+        form.setFieldsValue(record);
+        dispatch(setProductCategoryModalType("EDIT_FORM"))
+        dispatch(setProductCategoryModalVisible(true))
+    }
+
+    const handleDelete = async (id) => {
+        try {
+            await dispatch(deleteProductCategory({id: id})).unwrap()
+            await dispatch(setProductCategoryCurrentPage(1))
+            return message.success('Operation executed')
+        } catch (e) {
+            await dispatch(setProductCategoryCurrentPage(1))
+            return message.error(e.message)
+        }
+    }
+
+    const columns = [
+        {
+            title: 'Category',
+            dataIndex: 'name',
+            key: 'name',
+            render: (value, record) => (
+                <>
+                    {record.parent_id !== null && <EnterOutlined />}
+                    <div>{value}</div>
+                </>
+            ),
+            onCell: (record, rowIndex) => {
+                return {
+                    onClick: () => {
+                        console.log(record, rowIndex);
+                    }
+                };
+            }
+        },
+        {
+            title: 'Add a Child',
+            key: 'add',
+            render: (record) => typeof record.children !== "undefined" &&
+                <Button icon={<PlusOutlined/>} shape={"circle"} onClick={() => openAddChildrenModal(record)}/>,
+        },
+        {
+            title: "Actions",
+            key: "actions",
+            render: (_, record) => (
+                <Space size="middle">
+                    <Button icon={<EditOutlined/>} shape={"circle"} onClick={() => openEditModal(record)}/>
+                    <Popconfirm
+                        title="Delete data"
+                        description="Are you sure to delete this data?"
+                        onConfirm={() => handleDelete(record.id)}
+                        okText="Do it"
+                        cancelText="Nah"
+                    >
+                        <Button icon={<DeleteOutlined/>} shape={"circle"} danger/>
+                    </Popconfirm>
+                </Space>
+            ),
+        },
+    ];
+
+    const pagination = PaginationConfig(
+        productCategoryCurrentPage,
+        productCategoryPerPage,
+        productCategoryTotalData,
+        (current, size) => dispatch(setProductCategoryPerPage(size)),
+        (page) => dispatch(setProductCategoryCurrentPage(page))
+    )
 
     return (
         <Table
-            loading={status === 'loading'}
-            dataSource={treeData}
+            loading={productCategoryStatus === 'loading'}
+            dataSource={productCategoryData}
             columns={columns}
             pagination={pagination}
             scroll={{ x: true }}
             bordered
             expandable={{
-                expandedRowKeys,
+                productCategorySelectedRow,
                 onExpandedRowsChange: (expandedRows) => {
-                    setExpandedRowKeys(expandedRows);
+                    dispatch(setProductCategorySelectedRow(expandedRows));
                 },
             }}
         />

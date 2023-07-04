@@ -22,7 +22,7 @@ export const hitPriceList = createAsyncThunk(
     }
 );
 
-const invPPOBSlice = createSlice({
+const invProductPPOBSlice = createSlice({
     name: 'ppob',
     initialState: {
         balance: [],
@@ -62,4 +62,4 @@ const invPPOBSlice = createSlice({
     }
 })
 
-export default invPPOBSlice.reducer
+export default invProductPPOBSlice.reducer
