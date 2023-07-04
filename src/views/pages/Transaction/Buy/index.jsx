@@ -1,35 +1,43 @@
 import React, {useState, useRef} from "react";
 import {CSSTransition, SwitchTransition} from "react-transition-group";
 import {Card, Typography} from "antd";
-import PanelGroup from "./PanelGroup";
+import PanelGroup from "../../../components/PanelGroup";
 import InvReceiving from "./InvReceiving";
 import InvPO from "./InvPO";
 
+const listCurrentData = [
+    {
+        type: "Purchase Order",
+        component: <InvPO/>,
+        icon: "TeamOutlined",
+        color: "#40c9c6",
+    },{
+        type: "Receiving",
+        component: <InvReceiving/>,
+        icon: "TeamOutlined",
+        color: "#40c9c6",
+    },
+];
+
 const Index = () => {
     const nodeRef = useRef(null);
-    const listCurrentData = {
-        "Purchase Order": {
-            type: "Purchase Order",
-            component: <InvPO/>
-        },
-        "Receiving": {
-            type: "Receiving",
-            component: <InvReceiving/>
-        },
-    };
-    const [currentData, setCurrentData] = useState(
-        listCurrentData["Purchase Order"]
-    )
+    const [currentData, setCurrentData] = useState(listCurrentData[0])
 
-    const handleSetCurrentData = (type) => setCurrentData(listCurrentData[type]);
+    const handleSetCurrentData = (type) => {
+        const filterCurrentData = listCurrentData.findIndex((v) => v.type === type)
+        setCurrentData(listCurrentData[filterCurrentData])
+    };
 
     return (
         <div className="app-container">
-            <Card
-                type={"inner"}
-                title={<Typography.Title level={4}>Buy Transaction</Typography.Title>}
+            <Card type={"inner"}
+                  title={<Typography.Title level={4}>Buy Transaction</Typography.Title>}
+                  style={{marginBottom: '16px'}}
             >
-                <PanelGroup handleSetCurrentData={handleSetCurrentData} currentType={currentData.type}/>
+                <PanelGroup cardList={listCurrentData}
+                            handleSetCurrentData={handleSetCurrentData}
+                            currentType={currentData.type}
+                />
             </Card>
             <Card
                 type={"inner"}

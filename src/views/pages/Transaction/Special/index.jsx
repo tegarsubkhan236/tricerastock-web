@@ -1,40 +1,49 @@
 import React, {useState, useRef} from "react";
 import {CSSTransition, SwitchTransition} from "react-transition-group";
 import {Card, Typography} from "antd";
-import PanelGroup from "./PanelGroup";
+import PanelGroup from "../../../components/PanelGroup";
 import InvBo from "./InvBO";
 import InvReturnBuy from "./InvReturnBuy";
 import InvReturnSell from "./InvReturnSell";
 
+const listCurrentData = [
+    {
+        type: "Back Order",
+        component: <InvBo/>,
+        icon: "TeamOutlined",
+        color: "#40c9c6",
+    }, {
+        type: "Return Buy",
+        component: <InvReturnBuy/>,
+        icon: "TeamOutlined",
+        color: "#40c9c6",
+    }, {
+        type: "Return Sell",
+        component: <InvReturnSell/>,
+        icon: "TeamOutlined",
+        color: "#40c9c6",
+    },
+];
+
 const Index = () => {
     const nodeRef = useRef(null);
-    const listCurrentData = {
-        "Back Order": {
-            type: "Back Order",
-            component: <InvBo/>
-        },
-        "Return Buy": {
-            type: "Return Buy",
-            component: <InvReturnBuy/>
-        },
-        "Return Sell": {
-            type: "Return Sell",
-            component: <InvReturnSell/>
-        },
-    };
-    const [currentData, setCurrentData] = useState(
-        listCurrentData["Back Order"]
-    )
+    const [currentData, setCurrentData] = useState(listCurrentData[0])
 
-    const handleSetCurrentData = (type) => setCurrentData(listCurrentData[type]);
+    const handleSetCurrentData = (type) => {
+        const filterCurrentData = listCurrentData.findIndex((v) => v.type === type)
+        setCurrentData(listCurrentData[filterCurrentData])
+    };
 
     return (
         <div className="app-container">
-            <Card
-                type={"inner"}
-                title={<Typography.Title level={4}>Buy Transaction</Typography.Title>}
+            <Card type={"inner"}
+                  title={<Typography.Title level={4}>Special Transaction</Typography.Title>}
+                  style={{marginBottom: '16px'}}
             >
-                <PanelGroup handleSetCurrentData={handleSetCurrentData} currentType={currentData.type}/>
+                <PanelGroup cardList={listCurrentData}
+                            handleSetCurrentData={handleSetCurrentData}
+                            currentType={currentData.type}
+                />
             </Card>
             <Card
                 type={"inner"}
