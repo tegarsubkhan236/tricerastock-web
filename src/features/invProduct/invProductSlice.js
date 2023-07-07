@@ -110,6 +110,7 @@ const msInvProduct = createSlice({
                 key: item.id,
                 id: item.id,
                 name: item.name,
+                cost: item.cost,
                 supplier: item.inv_supplier,
                 categories: item.inv_product_category,
             }));
@@ -124,12 +125,13 @@ const msInvProduct = createSlice({
         },
         [postProduct.fulfilled]: (state, action) => {
             state.productStatus = 'succeeded';
-            if (action.payload.data.data.length === 1) {
+            if ("name" in action.payload.data.data) {
                 const item = action.payload.data.data
                 const newItem = {
                     key: item.id,
                     id: item.id,
                     name: item.name,
+                    cost: item.cost,
                     supplier: item.inv_supplier,
                     categories: item.inv_product_category,
                 }

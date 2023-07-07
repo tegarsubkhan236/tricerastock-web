@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {Col, Form, Input, InputNumber, message, Row, TreeSelect} from "antd";
 import {fetchSupplier} from "../invSupplier/invSupplierSlice";
 import {useDispatch, useSelector} from "react-redux";
@@ -24,7 +24,7 @@ const InvProductFormSingle = ({form}) => {
         }
     }
 
-    const handleSubmit = useCallback(() => {
+    const handleSubmit = () => {
         form.validateFields().then(async (values) => {
             try {
                 if (productModalType === "ADD_FORM") {
@@ -48,7 +48,7 @@ const InvProductFormSingle = ({form}) => {
                 return message.error(e?.response?.data?.message ?? e.message)
             }
         })
-    }, [dispatch, form, productModalType])
+    }
 
     return (
         <Form id='myForm'

@@ -1,4 +1,3 @@
-import React, {useCallback, useMemo} from 'react';
 import {Button, Dropdown, Input, message, Popconfirm, Space} from "antd";
 import {DeleteOutlined, DownloadOutlined, EditOutlined, ImportOutlined, PlusOutlined,} from "@ant-design/icons";
 import {
@@ -54,11 +53,11 @@ const InvProductToolkit = ({form}) => {
     };
 
     const addMenuProps = {
-        items: useMemo(() => [
+        items: [
             {label: "Download Template", key: "download_add_template", icon: <DownloadOutlined/>},
             {label: "Add Batch Data", key: "add_batch_data", icon: <ImportOutlined/>},
-        ], []),
-        onClick: useCallback(async ({key}) => {
+        ],
+        onClick: async ({key}) => {
             if (key === "download_add_template"){
                 const columnTemplate = ["No", "Product Name", "Product Price", "Product Category ID", "Supplier ID"]
                 const dataTemplate = [[1, "Ale-ale", 1000, 1, 1]]
@@ -67,15 +66,15 @@ const InvProductToolkit = ({form}) => {
             if (key === "add_batch_data"){
                 openModal("ADD_BATCH_FORM")
             }
-        }, []),
+        },
     };
 
     const editMenuProps = {
-        items: useMemo(() => [
+        items: [
             {label: "Download Template", key: "download_edit_template", icon: <DownloadOutlined/>},
             {label: "Edit Batch Data", key: "edit_batch_data", icon: <ImportOutlined/>},
-        ], []),
-        onClick:  useCallback(async ({key}) => {
+        ],
+        onClick:  async ({key}) => {
             if (key === "download_edit_template"){
                 const columnTemplate = ["No", "Product Name", "Product Price", "Product Category", "Supplier Name"]
                 const dataTemplate = [[1, "Ale-ale", 1000, "drink", "Michael"]]
@@ -84,7 +83,7 @@ const InvProductToolkit = ({form}) => {
             if (key === "edit_batch_data"){
                 openModal("EDIT_BATCH_FORM")
             }
-        }, []),
+        },
     };
 
     return (

@@ -3,6 +3,7 @@ import {Avatar, Button, message, Space, Table, Tag} from "antd";
 import {fetchProducts, setProductCurrentPage, setProductPerPage, setProductSelectedRow} from "./invProductSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {PaginationConfig} from "../../config/helper/tableConfig";
+import {currencyFormatter} from "../../config/helper/currency";
 
 const InvProductList = () => {
     const dispatch = useDispatch()
@@ -61,9 +62,9 @@ const InvProductList = () => {
                 {
                     title: 'Price',
                     key: 'price',
-                    render: (_, {name}) => (
+                    render: (_, {cost}) => (
                         <Button onClick={() => console.log('cek')}>
-                            23.000
+                            {currencyFormatter(cost)}
                         </Button>
                     )
                 },
