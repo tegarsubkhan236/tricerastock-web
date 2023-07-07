@@ -1,118 +1,54 @@
 import React, {useRef, useState} from 'react';
-import {useDispatch} from "react-redux";
-import {Button, Card, Col, DatePicker, Form, Input, message, Popconfirm, Row, Space, Switch, Typography} from "antd";
-import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
-import UsersList from "../../../../features/coreUser/CoreUsersList";
-import UsersForm from "../../../../features/coreUser/CoreUsersForm";
-import {deleteUser} from "../../../../features/coreUser/coreUsersSlice";
+import {CSSTransition, SwitchTransition} from "react-transition-group";
+import {Card, Typography} from "antd";
+import PanelGroup from "../../../components/PanelGroup";
+import CoreUsers from "./CoreUsers";
+import CorePermission from "./CorePermission";
+
+const listCurrentData = [
+    {
+        type: "User", component: <CoreUsers/>, icon: "TeamOutlined", color: "#40c9c6",
+    }, {
+        type: "Permission", component: <CorePermission/>, icon: "TeamOutlined", color: "#40c9c6",
+    },
+]
 
 const Index = () => {
-    const dispatch = useDispatch()
-    const [form] = Form.useForm();
-    const searchInput = useRef(null);
-    const [visible, setVisible] = useState(false);
-    const [formType, setFormType] = useState("");
+    const nodeRef = useRef(null);
+    const [currentData, setCurrentData] = useState(listCurrentData[0])
 
-    const openAddModal = () => {
-        form.resetFields();
-        setFormType("ADD_FORM")
-        setVisible(true);
+    const handleSetCurrentData = (type) => {
+        const filterCurrentData = listCurrentData.findIndex((v) => v.type === type)
+        setCurrentData(listCurrentData[filterCurrentData])
     };
-
-    const openEditModal = (record) => {
-        form.setFieldsValue(record);
-        setFormType("EDIT_FORM")
-        setVisible(true);
-    };
-
-    const handleDelete = async (id) => {
-      await dispatch(deleteUser({id: id}));
-      return message.success('Data deleted successfully')
-    }
-
-    const columns = [
-        {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
-        },
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            responsive: ["sm"],
-        },
-        {
-            title: 'Username',
-            dataIndex: 'username',
-            key: 'username',
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-            responsive: ["sm"],
-        },
-        {
-            title: 'Status',
-            key: 'status',
-            render: (_, record) => (
-                <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked={record.id !== 3} />
-            )
-        },
-        {
-            title: "Actions",
-            key: "actions",
-            render: (_, record) => (
-                <Space size="middle">
-                    <Button icon={<EditOutlined/>} shape={"circle"} onClick={() => openEditModal(record)}/>
-                    <Popconfirm
-                        title="Delete data"
-                        description="Are you sure to delete this data?"
-                        onConfirm={() => handleDelete(record.id)}
-                        onCancel={() => console.log("canceled")}
-                        okText="Do it"
-                        cancelText="Nah"
-                    >
-                        <Button icon={<DeleteOutlined/>} shape={"circle"} danger/>
-                    </Popconfirm>
-                </Space>
-            ),
-        },
-    ];
 
     return (
         <div className="app-container">
-            <Card
-                type={"inner"}
-                title={<Typography.Title level={4}>User Authority</Typography.Title>}
-                style={{ marginBottom: '16px' }}
+            <Card type={"inner"}
+                  title={<Typography.Title level={4}>User Authority</Typography.Title>}
+                  style={{marginBottom: '16px'}}
             >
-                <Row>
-                    <Col xs={24} sm={24} md={24} lg={12}>
-                        <Button>Clear all</Button>
-                        <DatePicker.RangePicker bordered={false}/>
-                    </Col>
-                    <Col xs={24} sm={24} md={24} lg={{ span: 8, offset: 4}}>
-                        <Space>
-                            <Input.Search
-                                placeholder="Cari..."
-                                allowClear
-                                ref={searchInput}
-                                size="middle"
-                                onSearch={(value) => console.log(value)}
-                            />
-                            <Button icon={<PlusOutlined />} type={"primary"} onClick={()=>openAddModal()}>Add Data</Button>
-                        </Space>
-                    </Col>
-                </Row>
+                <PanelGroup cardList={listCurrentData}
+                            handleSetCurrentData={handleSetCurrentData}
+                            currentType={currentData.type}
+                />
             </Card>
-            <Card>
-                <UsersList columns={columns}/>
+            <Card type={"inner"}
+                  title={<Typography.Title level={4}>{currentData.type}</Typography.Title>}
+                  style={{marginBottom: '16px'}}
+            >
+                <SwitchTransition>
+                    <CSSTransition timeout={500} classNames="fade" exit={false} nodeRef={nodeRef} key={currentData.type}>
+                        {() => (
+                            <div ref={nodeRef}>
+                                {currentData.component}
+                            </div>
+                        )}
+                    </CSSTransition>
+                </SwitchTransition>
             </Card>
-            <UsersForm formType={formType} form={form} setVisible={setVisible} visible={visible}/>
         </div>
-    );
+    )
 };
 
 export default Index;

@@ -1,86 +1,60 @@
 import React from 'react';
-import {Col, Form, Input, message, Modal, Row} from "antd";
+import {Button, Modal, Space} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {postUser, updateUser} from "./coreUsersSlice";
+import {setUserModalVisible} from "./coreUsersSlice";
+import CoreUsersFormSingle from "./CoreUsersFormSingle";
+import CoreUsersFormBatch from "./CoreUsersFormBatch";
 
-const CoreUsersForm = ({formType, form, visible, setVisible}) => {
+const CoreUsersForm = ({form}) => {
     const dispatch = useDispatch();
-    const {isLoading} = useSelector((state) => state.users);
+    const {userStatus, userModalType, userModalVisible} = useSelector((state) => state.users);
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        form.validateFields().then(async (values) => {
-            if (formType === "ADD_FORM") {
-                await dispatch(postUser(values)).then(() => {
-                    setVisible(false)
-                    return message.success("done")
-                })
-            }
-            if (formType === "EDIT_FORM") {
-                await dispatch(updateUser({id: values.id, updatedData: values})).then(() => {
-                    setVisible(false)
-                    return message.success("done")
-                })
-            }
-        })
+    const getModalTitle = () => {
+        if (userModalType === "EDIT_FORM") {
+            return "Edit User"
+        } else if (userModalType === "ADD_FORM") {
+            return "Add User"
+        } else if (userModalType === "ADD_BATCH_FORM") {
+            return "Add Batch User"
+        } else if (userModalType === "EDIT_BATCH_FORM") {
+            return "Edit Batch User"
+        } else {
+            return "Undefined"
+        }
+    }
+
+    const RenderForm = () => {
+        if (userModalType === "ADD_FORM" || userModalType === "EDIT_FORM") {
+            return <CoreUsersFormSingle form={form}/>
+        } else if (userModalType === "ADD_BATCH_FORM" || userModalType === "EDIT_BATCH_FORM") {
+            return <CoreUsersFormBatch form={form}/>
+        } else {
+            return null
+        }
+    }
+
+    const modalProps = {
+        destroyOnClose: true,
+        centered: true,
+        onCancel: () => dispatch(setUserModalVisible(false)),
+        open: userModalVisible,
+        confirmLoading: userStatus === 'loading',
+        title: getModalTitle(),
+        footer: [
+            <Space key="button-group">
+                <Button type="primary" key="cancel" onClick={() => dispatch(setUserModalVisible(false))}>
+                    Cancel
+                </Button>
+                <Button form="myForm" key="submit" htmlType="submit">
+                    Submit
+                </Button>
+            </Space>
+        ]
     }
 
     return (
-        <Modal
-            title={formType === "EDIT_FORM" ? "Edit Form" : "Add Form"}
-            open={visible}
-            centered
-            onCancel={() => setVisible(false)}
-            onOk={handleSubmit}
-            confirmLoading={isLoading}
-        >
-            <Form form={form}>
-                <Form.Item name="id" hidden>
-                    <Input/>
-                </Form.Item>
-                <Row gutter={24}>
-                    <Col xs={24} sm={24} md={24} lg={24}>
-                        <Form.Item name="name"
-                                   rules={[{
-                                       required: true, message: 'Please input your names',
-                                   },]}
-                                   label="Name"
-                        >
-                            <Input/>
-                        </Form.Item>
-                    </Col>
-                    <Col xs={24} sm={24} md={24} lg={24}>
-                        <Form.Item name="username"
-                                   rules={[{
-                                       required: true, message: 'Please input your username',
-                                   },]}
-                                   label="Username"
-                        >
-                            <Input/>
-                        </Form.Item>
-                    </Col>
-                    <Col xs={24} sm={24} md={24} lg={24}>
-                        <Form.Item name="email"
-                                   rules={[{
-                                       required: true, message: 'Please input your email!',
-                                   },]}
-                                   label="Email"
-                        >
-                            <Input/>
-                        </Form.Item>
-                    </Col>
-                    <Col xs={24} sm={24} md={24} lg={24}>
-                        <Form.Item name="password"
-                                   rules={[{
-                                       required: true, message: 'Please input your password',
-                                   },]}
-                                   label="Password"
-                        >
-                            <Input.Password/>
-                        </Form.Item>
-                    </Col>
-                </Row>
-            </Form>
+        <Modal {...modalProps}>
+            <RenderForm/>
         </Modal>
     );
 };

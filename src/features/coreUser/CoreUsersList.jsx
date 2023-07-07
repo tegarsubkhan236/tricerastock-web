@@ -1,44 +1,99 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchUsers, setCurrentPage, setPerPage} from './coreUsersSlice';
-import {Table} from "antd";
+import {message, Switch, Table} from "antd";
+import {fetchUsers, setUserCurrentPage, setUserPerPage, setUserSelectedRow} from './coreUsersSlice';
 
-const CoreUsersList = ({columns}) => {
+const CoreUsersList = () => {
     const dispatch = useDispatch();
-    const {data, isLoading, error, currentPage, perPage} = useSelector((state) => state.users);
+    const {
+        userData,
+        userTotalData,
+        userSelectedRow,
+        userFilter,
+        userStatus,
+        userCurrentPage,
+        userPerPage,
+    } = useSelector((state) => state.users);
+
     useEffect(() => {
-        dispatch(fetchUsers({page: currentPage, perPage}));
-    }, [dispatch, currentPage, perPage, data?.data?.total]);
+        try {
+            if (userStatus === "idle") {
+                dispatch(fetchUsers({
+                    page: userCurrentPage,
+                    perPage: userPerPage,
+                    column: {...userFilter},
+                })).unwrap();
+            }
+        } catch (e) {
+            console.log(e)
+            return message.error(e)
+        }
+    }, [userStatus]);
 
     const pagination = {
-        current: currentPage,
-        pageSize: perPage,
-        total: data?.data?.total,
-        showSizeChanger: true,
-        onShowSizeChange: (current, size) => dispatch(setPerPage(size)),
-        onChange: (page) => dispatch(setCurrentPage(page)),
+        current: userCurrentPage,
+        pageSize: userPerPage,
+        total: userTotalData,
+        onShowSizeChange: (current, size) => dispatch(setUserPerPage(size)),
+        onChange: (page) => dispatch(setUserCurrentPage(page)),
     };
-    let dataSource = [];
-    if (isLoading === false && error === null) {
-        data?.data?.results.map((user) => (
-            dataSource = [...dataSource, {
-                key: user.id,
-                id: user.id,
-                name: user.username,
-                username: user.username,
-                email: user.username,
-            }]
-        ))
-    }
+
+    const columns = [
+        {
+            title: 'ID',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'Username',
+            dataIndex: 'username',
+            key: 'username',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+            responsive: ["sm"],
+        },
+        {
+            title: 'Status',
+            key: 'status',
+            render: (_, record) => (
+                <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked={record.id !== 3}/>
+            )
+        }
+    ];
 
     return (
         <Table
-            loading={isLoading}
-            dataSource={dataSource}
+            loading={userStatus}
+            dataSource={userData}
             columns={columns}
             pagination={pagination}
-            scroll={{ x: true }}
+            scroll={{x: true, y: 350}}
             bordered
+            rowKey={record => record.key}
+            rowSelection={{
+                preserveSelectedRowKeys: true,
+                selectedRowKeys: userSelectedRow,
+                onChange: (selectedRowKeys) => {
+                    dispatch(setUserSelectedRow(selectedRowKeys))
+                }
+            }}
+            onRow={(record) => {
+                return {
+                    onClick: () => {
+                        const selectedKeys = [...userSelectedRow];
+                        const index = selectedKeys.indexOf(record.key);
+                        if (index > -1) {
+                            selectedKeys.splice(index, 1);
+                        } else {
+                            selectedKeys.push(record.key);
+                        }
+                        dispatch(setUserSelectedRow(selectedKeys))
+                    },
+                };
+            }}
         />
     );
 };

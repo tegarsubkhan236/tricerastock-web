@@ -3,13 +3,51 @@ import instance from "../../config/lib/axios";
 
 export const fetchUsers = createAsyncThunk(
     'users/fetchUsers',
-    async ({page, perPage}) => {
-        const response = await instance.get('/user', {
-            params: {
-                page: page,
-                limit: perPage,
+    async ({page, perPage, column}, thunkAPI) => {
+        try {
+            let filter = {}
+            if ("username" in column){
+                filter = {...filter, "user.username": column.username}
             }
-        });
+            if ("email" in column){
+                filter = {...filter, "user.email": column.email}
+            }
+            const response = await instance.get('/user', {
+                params: {
+                    page: page,
+                    limit: perPage,
+                    ...filter
+                }
+            });
+            return response.data;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e.response.data)
+        }
+    }
+);
+
+export const fetchTemplateUser = createAsyncThunk(
+    'users/fetch_template',
+    async ({ids}, thunkAPI) => {
+        try {
+            const response = await instance.get('/user', {
+                params: {
+                    page: 1,
+                    limit: 999,
+                    ids: ids.map(value => `${value}`).join(','),
+                }
+            });
+            return response.data;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e.response.data)
+        }
+    }
+);
+
+export const fetchDetailUsers = createAsyncThunk(
+    'users/fetchDetailUsers',
+    async ({id}) => {
+        const response = await instance.get(`/user/${id}`, id);
         return response.data;
     }
 );
@@ -33,7 +71,8 @@ export const updateUser = createAsyncThunk(
 export const deleteUser = createAsyncThunk(
     'users/deleteUser',
     async ({id}) => {
-        await instance.delete(`/user/${id}`, id);
+        const queryString = id.map((itemId) => `id=${itemId}`).join('&');
+        await instance.delete(`/user?${queryString}`);
         return id;
     }
 );
@@ -41,79 +80,123 @@ export const deleteUser = createAsyncThunk(
 const coreUsersSlice = createSlice({
     name: 'users',
     initialState: {
-        data: [],
-        isLoading: false,
-        error: null,
-        currentPage: 1,
-        perPage: 5
+        userData: [],
+        userTotalData: 0,
+        userModalVisible: false,
+        userNodalType: '',
+        userSelectedRow: [],
+        userFilter: {},
+        userStatus: 'idle',
+        userCurrentPage: 1,
+        userPerPage: 5
     },
     reducers: {
-        setPerPage: (state, action) => {
-            state.perPage = action.payload;
+        setUserStatus: (state, action) => {
+            state.userStatus = action.payload
         },
-        setCurrentPage: (state, action) => {
-            state.currentPage = action.payload;
+        setUserPerPage: (state, action) => {
+            state.userStatus = "idle"
+            state.userPerPage = action.payload;
+        },
+        setUserCurrentPage: (state, action) => {
+            state.userStatus = "idle"
+            state.userCurrentPage = action.payload;
+        },
+        setUserFilter: (state, action) => {
+            state.userStatus = "idle"
+            state.userFilter = action.payload
+        },
+        setUserModalVisible: (state, action) => {
+            state.userModalVisible = action.payload
+        },
+        setUserModalType: (state, action) => {
+            state.userModalType = action.payload
+        },
+        setUserSelectedRow: (state, action) => {
+            state.userSelectedRow = action.payload
         },
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchUsers.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
+                state.userStatus = 'loading';
             })
             .addCase(fetchUsers.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.error = null;
-                state.data = action.payload;
+                state.userStatus = 'succeeded';
+                state.userData = action.payload.data.results.map((item) => ({
+                    key: item.id,
+                    id: item.id,
+                    username: item.username,
+                    email: item.email,
+                }));
+                state.userTotalData = action.payload.data.total;
             })
-            .addCase(fetchUsers.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.error.message;
+            .addCase(fetchUsers.rejected, (state) => {
+                state.userStatus = 'failed';
             })
+
             .addCase(postUser.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
+                state.userStatus = 'loading';
             })
             .addCase(postUser.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.error = null;
-                state.data["data"]["results"].unshift(action.payload.data)
+                state.userStatus = 'succeeded';
+                const item = action.payload.data
+                if (item !== null) {
+                    const newItem = {
+                        key: item.id,
+                        id: item.id,
+                        username: item.username,
+                        email: item.email,
+                        password: item.password
+                    }
+                    state.userData.unshift(newItem)
+                    state.userTotalData++
+                }
             })
-            .addCase(postUser.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.error.message;
+            .addCase(postUser.rejected, (state) => {
+                state.userStatus = 'failed';
             })
+
             .addCase(updateUser.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
+                state.userStatus = 'loading';
             })
             .addCase(updateUser.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.error = null;
-                const updatedUser = action.payload.data.user;
-                const index = state.data["data"]["results"].findIndex(user => user.id === updatedUser.id);
-                state.data["data"]["results"][index] = updatedUser;
+                state.userStatus = 'succeeded';
+                const item = action.payload.data.user;
+                const updatedItem = {
+                    key: item.id,
+                    id: item.id,
+                    username: item.username,
+                    email: item.email,
+                }
+                const index = state.userData.findIndex(user => user.id === updatedItem.id);
+                state.userData[index] = updatedItem;
             })
-            .addCase(updateUser.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.error.message;
+            .addCase(updateUser.rejected, (state) => {
+                state.userStatus = 'failed';
             })
+
             .addCase(deleteUser.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
+                state.userStatus = 'loading';
             })
             .addCase(deleteUser.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.error = null;
-                state.data = state.data["data"]["results"].filter(user => user.id !== action.payload);
+                state.userStatus = 'idle';
+                state.userSelectedRow = [];
             })
-            .addCase(deleteUser.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.error.message;
+            .addCase(deleteUser.rejected, (state) => {
+                state.userStatus = 'failed';
             })
     },
 });
 
-export const {setCurrentPage, setPerPage} = coreUsersSlice.actions;
+export const {
+    setUserStatus,
+    setUserPerPage,
+    setUserCurrentPage,
+    setUserModalVisible,
+    setUserModalType,
+    setUserSelectedRow,
+    setUserFilter,
+} = coreUsersSlice.actions;
 
 export default coreUsersSlice.reducer;
