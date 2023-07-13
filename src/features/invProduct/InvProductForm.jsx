@@ -4,6 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {setProductModalVisible} from "./invProductSlice";
 import InvProductFormSingle from "./InvProductFormSingle";
 import InvProductFormBatch from "./InvProductFormBatch";
+import InvProductFormDetailPrice from "./InvProductFormDetailPrice";
+import InvProductFormDetailStock from "./InvProductFormDetailStock";
 
 const InvProductForm = ({form}) => {
     const dispatch = useDispatch();
@@ -18,6 +20,10 @@ const InvProductForm = ({form}) => {
             return "Add Batch Product"
         } else if (productModalType === "EDIT_BATCH_FORM") {
             return "Edit Batch Product"
+        } else if (productModalType === "PRICE_HISTORY_FORM") {
+            return "Product Price History"
+        } else if (productModalType === "STOCK_HISTORY_FORM") {
+            return "Product Stock History"
         } else {
             return "Undefined"
         }
@@ -28,6 +34,10 @@ const InvProductForm = ({form}) => {
             return <InvProductFormSingle form={form}/>
         } else if (productModalType === "ADD_BATCH_FORM" || productModalType === "EDIT_BATCH_FORM") {
             return <InvProductFormBatch form={form}/>
+        } else if (productModalType === "PRICE_HISTORY_FORM") {
+            return <InvProductFormDetailPrice/>
+        } else if (productModalType === "STOCK_HISTORY_FORM") {
+            return <InvProductFormDetailStock/>
         } else {
             return null
         }

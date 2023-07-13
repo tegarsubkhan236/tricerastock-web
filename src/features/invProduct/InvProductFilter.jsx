@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Button, Form, message, Tree} from "antd";
+import {Button, Form, Input, message, Tree} from "antd";
 import DebounceSelect from "../../views/components/DebounceSelect";
 import {fetchSupplier} from "../invSupplier/invSupplierSlice";
 import {fetchProductCategory} from "../invProductCategory/invProductCategorySlice";
 import {setProductFilter} from "./invProductSlice";
+import {Debounce} from "../../config/helper/debounce";
 
 const InvProductFilter = () => {
     const dispatch = useDispatch()
@@ -34,10 +35,19 @@ const InvProductFilter = () => {
             await dispatch(setProductFilter({
                 ...productFilter,
                 suppliers : values.supplier !== undefined ? values.supplier : null,
+                search_text: values.search_text,
                 categories : checkedNodes,
             }))
         } catch (e) {
             console.log(e)
+        }
+    };
+
+    const handleSearch = async (value) => {
+        try {
+            await dispatch(setProductFilter({...productFilter, search_text: value?.target?.value ?? value}))
+        } catch (e) {
+            return message.error(e)
         }
     };
 
@@ -61,6 +71,15 @@ const InvProductFilter = () => {
             onFinishFailed={(errorInfo) => console.log('Failed:', errorInfo)}
             autoComplete="off"
         >
+            <Form.Item label="Search Product" name="search_text">
+                <Input.Search
+                    placeholder="Cari..."
+                    allowClear
+                    size="middle"
+                    onSearch={onFinish}
+                    onChange={Debounce(handleSearch,1000)}
+                />
+            </Form.Item>
             <Form.Item label="Supplier" name="supplier">
                 <DebounceSelect
                     showSearch

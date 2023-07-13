@@ -21,6 +21,19 @@ export const fetchProducts = createAsyncThunk(
     }
 );
 
+export const detailProduct = createAsyncThunk(
+    'Product/detail',
+    async ({id, based_on}, thunkAPI) => {
+        try {
+            const response = await instance.get(`/product/${id}/${based_on}`);
+            console.log("response", response)
+            return response.data;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e)
+        }
+    }
+);
+
 export const postProduct = createAsyncThunk(
     'Product/post',
     async (postData, thunkAPI) => {
@@ -61,6 +74,7 @@ const msInvProduct = createSlice({
     name: 'products',
     initialState: {
         productData: [],
+        productDetail: {},
         productTotalData: 0,
         productFilter: {
             suppliers : null,
@@ -99,6 +113,9 @@ const msInvProduct = createSlice({
         setProductSelectedRow: (state, action) => {
             state.productSelectedRow = action.payload
         },
+        setProductDetail: (state, action) => {
+            state.productDetail = action.payload
+        },
     },
     extraReducers: {
         [fetchProducts.pending]: (state) => {
@@ -110,15 +127,28 @@ const msInvProduct = createSlice({
                 key: item.id,
                 id: item.id,
                 name: item.name,
-                cost: item.cost,
-                supplier: item.inv_supplier,
-                categories: item.inv_product_category,
+                description: item.description,
+                supplier: item.inv_supplier.name,
+                categories: item.inv_product_categories,
+                sell_price: item.inv_product_prices[0].sell_price,
+                buy_price: item.inv_product_prices[0].buy_price,
+                current_stock: item.inv_stocks[0].total,
             }));
             state.productTotalData = action.payload.data.total;
         },
         [fetchProducts.rejected]: (state) => {
             state.productStatus = 'failed';
         },
+
+        // [detailProduct.pending]: (state) => {
+        //     state.productStatus = 'loading';
+        // },
+        // [detailProduct.fulfilled]: (state) => {
+        //     state.productStatus = 'succeeded';
+        // },
+        // [detailProduct.rejected]: (state) => {
+        //     state.productStatus = 'failed';
+        // },
 
         [postProduct.pending]: (state) => {
             state.productStatus = 'loading';
@@ -131,9 +161,12 @@ const msInvProduct = createSlice({
                     key: item.id,
                     id: item.id,
                     name: item.name,
-                    cost: item.cost,
-                    supplier: item.inv_supplier,
-                    categories: item.inv_product_category,
+                    description: item.description,
+                    supplier: item.inv_supplier.name,
+                    categories: item.inv_product_categories,
+                    sell_price: item.inv_product_prices[0].sell_price,
+                    buy_price: item.inv_product_prices[0].buy_price,
+                    current_stock: item.inv_stocks[0].total,
                 }
                 state.productData.unshift(newItem)
                 state.productTotalData++

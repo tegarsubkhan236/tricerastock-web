@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Avatar, Button, message, Space, Table, Tag} from "antd";
+import {Avatar, Descriptions, message, Space, Table, Tag} from "antd";
 import {fetchProducts, setProductCurrentPage, setProductPerPage, setProductSelectedRow} from "./invProductSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {PaginationConfig} from "../../config/helper/tableConfig";
@@ -39,37 +39,24 @@ const InvProductList = () => {
             title: 'Product',
             children: [
                 {
-                    title: 'Image',
-                    key: 'img',
-                    render: (_, {name}) => (
-                        <Avatar
-                            style={{
-                                backgroundColor: '#f56a00',
-                                verticalAlign: 'middle',
-                            }}
-                            size="large"
-                        >
-                            {name}
-                        </Avatar>
-                    )
+                    title: 'Code',
+                    key: 'code',
+                    width: '5%',
+                    render: (_, {code}) => (
+                        <Tag color={"geekblue-inverse"} key={code}>
+                            {code}120230
+                        </Tag>
+                    ),
                 },
                 {
                     title: 'Name',
                     key: 'name',
+                    width: '30%',
                     dataIndex: 'name',
-                    width: "35%"
-                },
-                {
-                    title: 'Price',
-                    key: 'price',
-                    render: (_, {cost}) => (
-                        <Button onClick={() => console.log('cek')}>
-                            {currencyFormatter(cost)}
-                        </Button>
-                    )
                 },
             ]
         },
+        Table.EXPAND_COLUMN,
         {
             title: 'Category',
             key: 'categories',
@@ -77,7 +64,7 @@ const InvProductList = () => {
                 <Space size={[0, 8]} wrap>
                     {categories.map((category) => {
                         return (
-                            <Tag color={"geekblue"} key={category.id}>
+                            <Tag color={"green-inverse"} key={category.id}>
                                 {category.name.toUpperCase()}
                             </Tag>
                         );
@@ -89,9 +76,7 @@ const InvProductList = () => {
             title: 'Supplier',
             key: 'supplier',
             width: "15%",
-            render: (_, {supplier}) => (
-                supplier.name
-            )
+            dataIndex: "supplier"
         },
     ];
 
@@ -111,7 +96,7 @@ const InvProductList = () => {
             rowKey={record => record.key}
             rowSelection={{
                 preserveSelectedRowKeys: true,
-                selectedRowKeys : productSelectedRow,
+                selectedRowKeys: productSelectedRow,
                 onChange: (selectedRowKeys) => {
                     dispatch(setProductSelectedRow(selectedRowKeys))
                 }
@@ -132,6 +117,18 @@ const InvProductList = () => {
                         dispatch(setProductSelectedRow(selectedKeys))
                     },
                 };
+            }}
+            expandable={{
+                expandedRowRender: ({sell_price, buy_price, current_stock, description}) => (
+                    <Descriptions bordered>
+                        <Descriptions.Item label="Sell Price">Rp. {currencyFormatter(sell_price)}</Descriptions.Item>
+                        <Descriptions.Item label="Buy Price">Rp. {currencyFormatter(buy_price)}</Descriptions.Item>
+                        <Descriptions.Item label="Current Stock">{currencyFormatter(current_stock)}</Descriptions.Item>
+                        <Descriptions.Item label="Product Description" span={3}>
+                            {description}
+                        </Descriptions.Item>
+                    </Descriptions>
+                ),
             }}
         />
     );

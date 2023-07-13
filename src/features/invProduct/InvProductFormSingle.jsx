@@ -10,6 +10,7 @@ const InvProductFormSingle = ({form}) => {
     const dispatch = useDispatch();
     const {productCategoryData} = useSelector((state) => state.productCategories);
     const {productModalType} = useSelector((state) => state.products);
+    const {user} = useSelector((state) => state.auth);
     const [supplierID, setSupplierID] = useState([]);
     const [categoryID, setCategoryID] = useState([]);
 
@@ -28,13 +29,16 @@ const InvProductFormSingle = ({form}) => {
         form.validateFields().then(async (values) => {
             try {
                 if (productModalType === "ADD_FORM") {
-                    const payload = [{
-                        name: values.name,
-                        cost: values.initial_cost,
-                        description: values.description,
-                        inv_supplier_id: values.supplierID.key,
-                        inv_product_category: values.productCategoryID.map(val => ({id: val}))
-                    }]
+                    const payload = [
+                        {
+                            name: values.name,
+                            sell_price: values.initial_cost,
+                            description: values.description,
+                            user_id: user.user_id,
+                            supplier_id: values.supplierID.key,
+                            category_ids: values.productCategoryID
+                        }
+                    ]
                     await dispatch(postProduct(payload)).unwrap()
                 }
                 if (productModalType === "EDIT_FORM") {
