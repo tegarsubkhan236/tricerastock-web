@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import Hamburger from "./Hamburger";
 import Fullscreen from "./Fullscreen";
 import {useDispatch} from "react-redux";
-import {logout} from "../../../features/coreAuth/coreAuthSlice";
+import {logout} from "../../../features/core/coreAuth/coreAuthSlice";
 
 const {Header} = Layout
 

@@ -2,29 +2,29 @@ import React, {useState, useRef} from "react";
 import {Card, Typography} from "antd";
 import {CSSTransition, SwitchTransition} from "react-transition-group";
 import PanelGroup from "../../../components/PanelGroup";
-import InvSupplier from "./InvSupplier";
-import InvProduct from "./InvProduct";
-import InvProductCategory from "./InvProductCategory";
+import MsSupplier from "./MsSupplier";
+import MsProduct from "./MsProduct";
+import MsProductCategory from "./MsProductCategory";
 
 const listCurrentData = [
     {
         type: "Supplier",
-        component: <InvSupplier/>,
+        component: <MsSupplier/>,
         icon: "TeamOutlined",
         color: "#40c9c6",
     },{
         type: "Product Category",
-        component: <InvProductCategory/>,
+        component: <MsProductCategory/>,
         icon: "ShopOutlined",
         color: "#36a3f7",
     },{
         type: "Store Product",
-        component: <InvProduct/>,
+        component: <MsProduct/>,
         icon: "TagOutlined",
         color: "#f4516c",
     },{
         type: "PPOB Product",
-        component: <InvProduct/>,
+        component: <MsProduct/>,
         icon: "TagsOutlined",
         color: "#f6ab40",
     },

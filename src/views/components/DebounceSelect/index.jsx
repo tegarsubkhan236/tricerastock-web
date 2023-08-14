@@ -23,7 +23,7 @@ const Index = ({ fetchOptions, ...props }) => {
                 setFetching(false);
             });
         };
-        return Debounce(loadOptions,[]);
+        return Debounce(loadOptions,500);
     }, [fetchOptions]);
 
     return (

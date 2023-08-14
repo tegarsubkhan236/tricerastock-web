@@ -5,7 +5,7 @@ import {
     Dashboard,
     Login,
     MainLayout,
-    NoMatch,
+    Page404,
     Report,
     TransactionBuy,
     TransactionSell,
@@ -48,7 +48,7 @@ export const router = createBrowserRouter(
                     <Route path={"special"} element={<TransactionSpecial/>}/>
                 </Route>
                 <Route path={"report"} element={<Report/>}/>
-                <Route path="*" element={<NoMatch/>}/>
+                <Route path="*" element={<Page404/>}/>
             </Route>
         </Route>
     )

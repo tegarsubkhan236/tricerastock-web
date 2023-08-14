@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
+    "@react-pdf/renderer": "^3.1.12",
     "@reduxjs/toolkit": "^1.9.1",
     "antd": "^5.1.6",
     "axios": "^1.2.5",

@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.css'
 import DocumentTitle from "react-document-title";
-import AuthForm from "../../../../features/coreAuth/CoreAuthForm";
+import AuthForm from "../../../../features/core/coreAuth/CoreAuthForm";
 import LoginBackground from "../../../../assets/images/login_background.jpeg"
 import {Col, Row} from "antd";
 

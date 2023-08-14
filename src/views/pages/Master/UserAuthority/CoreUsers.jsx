@@ -1,8 +1,8 @@
 import React from 'react';
 import {Col, Form, Row} from "antd";
-import UsersList from "../../../../features/coreUser/CoreUsersList";
-import UsersForm from "../../../../features/coreUser/CoreUsersForm";
-import CoreUsersToolkit from "../../../../features/coreUser/CoreUsersToolkit";
+import UsersList from "../../../../features/core/coreUser/CoreUsersList";
+import UsersForm from "../../../../features/core/coreUser/CoreUsersForm";
+import CoreUsersToolkit from "../../../../features/core/coreUser/CoreUsersToolkit";
 
 const CoreUsers = () => {
     const [form] = Form.useForm();
