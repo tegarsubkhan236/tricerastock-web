@@ -8,6 +8,7 @@ import msSupplierReducer from "../features/master/msSupplier/msSupplierSlice";
 import msProductCategoriesReducer from "../features/master/msProductCategory/msProductCategorySlice";
 import msProductsReducer from "../features/master/msProduct/msProductSlice";
 import trPurchaseOrdersReducer from "../features/transaction/trPurchaseOrder/trPurchaseOrderSlice";
+import trReceivingOrdersReducer from "../features/transaction/trReceivingOrder/trReceivingOrderSlice";
 
 const rootReducer = combineReducers({
     auth: msAuthReducer,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     suppliers: msSupplierReducer,
     productCategories: msProductCategoriesReducer,
     products: msProductsReducer,
-    purchaseOrders: trPurchaseOrdersReducer
+    purchaseOrders: trPurchaseOrdersReducer,
+    receivingOrders: trReceivingOrdersReducer,
 });
 
 const persistConfig = {

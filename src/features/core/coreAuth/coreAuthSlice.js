@@ -6,7 +6,7 @@ export const postLogin = createAsyncThunk(
     'auth/postLogin',
     async ({identity, password}, thunkAPI) => {
         try {
-            const response = await instance.post('/auth/login', {
+            const response = await instance.post('/v1/auth/login', {
                 identity, password
             });
             return response.data

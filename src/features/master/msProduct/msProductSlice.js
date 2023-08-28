@@ -5,7 +5,7 @@ export const fetchProducts = createAsyncThunk(
     'Product/fetch',
     async ({page, perPage, supplier_id, category_id, search_text}, thunkAPI) => {
         try {
-            const response = await instance.get('/product', {
+            const response = await instance.get('/v1/master/product', {
                 params: {
                     page: page,
                     limit: perPage,
@@ -25,7 +25,7 @@ export const fetchProductsWithoutExtraReducers = createAsyncThunk(
     'Product/fetch',
     async ({page, perPage, supplier_id, category_id, search_text}, thunkAPI) => {
         try {
-            const response = await instance.get('/product', {
+            const response = await instance.get('/v1/master/product', {
                 params: {
                     page: page,
                     limit: perPage,
@@ -45,7 +45,7 @@ export const detailProduct = createAsyncThunk(
     'Product/detail',
     async ({id, based_on}, thunkAPI) => {
         try {
-            const response = await instance.get(`/product/${id}/${based_on}`);
+            const response = await instance.get(`/v1/master/product/${id}/${based_on}`);
             console.log("response", response)
             return response.data;
         } catch (e) {
@@ -58,7 +58,7 @@ export const postProduct = createAsyncThunk(
     'Product/post',
     async (postData, thunkAPI) => {
         try {
-            return await instance.post('/product', postData)
+            return await instance.post('/v1/master/product', postData)
         } catch (e) {
             return thunkAPI.rejectWithValue(e)
         }
@@ -69,7 +69,7 @@ export const updateProduct = createAsyncThunk(
     'Product/update',
     async ({id, updatedData}, thunkAPI) => {
         try {
-            const response = await instance.put(`/product/${id}`, updatedData);
+            const response = await instance.put(`/v1/master/product/${id}`, updatedData);
             return response.data;
         } catch (e) {
             return thunkAPI.rejectWithValue(e)
@@ -82,7 +82,7 @@ export const deleteProduct = createAsyncThunk(
     async ({id}, thunkAPI) => {
         try {
             const queryString = id.map((itemId) => `id=${itemId}`).join('&');
-            await instance.delete(`/product?${queryString}`);
+            await instance.delete(`/v1/master/product?${queryString}`);
             return id;
         } catch (e) {
             return thunkAPI.rejectWithValue(e)
@@ -148,11 +148,11 @@ const msInvProduct = createSlice({
                 id: item.id,
                 name: item.name,
                 description: item.description,
-                supplier: item.ms_supplier.name,
-                categories: item.ms_product_categories,
-                sell_price: item.ms_product_prices[0].sell_price,
-                buy_price: item.ms_product_prices[0].buy_price,
-                current_stock: item.ms_stocks[0].total,
+                supplier: item.supplier.name,
+                categories: item.product_categories,
+                sell_price: item.product_prices[0].sell_price,
+                buy_price: item.product_prices[0].buy_price,
+                current_stock: item.stocks[0].total,
             }));
             state.productTotalData = action.payload.data.total;
         },

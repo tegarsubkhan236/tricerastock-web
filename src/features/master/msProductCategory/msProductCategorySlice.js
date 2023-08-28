@@ -5,7 +5,7 @@ export const fetchProductCategory = createAsyncThunk(
     'productCategory/fetch',
     async ({page, perPage}, thunkAPI) => {
         try {
-            const response = await instance.get('/product_category', {
+            const response = await instance.get('/v1/master/product_category', {
                 params: {
                     page: page,
                     limit: perPage,
@@ -22,7 +22,7 @@ export const postProductCategory = createAsyncThunk(
     'productCategory/post',
     async ({parent_id, name}, thunkAPI) => {
         try {
-            const response = await instance.post('/product_category', {
+            const response = await instance.post('/v1/master/product_category', {
                 parent_id, name
             });
             return response.data
@@ -36,7 +36,7 @@ export const updateProductCategory = createAsyncThunk(
     'productCategory/update',
     async ({id, name}, thunkAPI) => {
         try {
-            const response = await instance.put(`/product_category/${id}`, {
+            const response = await instance.put(`/v1/master/product_category/${id}`, {
                 name
             });
             return response.data;
@@ -50,7 +50,7 @@ export const deleteProductCategory = createAsyncThunk(
     'productCategory/delete',
     async ({id}, thunkAPI) => {
         try {
-            await instance.delete(`/product_category/${id}`, id);
+            await instance.delete(`/v1/master/product_category/${id}`, id);
             return id;
         } catch (e) {
             return thunkAPI.rejectWithValue(e.response.data)

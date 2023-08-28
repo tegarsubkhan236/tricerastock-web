@@ -13,9 +13,9 @@ const menuList = [
         getItem("Core Inventory", "/master/inventory", <LineOutlined />),
     ]),
     getItem("Transaction", "/transaction", <FormOutlined/>,[
-        getItem("Buy", "/transaction/buy", <LineOutlined />),
-        getItem("Sell", "/transaction/sell", <LineOutlined />),
-        getItem("Special", "/transaction/special", <LineOutlined />),
+        getItem("Buy Order", "/transaction/buy", <LineOutlined />),
+        getItem("Sell Order", "/transaction/sell", <LineOutlined />),
+        getItem("Special Order", "/transaction/special", <LineOutlined />),
     ]),
     getItem("Report", "/report", <FormOutlined/>),
 ]

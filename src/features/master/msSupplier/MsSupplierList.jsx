@@ -30,32 +30,41 @@ const MsSupplierList = () => {
         }
     }, [supplierStatus]);
 
+    const handlePageChange = (page) => {
+        dispatch(setSupplierCurrentPage(page))
+    }
+    const handlePageSizeChange = (current, size) => {
+        dispatch(setSupplierPerPage(size))
+    }
+
     const pagination = PaginationConfig(
         supplierCurrentPage,
         supplierPerPage,
         supplierTotalData,
-        (current, size) => dispatch(setSupplierPerPage(size)),
-        (page) => dispatch(setSupplierCurrentPage(page))
+        handlePageSizeChange,
+        handlePageChange,
     );
 
-    const columns = [{
-        title: 'ID', dataIndex: 'id', key: 'id',
-    }, {
-        title: 'Name', key: 'name', dataIndex: 'name',
-    }, {
-        title: 'Address', dataIndex: 'address', key: 'address',
-    }, {
-        title: 'Contact', children: [{
-            title: 'Contact Person', dataIndex: 'contact_person', key: 'contact_person'
+    const columns = [
+        {
+            title: 'ID', dataIndex: 'id', key: 'id',
         }, {
-            title: 'Contact Number', dataIndex: 'contact_number', key: 'contact_number'
-        }]
-    }, {
-        title: 'Status',
-        key: 'status',
-        render: (_, record) => (
-            <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked={record.status === 1}/>)
-    }];
+            title: 'Name', key: 'name', dataIndex: 'name',
+        }, {
+            title: 'Address', dataIndex: 'address', key: 'address',
+        }, {
+            title: 'Contact', children: [{
+                title: 'Contact Person', dataIndex: 'contact_person', key: 'contact_person'
+            }, {
+                title: 'Contact Number', dataIndex: 'contact_number', key: 'contact_number'
+            }]
+        }, {
+            title: 'Status',
+            key: 'status',
+            render: (_, record) => (
+                <Switch checkedChildren="Active" unCheckedChildren="InActive" defaultChecked={record.status === 1}/>)
+        }
+    ];
 
     return (<Table
         loading={supplierStatus === "loading"}

@@ -6,14 +6,11 @@ import {fetchSupplier} from "../../../master/msSupplier/msSupplierSlice";
 import DebounceSelect from "../../../../views/components/DebounceSelect";
 
 const Step1 = () => {
-    const {
-        next,
-        postData,
-        setPostData,
-    } = useContext(PurchaseOrderStepFormContext);
-    const dispatch = useDispatch();
+    const {next, postData, setPostData} = useContext(PurchaseOrderStepFormContext);
     const {user} = useSelector(state => state.auth)
     const [supplier, setSupplier] = useState(postData.supplier || []);
+    const dispatch = useDispatch();
+
     const formattedDate = new Date().toLocaleDateString('en-GB')
     const purchaseOrderDefaultRemarks = `Purchase Order created by ${user.username} at ${formattedDate}`
 
@@ -43,15 +40,10 @@ const Step1 = () => {
         next()
     }
 
-    const onFinishFailed = (errorInfo) => {
-        console.log(errorInfo)
-    }
-
     return (
         <Form id='myForm'
               layout={"vertical"}
               onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
         >
             <Row gutter={20}>
                 <Col span={12}>

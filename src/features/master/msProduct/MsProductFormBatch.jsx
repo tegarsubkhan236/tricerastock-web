@@ -30,8 +30,8 @@ const MsProductFormBatch = () => {
                 name: obj[1],
                 cost: obj[2],
                 description: obj[1],
-                ms_product_category: [{id : obj[3]}],
-                ms_supplier_id: obj[4],
+                product_categories_id: [{id : obj[3]}],
+                supplier_id: obj[4],
             }));
             setBatchData(updatedData)
         } catch (error) {

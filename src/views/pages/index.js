@@ -1,6 +1,6 @@
 // Main
 export { default as MainLayout } from '../layout'
-export { default as Page404 } from './Error/Page404'
+export { default as Page404 } from './../Error/Page404'
 
 // Auth
 export { default as Login } from './Auth/Login'

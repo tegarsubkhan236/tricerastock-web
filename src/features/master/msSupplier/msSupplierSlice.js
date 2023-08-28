@@ -22,7 +22,7 @@ export const fetchSupplier = createAsyncThunk(
             if ("contact_number" in column){
                 filter = {...filter, "supplier.contact_number": column.contact_number}
             }
-            const response = await instance.get('/supplier', {
+            const response = await instance.get('/v1/master/supplier', {
                 params: {
                     page: page, 
                     limit: perPage,
@@ -41,7 +41,7 @@ export const fetchTemplateSupplier = createAsyncThunk(
     'supplier/fetch_template',
     async ({ids}, thunkAPI) => {
         try {
-            const response = await instance.get('/supplier', {
+            const response = await instance.get('/v1/master/supplier', {
                 params: {
                     page: 1,
                     limit: 999,
@@ -59,7 +59,7 @@ export const fetchDetailSupplier = createAsyncThunk(
     'supplier/detail',
     async ({id}, thunkAPI) => {
         try {
-            const response = await instance.get(`/supplier/${id}`);
+            const response = await instance.get(`/v1/master/supplier/${id}`);
             return response.data;
         } catch (e) {
             return thunkAPI.rejectWithValue(e.response.data)
@@ -71,7 +71,7 @@ export const postSupplier = createAsyncThunk(
     'supplier/post',
     async ({postData}, thunkAPI) => {
         try {
-            const response = await instance.post('/supplier', postData);
+            const response = await instance.post('/v1/master/supplier', postData);
             return response.data
         } catch (e) {
             return thunkAPI.rejectWithValue(e.response.data)
@@ -83,7 +83,7 @@ export const updateSupplier = createAsyncThunk(
     'supplier/update',
     async ({id, updatedData}, thunkAPI) => {
         try {
-            const response = await instance.put(`/supplier/${id}`, updatedData);
+            const response = await instance.put(`/v1/master/supplier/${id}`, updatedData);
             return response.data;
         } catch (e) {
             return thunkAPI.rejectWithValue(e.response.data)
@@ -96,7 +96,7 @@ export const deleteSupplier = createAsyncThunk(
     async ({id}, thunkAPI) => {
         try {
             const queryString = id.map((itemId) => `id=${itemId}`).join('&');
-            await instance.delete(`/supplier?${queryString}`);
+            await instance.delete(`/v1/master/supplier?${queryString}`);
             return id;
         } catch (e) {
             return thunkAPI.rejectWithValue(e)

@@ -35,7 +35,7 @@ const MsProductFormSingle = ({form}) => {
                         supplier_id: values.supplierID.key,
                         sell_price: values.initial_cost,
                         user_id: user.user_id,
-                        category_ids: values.productCategoryID
+                        product_categories_id: values.productCategoryID
                     }
                 ]
                 await dispatch(postProduct(payload)).unwrap()

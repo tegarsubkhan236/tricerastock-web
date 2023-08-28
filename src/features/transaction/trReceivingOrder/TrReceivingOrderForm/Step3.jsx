@@ -1,11 +1,11 @@
 import React from 'react';
 
-const TrBOForm = () => {
+const Step3 = () => {
     return (
         <div>
-            <b>Hallo World</b>
+            
         </div>
     );
 };
 
-export default TrBOForm;
+export default Step3;

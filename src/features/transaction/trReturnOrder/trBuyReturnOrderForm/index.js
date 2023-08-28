@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TrBOList = () => {
+const Index = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const TrBOList = () => {
     );
 };
 
-export default TrBOList;
+export default Index;

@@ -12,7 +12,7 @@ export const fetchUsers = createAsyncThunk(
             if ("email" in column){
                 filter = {...filter, "user.email": column.email}
             }
-            const response = await instance.get('/user', {
+            const response = await instance.get('/v1/core/user', {
                 params: {
                     page: page,
                     limit: perPage,
@@ -30,7 +30,7 @@ export const fetchTemplateUser = createAsyncThunk(
     'users/fetch_template',
     async ({ids}, thunkAPI) => {
         try {
-            const response = await instance.get('/user', {
+            const response = await instance.get('/v1/core/user', {
                 params: {
                     page: 1,
                     limit: 999,
@@ -47,7 +47,7 @@ export const fetchTemplateUser = createAsyncThunk(
 export const fetchDetailUsers = createAsyncThunk(
     'users/fetchDetailUsers',
     async ({id}) => {
-        const response = await instance.get(`/user/${id}`, id);
+        const response = await instance.get(`/v1/core/user/${id}`, id);
         return response.data;
     }
 );
@@ -55,7 +55,7 @@ export const fetchDetailUsers = createAsyncThunk(
 export const postUser = createAsyncThunk(
     'users/postUser',
     async (postData) => {
-        const response = await instance.post('/user', postData);
+        const response = await instance.post('/v1/core/user', postData);
         return response.data
     }
 )
@@ -63,7 +63,7 @@ export const postUser = createAsyncThunk(
 export const updateUser = createAsyncThunk(
     'users/updateUser',
     async ({id, updatedData}) => {
-        const response = await instance.put(`/user/${id}`, updatedData);
+        const response = await instance.put(`/v1/core/user/${id}`, updatedData);
         return response.data;
     }
 );
@@ -72,7 +72,7 @@ export const deleteUser = createAsyncThunk(
     'users/deleteUser',
     async ({id}) => {
         const queryString = id.map((itemId) => `id=${itemId}`).join('&');
-        await instance.delete(`/user?${queryString}`);
+        await instance.delete(`/v1/core/user?${queryString}`);
         return id;
     }
 );

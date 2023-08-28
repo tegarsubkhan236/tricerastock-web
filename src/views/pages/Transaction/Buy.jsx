@@ -1,31 +1,31 @@
 import React, {useRef, useState} from "react";
 import {CSSTransition, SwitchTransition} from "react-transition-group";
 import {Card, Typography} from "antd";
-import PanelGroup from "../../../components/PanelGroup";
-import TrPurchaseOrder from "./TrPurchaseOrder";
-import TrReceivingOrder from "./TrReceivingOrder";
-import TrBuyReturnOrder from "./TrBuyReturnOrder";
+import PanelGroup from "../../components/PanelGroup";
+import TrPurchaseOrderForm from "../../../features/transaction/trPurchaseOrder/TrPurchaseOrderForm";
+import TrReceivingOrderForm from "../../../features/transaction/trReceivingOrder/TrReceivingOrderForm";
+import TrBuyReturnOrderForm from "../../../features/transaction/trReturnOrder/trBuyReturnOrderForm";
 
 const listCurrentData = [
     {
         type: "Purchase Order",
-        component: <TrPurchaseOrder/>,
+        component: <TrPurchaseOrderForm/>,
         icon: "TeamOutlined",
         color: "#40c9c6",
     }, {
         type: "Receiving Order",
-        component: <TrReceivingOrder/>,
+        component: <TrReceivingOrderForm/>,
         icon: "TeamOutlined",
         color: "#40c9c6",
     }, {
         type: "Buy Return Order",
-        component: <TrBuyReturnOrder/>,
+        component: <TrBuyReturnOrderForm/>,
         icon: "TeamOutlined",
         color: "#40c9c6",
     },
 ];
 
-const Index = () => {
+const Buy = () => {
     const nodeRef = useRef(null);
     const [currentData, setCurrentData] = useState(listCurrentData[0])
 
@@ -69,4 +69,4 @@ const Index = () => {
     </div>);
 };
 
-export default Index;
+export default Buy;

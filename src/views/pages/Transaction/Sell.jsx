@@ -3,7 +3,7 @@ import {MinusOutlined, PayCircleOutlined, PlusOutlined} from '@ant-design/icons'
 import {Avatar, List, Space, Card, Col, Row, Typography, Input, Tree, Button} from "antd";
 const { Meta } = Card;
 
-const Index = () => {
+const Sell = () => {
     const arrProduct = ['1','2','3','4','5','6']
 
     const treeData = [
@@ -166,4 +166,4 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default Sell;
