@@ -74,7 +74,7 @@ const trPurchaseOrderSlice = createSlice({
         },
         [fetchPo.fulfilled]: (state, action) => {
             state.poStatus = 'succeeded';
-            state.poData = action.payload.data.results.map((purchase_order) => ({
+            state.poData = action.payload.data.results?.map((purchase_order) => ({
                 key: purchase_order.id,
                 id: purchase_order.id,
                 po_code: purchase_order.po_code,

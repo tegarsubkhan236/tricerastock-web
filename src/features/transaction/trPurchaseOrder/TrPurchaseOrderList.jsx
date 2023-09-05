@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Badge, Button, Modal, Table} from "antd";
+import {Button, Modal, Table} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {PaginationConfig} from "../../../config/helper/tableConfig";
 import {fetchPo, setPoCurrentPage, setPoPerPage} from "./trPurchaseOrderSlice";
@@ -11,20 +11,21 @@ const TrPurchaseOrderList = () => {
     const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({});
-    const {poData, poTotalData, poStatus, poCurrentPage, poPerPage} = useSelector((state) => state.purchaseOrders);
+    const {
+        poData,
+        poTotalData,
+        poStatus,
+        poCurrentPage,
+        poPerPage,
+    } = useSelector((state) => state.purchaseOrders);
 
     useEffect(() => {
         try {
-            if (poStatus === "idle") {
-                dispatch(fetchPo({
-                    page: poCurrentPage,
-                    perPage: poPerPage,
-                })).unwrap();
-            }
+            dispatch(fetchPo({page: poCurrentPage, perPage: poPerPage,})).unwrap();
         } catch (e) {
             return console.log(e)
         }
-    }, [poStatus]);
+    }, []);
 
     const handlePageChange = (page) => {
         console.log("page", page)
@@ -49,73 +50,48 @@ const TrPurchaseOrderList = () => {
         setModalData({code, products})
     };
 
-    const po_columns = [
+    const columns = [
         {
             title: 'PO Code',
-            key: 'po_code',
             dataIndex: 'po_code',
-        }, {
+        },
+        {
             title: 'Supplier',
-            key: 'supplier_name',
             dataIndex: 'supplier_name',
-        }, {
+        },
+        {
             title: 'Prices',
             children: [
                 {
                     title: 'Discount',
-                    key: 'disc',
-                    render: (_, {disc}) => `${disc} %`
-                }, {
+                    render: (_, { disc }) => `${disc} %`,
+                },
+                {
                     title: 'Tax',
-                    key: 'tax',
-                    render: (_, {tax}) => `${tax} %`
-                }, {
+                    render: (_, { tax }) => `${tax} %`,
+                },
+                {
                     title: 'Total Amount',
-                    key: 'amount',
-                    render: (_, {amount}) => `Rp. ${currencyFormatter(amount)}`
-                }
-            ]
-        }, {
-            title: 'PO Products',
-            key: 'po_product',
-            align: 'center',
-            render: (_, {purchase_order_products, po_code}) => (
-                <Button type="primary"
-                        shape="circle"
-                        icon={<EyeOutlined/>}
-                        onClick={() => showModal(purchase_order_products, po_code)}/>
-            )
-        }, {
-            title: 'Status',
-            key: 'status',
-            render: (_, {status}) => generateTransactionStatus(status),
-        }
-    ];
-
-    const bo_columns = [
+                    render: (_, { amount }) => `Rp. ${currencyFormatter(amount)}`,
+                },
+            ],
+        },
         {
-            title: 'BO Code',
-            key: 'bo_code',
-            dataIndex: 'bo_code',
-        }, {
-            title: 'Total Amount',
-            key: 'amount',
-            render: (_, {amount}) => `Rp. ${currencyFormatter(amount)}`
-        }, {
-            title: 'BO Products',
-            key: 'bo_product',
+            title: 'PO Products',
             align: 'center',
-            render: (_, {back_order_products, bo_code}) => (
-                <Button type="primary"
-                        shape="circle"
-                        icon={<EyeOutlined/>}
-                        onClick={() => showModal(back_order_products, bo_code)}/>
-            )
-        }, {
+            render: (_, { purchase_order_products, po_code }) => (
+                <Button
+                    type="primary"
+                    shape="circle"
+                    icon={<EyeOutlined />}
+                    onClick={() => showModal(purchase_order_products, po_code)}
+                />
+            ),
+        },
+        {
             title: 'Status',
-            key: 'status',
-            render: (_, {status}) => generateTransactionStatus(status)
-        }
+            render: (_, { status }) => generateTransactionStatus(status),
+        },
     ];
 
     const product_columns = [
@@ -135,34 +111,73 @@ const TrPurchaseOrderList = () => {
     ];
 
     const expandedRowRender = (record) => {
-        if (record.back_orders != null) {
-            return <Table columns={bo_columns} dataSource={record.back_orders} pagination={false} size={"small"}/>;
+        if (record.back_orders) {
+            const bo_columns = [
+                {
+                    title: 'BO Code',
+                    dataIndex: 'bo_code',
+                },
+                {
+                    title: 'Total Amount',
+                    render: (_, { amount }) => `Rp. ${currencyFormatter(amount)}`,
+                },
+                {
+                    title: 'BO Products',
+                    align: 'center',
+                    render: (_, { back_order_products, bo_code }) => (
+                        <Button
+                            type="primary"
+                            shape="circle"
+                            icon={<EyeOutlined />}
+                            onClick={() => showModal(back_order_products, bo_code)}
+                        />
+                    ),
+                },
+                {
+                    title: 'Status',
+                    render: (_, { status }) => generateTransactionStatus(status),
+                },
+            ];
+
+            return (
+                <Table
+                    columns={bo_columns}
+                    dataSource={record.back_orders}
+                    pagination={false}
+                    size="small"
+                />
+            );
         }
     };
 
     return (
         <>
             <Table
-                loading={poStatus === "loading"}
-                bordered={true}
-                size={"small"}
+                loading={poStatus === 'loading'}
+                bordered
+                size="small"
                 dataSource={poData}
-                columns={po_columns}
+                columns={columns}
                 pagination={pagination}
-                scroll={{x: true}}
+                scroll={{ x: true }}
                 expandable={{
                     expandedRowRender,
                     defaultExpandedRowKeys: ['0'],
                 }}
                 rowKey={(record) => record.key}
             />
-            <Modal title={`Products from ${modalData.code}`}
-                   open={isModalOpen}
-                   onCancel={() => setIsModalOpen(false)}
-                   key={modalData.code}
-                   footer={null}
+            <Modal
+                title={`Products from ${modalData.code}`}
+                open={isModalOpen}
+                onCancel={() => setIsModalOpen(false)}
+                footer={null}
             >
-                <Table dataSource={modalData.products} columns={product_columns} pagination={false} rowKey={modalData.code}/>
+                <Table
+                    dataSource={modalData.products}
+                    columns={product_columns}
+                    pagination={false}
+                    rowKey={(item) => item.key}
+                />
             </Modal>
         </>
     );

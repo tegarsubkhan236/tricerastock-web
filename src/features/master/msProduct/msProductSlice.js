@@ -143,7 +143,7 @@ const msInvProduct = createSlice({
         },
         [fetchProducts.fulfilled]: (state, action) => {
             state.productStatus = 'succeeded';
-            state.productData = action.payload.data.results.map((item) => ({
+            state.productData = action.payload.data.results?.map((item) => ({
                 key: item.id,
                 id: item.id,
                 name: item.name,
@@ -153,22 +153,12 @@ const msInvProduct = createSlice({
                 sell_price: item.product_prices[0].sell_price,
                 buy_price: item.product_prices[0].buy_price,
                 current_stock: item.stocks[0].total,
-            }));
+            })) || [];
             state.productTotalData = action.payload.data.total;
         },
         [fetchProducts.rejected]: (state) => {
             state.productStatus = 'failed';
         },
-
-        // [detailProduct.pending]: (state) => {
-        //     state.productStatus = 'loading';
-        // },
-        // [detailProduct.fulfilled]: (state) => {
-        //     state.productStatus = 'succeeded';
-        // },
-        // [detailProduct.rejected]: (state) => {
-        //     state.productStatus = 'failed';
-        // },
 
         [postProduct.pending]: (state) => {
             state.productStatus = 'loading';
@@ -182,11 +172,11 @@ const msInvProduct = createSlice({
                     id: item.id,
                     name: item.name,
                     description: item.description,
-                    supplier: item.ms_supplier.name,
-                    categories: item.ms_product_categories,
-                    sell_price: item.ms_product_prices[0].sell_price,
-                    buy_price: item.ms_product_prices[0].buy_price,
-                    current_stock: item.ms_stocks[0].total,
+                    supplier: item.supplier.name,
+                    categories: item.product_categories,
+                    sell_price: item.product_prices[0].sell_price,
+                    buy_price: item.product_prices[0].buy_price,
+                    current_stock: item.stocks[0].total,
                 }
                 state.productData.unshift(newItem)
                 state.productTotalData++

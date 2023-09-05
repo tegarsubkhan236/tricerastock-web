@@ -4,41 +4,97 @@ import {currencyFormatter, currencyParser} from "../../../config/helper/currency
 import {AppstoreAddOutlined, DeleteOutlined} from "@ant-design/icons";
 const {Text} = Typography
 
-export const ItemCartInput = ({item, defaultValueQuantity, defaultValueBuyPrice, onAddToCart, onRemoveFromCart}) => {
+export const ItemCartInput = ({item, cartItems, setCartItems, inputPriceReadOnly}) => {
+    const handleAddToCart = (product_id, product_name, buy_price, quantity) => {
+        if (quantity === 0 || buy_price === 0) return
+        const existingItem = cartItems.find((cartItem) => cartItem.product_id === product_id);
+        if (existingItem) {
+            const updatedCartItem = {
+                product_id: product_id,
+                product_name: product_name,
+                buy_price: buy_price,
+                quantity: quantity,
+            };
+            setCartItems(cartItems.map((cartItem) => (cartItem.product_id === product_id ? updatedCartItem : cartItem)));
+        } else {
+            const newItem = {
+                product_id: product_id,
+                product_name: product_name,
+                buy_price: buy_price,
+                quantity: quantity,
+            };
+            setCartItems([...cartItems, newItem]);
+        }
+    };
+
+    const handleRemoveFromCart = (product_id) => {
+        const updatedCartItems = cartItems.filter((item) => item.product_id !== product_id);
+        setCartItems(updatedCartItems);
+    };
+
+    const defaultValueQuantity = (product_id) => {
+        const existingItem = cartItems.find((cartItem) => cartItem.product_id === product_id);
+        if (existingItem) {
+            return existingItem.quantity
+        } else {
+            return item.quantity
+        }
+    }
+
+    const defaultValueBuyPrice = (product_id) => {
+        const existingItem = cartItems.find((cartItem) => cartItem.product_id === product_id);
+        if (existingItem) {
+            return existingItem.buy_price
+        } else {
+            return item.buy_price
+        }
+    }
+
+    const inputQuantityConfig = {
+        addonBefore: "Quantity",
+        formatter: (value) => currencyFormatter(value),
+        parser: (value) => currencyParser(value),
+        defaultValue: defaultValueQuantity(item.product_id),
+        min: 0,
+        size: "small",
+        onChange: (value) => item.quantity = value
+    }
+
+    const inputPriceConfig = {
+        addonBefore: "Buy Price",
+        formatter: (value) => currencyFormatter(value),
+        parser: (value) => currencyParser(value),
+        prefix: "Rp",
+        defaultValue: defaultValueBuyPrice(item.product_id),
+        min: 0,
+        max: item.sell_price,
+        size: "small",
+        onChange: (value) => item.buy_price = value,
+        readOnly: inputPriceReadOnly
+    }
+
+    const buttonAddConfig = {
+        size: "small",
+        icon : <AppstoreAddOutlined/>,
+        onClick: () => handleAddToCart(item.product_id, item.product_name, item.buy_price, item.quantity)
+    }
+
+    const buttonRemoveConfig = {
+        danger: true,
+        size: "small",
+        icon : <DeleteOutlined/>,
+        onClick: () => handleRemoveFromCart(item.product_id)
+    }
+    
     return (
         <List.Item key={item.id}>
             <Card actions={[
                 <Space direction="vertical" style={{width: "200px"}}>
-                    <InputNumber addonBefore={"Quantity"}
-                                 formatter={(value) => currencyFormatter(value)}
-                                 parser={(value) => currencyParser(value)}
-                                 defaultValue={defaultValueQuantity(item.product_id)}
-                                 min={0}
-                                 size={"small"}
-                                 onChange={(value) => item.quantity = value}
-                    />
-                    <InputNumber addonBefore={"Buy Price"}
-                                 formatter={(value) => currencyFormatter(value)}
-                                 parser={(value) => currencyParser(value)}
-                                 prefix={"Rp"}
-                                 defaultValue={defaultValueBuyPrice(item.product_id)}
-                                 max={item.sell_price}
-                                 size={"small"}
-                                 onChange={(value) => item.buy_price = value}
-                    />
+                    <InputNumber {...inputQuantityConfig}/>
+                    <InputNumber {...inputPriceConfig}/>
                     <Space>
-                        <Button size={"small"}
-                                icon={<AppstoreAddOutlined/>}
-                                onClick={() => onAddToCart(item.product_id, item.product_name, item.buy_price, item.quantity)}
-                        >
-                            Add
-                        </Button>
-                        <Button danger
-                                size={"small"}
-                                icon={<DeleteOutlined/>}
-                                onClick={() => onRemoveFromCart(item.product_id)}>
-                            Remove
-                        </Button>
+                        <Button {...buttonAddConfig}>Add</Button>
+                        <Button {...buttonRemoveConfig}>Remove</Button>
                     </Space>
                 </Space>
             ]}>

@@ -83,8 +83,7 @@ const MsInvProductCategories = ({form}) => {
         {
             title: 'Add a Child',
             key: 'add',
-            render: (record) => typeof record.children !== "undefined" &&
-                <Button icon={<PlusOutlined/>} shape={"circle"} onClick={() => openAddChildrenModal(record)}/>,
+            render: (record) => <Button icon={<PlusOutlined/>} shape={"circle"} onClick={() => openAddChildrenModal(record)}/>,
         },
         {
             title: "Actions",

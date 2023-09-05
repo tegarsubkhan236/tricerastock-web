@@ -16,18 +16,9 @@ export const postRo = createAsyncThunk(
 const trReceivingOrderSlice = createSlice({
     name: "receiving_orders",
     initialState: {
-        roPayload : {},
-        roErrors: {},
         roStatus : "idle",
     },
-    reducers: {
-        setRoPayload: (state, action) => {
-            state.roPayload = action.payload;
-        },
-        setRoErrors: (state, action) => {
-            state.roErrors = action.payload;
-        },
-    },
+    reducers: {},
     extraReducers: {
         [postRo.pending] : (state) => {
             state.roStatus = "pending"
@@ -40,10 +31,5 @@ const trReceivingOrderSlice = createSlice({
         }
     }
 })
-
-export const {
-    setRoPayload,
-    setRoErrors,
-} = trReceivingOrderSlice.actions
 
 export default trReceivingOrderSlice.reducer;
