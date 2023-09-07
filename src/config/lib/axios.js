@@ -1,5 +1,5 @@
 import axios from "axios";
-import {logout} from "../../features/core/coreAuth/coreAuthSlice";
+import {logout} from "../../features/core/auth/authSlice";
 import {getStore} from "../helper/storeInjector";
 
 const instance = axios.create({

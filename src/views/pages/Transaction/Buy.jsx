@@ -2,24 +2,24 @@ import React, {useRef, useState} from "react";
 import {CSSTransition, SwitchTransition} from "react-transition-group";
 import {Card, Typography} from "antd";
 import PanelGroup from "../../components/PanelGroup";
-import TrPurchaseOrderForm from "../../../features/transaction/trPurchaseOrder/TrPurchaseOrderForm";
-import TrReceivingOrderForm from "../../../features/transaction/trReceivingOrder/TrReceivingOrderForm";
-import TrBuyReturnOrderForm from "../../../features/transaction/trReturnOrder/trBuyReturnOrderForm";
+import PurchaseOrderForm from "../../../features/transaction/purchaseOrder/PurchaseOrderForm";
+import ReceivingOrderForm from "../../../features/transaction/receivingOrder/ReceivingOrderForm";
+import BuyReturnOrderForm from "../../../features/transaction/returnOrder/BuyReturnOrderForm";
 
 const listCurrentData = [
     {
         type: "Purchase Order",
-        component: <TrPurchaseOrderForm/>,
+        component: <PurchaseOrderForm/>,
         icon: "TeamOutlined",
         color: "#40c9c6",
     }, {
         type: "Receiving Order",
-        component: <TrReceivingOrderForm/>,
+        component: <ReceivingOrderForm/>,
         icon: "TeamOutlined",
         color: "#40c9c6",
     }, {
         type: "Buy Return Order",
-        component: <TrBuyReturnOrderForm/>,
+        component: <BuyReturnOrderForm/>,
         icon: "TeamOutlined",
         color: "#40c9c6",
     },

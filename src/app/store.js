@@ -2,22 +2,22 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {persistReducer, persistStore} from 'redux-persist';
 import thunk from 'redux-thunk';
 import storage from 'redux-persist/lib/storage';
-import msAuthReducer from "../features/core/coreAuth/coreAuthSlice";
-import msUsersReducer from "../features/core/coreUser/coreUsersSlice";
-import msSupplierReducer from "../features/master/msSupplier/msSupplierSlice";
-import msProductCategoriesReducer from "../features/master/msProductCategory/msProductCategorySlice";
-import msProductsReducer from "../features/master/msProduct/msProductSlice";
-import trPurchaseOrdersReducer from "../features/transaction/trPurchaseOrder/trPurchaseOrderSlice";
-import trReceivingOrdersReducer from "../features/transaction/trReceivingOrder/trReceivingOrderSlice";
+import authReducer from "../features/core/auth/authSlice";
+import usersReducer from "../features/core/user/usersSlice";
+import supplierReducer from "../features/master/supplier/supplierSlice";
+import productCategoriesReducer from "../features/master/productCategory/productCategorySlice";
+import productsReducer from "../features/master/product/productSlice";
+import purchaseOrdersReducer from "../features/transaction/purchaseOrder/purchaseOrderSlice";
+import receivingOrdersReducer from "../features/transaction/receivingOrder/receivingOrderSlice";
 
 const rootReducer = combineReducers({
-    auth: msAuthReducer,
-    users: msUsersReducer,
-    suppliers: msSupplierReducer,
-    productCategories: msProductCategoriesReducer,
-    products: msProductsReducer,
-    purchaseOrders: trPurchaseOrdersReducer,
-    receivingOrders: trReceivingOrdersReducer,
+    auth: authReducer,
+    users: usersReducer,
+    suppliers: supplierReducer,
+    productCategories: productCategoriesReducer,
+    products: productsReducer,
+    purchaseOrders: purchaseOrdersReducer,
+    receivingOrders: receivingOrdersReducer,
 });
 
 const persistConfig = {

@@ -2,14 +2,14 @@ import React, {useRef, useState} from 'react';
 import {CSSTransition, SwitchTransition} from "react-transition-group";
 import {Card, Typography} from "antd";
 import PanelGroup from "../../../components/PanelGroup";
-import CoreUsers from "./CoreUsers";
-import CorePermission from "./CorePermission";
+import Users from "./Users";
+import Permissions from "./Permissions";
 
 const listCurrentData = [
     {
-        type: "User", component: <CoreUsers/>, icon: "TeamOutlined", color: "#40c9c6",
+        type: "User", component: <Users/>, icon: "TeamOutlined", color: "#40c9c6",
     }, {
-        type: "Permission", component: <CorePermission/>, icon: "TeamOutlined", color: "#40c9c6",
+        type: "Permission", component: <Permissions/>, icon: "TeamOutlined", color: "#40c9c6",
     },
 ]
 

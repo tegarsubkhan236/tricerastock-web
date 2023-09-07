@@ -2,30 +2,30 @@ import React, {useRef, useState} from "react";
 import {CSSTransition, SwitchTransition} from "react-transition-group";
 import {Card, Typography} from "antd";
 import PanelGroup from "../../../components/PanelGroup";
-import TrPurchaseOrder from "./TrPurchaseOrder";
-import TrSalesOrder from "./TrSalesOrder";
-import TrReturnOrder from "./TrReturnOrder";
-import TrCashflow from "./TrCashflow";
+import PurchaseOrder from "./PurchaseOrder";
+import SalesOrder from "./SalesOrder";
+import ReturnOrder from "./ReturnOrder";
+import Cashflow from "./Cashflow";
 
 const listCurrentData = [
     {
         type: "Purchase Order",
-        component: <TrPurchaseOrder/>,
+        component: <PurchaseOrder/>,
         icon: "TeamOutlined",
         color: "#40c9c6",
     }, {
         type: "Sales Order",
-        component: <TrSalesOrder/>,
+        component: <SalesOrder/>,
         icon: "TeamOutlined",
         color: "#40c9c6",
     }, {
         type: "Return Order",
-        component: <TrReturnOrder/>,
+        component: <ReturnOrder/>,
         icon: "TeamOutlined",
         color: "#40c9c6",
     }, {
         type: "Cashflow",
-        component: <TrCashflow/>,
+        component: <Cashflow/>,
         icon: "TeamOutlined",
         color: "#40c9c6",
     },
