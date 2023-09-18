@@ -4,8 +4,8 @@ import {Alert, Button, Col, Descriptions, Form, Input, Row} from "antd";
 import {SearchOutlined} from "@ant-design/icons";
 import {useDispatch} from "react-redux";
 import {fetchDetailPo} from "../../purchaseOrder/purchaseOrderSlice";
-import {currencyFormatter} from "../../../../config/helper/currency";
-import {generateTransactionStatus} from "../../../../config/helper/transactionStatus";
+import {currencyFormatter} from "../../../../helper/currency";
+import {transformTransactionStatus} from "../../../../helper/constants";
 
 const Step1 = () => {
     const dispatch = useDispatch()
@@ -70,6 +70,25 @@ const Step1 = () => {
 
     return (
         <>
+            {isExecuted && (postError.message ? (
+                <Alert
+                    message={postError.message}
+                    type="error"
+                    banner
+                    closable
+                    style={{marginBottom: "20px"}}
+                />
+            ) : (
+                <>
+                    <Alert
+                        message="Purchase Order found and ready to make receiving order"
+                        type="success"
+                        banner
+                        closable
+                        style={{marginBottom: "20px"}}
+                    />
+                </>
+            ))}
             <Form autoComplete="off" onFinish={getPurchaseOrderDetail}>
                 <Row gutter={20}>
                     <Col span={10}>
@@ -94,35 +113,16 @@ const Step1 = () => {
                     </Col>
                 </Row>
             </Form>
-            {isExecuted && (postError.message ? (
-                <Alert
-                    message={postError.message}
-                    type="error"
-                    banner
-                    closable
-                    style={{marginBottom: "20px"}}
-                />
-            ) : (
-                <>
-                    <Alert
-                        message="Purchase Order found and ready to make receiving order"
-                        type="success"
-                        banner
-                        closable
-                        style={{marginBottom: "20px"}}
-                    />
-                    <Form id='myForm' layout={"vertical"} onFinish={handleNextStep}>
-                        <Descriptions title="Purchase Order Info" bordered column={4}>
-                            <Descriptions.Item label="Supplier">{postData.supplier_name || ""}</Descriptions.Item>
-                            <Descriptions.Item label="Tax">{currencyFormatter(postData.tax || 0)} %</Descriptions.Item>
-                            <Descriptions.Item label="Discount">{currencyFormatter(postData.disc || 0)} %</Descriptions.Item>
-                            <Descriptions.Item label="Status">{generateTransactionStatus(postData.status || 0)}</Descriptions.Item>
-                            <Descriptions.Item label="Total Amount">Rp. {currencyFormatter(postData.amount || 0)}</Descriptions.Item>
-                            <Descriptions.Item label="Remarks">{postData.remarks || ""}</Descriptions.Item>
-                        </Descriptions>
-                    </Form>
-                </>
-            ))}
+            <Form id='myForm' layout={"vertical"} onFinish={handleNextStep}>
+                <Descriptions title="Purchase Order Info" bordered column={4}>
+                    <Descriptions.Item label="Supplier">{postData.supplier_name || ""}</Descriptions.Item>
+                    <Descriptions.Item label="Tax">{currencyFormatter(postData.tax || 0)} %</Descriptions.Item>
+                    <Descriptions.Item label="Discount">{currencyFormatter(postData.disc || 0)} %</Descriptions.Item>
+                    <Descriptions.Item label="Status">{transformTransactionStatus(postData.status || 0)}</Descriptions.Item>
+                    <Descriptions.Item label="Total Amount">Rp. {currencyFormatter(postData.amount || 0)}</Descriptions.Item>
+                    <Descriptions.Item label="Remarks">{postData.remarks || ""}</Descriptions.Item>
+                </Descriptions>
+            </Form>
         </>
     );
 };

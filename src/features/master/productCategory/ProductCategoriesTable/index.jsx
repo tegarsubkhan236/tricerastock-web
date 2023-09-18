@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Button, message, Popconfirm, Space, Table} from "antd";
-import {PaginationConfig} from "../../../../config/helper/tableConfig";
 import {
     deleteProductCategory,
     fetchProductCategory,
@@ -12,6 +11,7 @@ import {
     setProductCategorySelectedRow
 } from '../productCategorySlice';
 import {DeleteOutlined, EditOutlined, EnterOutlined, PlusOutlined} from "@ant-design/icons";
+import {PaginationConfig} from "../../../../config";
 
 const Index = ({form}) => {
     const dispatch = useDispatch();

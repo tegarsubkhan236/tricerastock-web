@@ -1,10 +1,10 @@
 import React, {useContext, useEffect} from 'react';
 import {Col, Form, Input, List, message, Row, Typography} from "antd";
 import {PurchaseOrderStepFormContext} from "./index";
-import {Debounce} from "../../../../config/helper/debounce";
 import {fetchProductsWithoutExtraReducers} from "../../../master/product/productSlice";
 import {useDispatch} from "react-redux";
 import {FooterCartList, ItemCartInput, ItemCartList} from "../../../../views/components/ProductCart";
+import {Debounce} from "../../../../config";
 
 const Step2 = () => {
     const dispatch = useDispatch();
@@ -55,9 +55,14 @@ const Step2 = () => {
         setPrevSupplierValue(currentSupplierValue);
     }, [postData])
 
+    useEffect(() => {
+        console.log("cartItems", cartItems)
+    }, [cartItems])
+
     const onSearch = async (value) => {
         await fetchProducts({
-            supplier_id: postData.supplier.value, search_text: value.target.value
+            supplier_id: postData.supplier.value,
+            search_text: value.target.value
         })
     }
 
@@ -82,6 +87,7 @@ const Step2 = () => {
                           loading={initLoading}
                           dataSource={products}
                           renderItem={(item) => <ItemCartInput
+                              type={"BUY_TRANSACTION"}
                               item={item}
                               cartItems={cartItems}
                               setCartItems={setCartItems}

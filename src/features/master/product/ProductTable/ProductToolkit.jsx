@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import {deleteProduct, setProductCurrentPage, setProductModalType, setProductModalVisible,} from "../productSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {exportExcel} from "../../../../config/lib/exportExcel";
+import {exportExcel} from "../../../../config/exportExcel";
 
 const ProductToolkit = ({form}) => {
     const dispatch = useDispatch()

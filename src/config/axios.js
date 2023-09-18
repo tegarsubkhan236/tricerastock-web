@@ -1,6 +1,6 @@
 import axios from "axios";
-import {logout} from "../../features/core/auth/authSlice";
-import {getStore} from "../helper/storeInjector";
+import {logout} from "../features/core/auth/authSlice";
+import {getStore} from "./index";
 
 const instance = axios.create({
     baseURL: 'http://localhost:4000/api',

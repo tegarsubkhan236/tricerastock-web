@@ -3,7 +3,7 @@ import {InboxOutlined} from "@ant-design/icons";
 import {Form, message, Upload} from "antd";
 import {useDispatch} from "react-redux";
 import {postSupplier, setSupplierModalVisible, setSupplierStatus,} from "../supplierSlice";
-import {importExcel} from "../../../../config/lib/importExcel";
+import {importExcel} from "../../../../config/importExcel";
 
 const SupplierFormBatch = () => {
     const dispatch = useDispatch()

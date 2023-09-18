@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import {LayoutContext} from "../index";
 import {Layout} from "antd";
 import SiderLogo from "./Logo";
 import SiderMenu from "./Menu";
 
 const {Sider} = Layout
 
-const LayoutSider = (props) => {
-    const {setSidebarCollapsed, sidebarCollapsed} = props
+const LayoutSider = () => {
+    const {setSidebarCollapsed, sidebarCollapsed} = useContext(LayoutContext)
     return (
         <Sider
             collapsible
@@ -20,7 +21,9 @@ const LayoutSider = (props) => {
                 }
             }}
             trigger={null}
-            style={{ zIndex: "10" }}
+            style={{
+                zIndex: "10"
+            }}
         >
             <SiderLogo/>
             <SiderMenu/>

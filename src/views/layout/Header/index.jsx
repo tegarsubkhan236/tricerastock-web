@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import './index.css'
 import {Layout, Avatar, Dropdown, Space} from "antd";
 import {UserOutlined} from "@ant-design/icons";
@@ -7,10 +7,12 @@ import Hamburger from "./Hamburger";
 import Fullscreen from "./Fullscreen";
 import {useDispatch} from "react-redux";
 import {logout} from "../../../features/core/auth/authSlice";
+import {LayoutContext} from "../index";
 
 const {Header} = Layout
 
-const LayoutHeader = (props) => {
+const LayoutHeader = () => {
+    const {setSidebarCollapsed, sidebarCollapsed} = useContext(LayoutContext)
     const dispatch = useDispatch()
     const items = [
         {
@@ -31,7 +33,6 @@ const LayoutHeader = (props) => {
         },
     ];
 
-    const {setSidebarCollapsed, sidebarCollapsed} = props
     return (
         <Header style={{width: "100%"}}>
             <Hamburger setSidebarCollapsed={setSidebarCollapsed} sidebarCollapsed={sidebarCollapsed}/>

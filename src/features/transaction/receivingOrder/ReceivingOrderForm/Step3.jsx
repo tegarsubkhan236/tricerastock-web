@@ -1,11 +1,11 @@
 import React, {useContext, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {ReceivingOrderFormContext} from "./index";
-import {currencyFormatter} from "../../../../config/helper/currency";
 import {Button, Descriptions, Form, Modal, Result, Table, Typography} from "antd";
 import {CloseCircleOutlined, ExclamationCircleFilled} from "@ant-design/icons";
 import {postRo} from "../receivingOrderSlice";
 import {FooterCartList} from "../../../../views/components/ProductCart";
+import {currencyFormatter} from "../../../../helper/currency";
 
 const { Text, Paragraph } = Typography;
 

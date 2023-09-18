@@ -1,11 +1,11 @@
-import {Button, Dropdown, Input, message, Popconfirm, Space} from "antd";
+import {Button, Dropdown, Input, Popconfirm, Space} from "antd";
 import {DeleteOutlined, DownloadOutlined, EditOutlined, ImportOutlined, PlusOutlined} from "@ant-design/icons";
 import {deleteSupplier, fetchTemplateSupplier, setSupplierModalType, setSupplierModalVisible} from "../supplierSlice";
 import {useDispatch} from "react-redux";
-import {exportExcel} from "../../../../config/lib/exportExcel";
-import {Debounce} from "../../../../config/helper/debounce";
 import {useContext} from "react";
 import {SupplierTableContext} from "./index";
+import {exportExcel} from "../../../../config/exportExcel";
+import {Debounce} from "../../../../config";
 
 const SupplierToolkit = () => {
     const dispatch = useDispatch()
@@ -15,6 +15,8 @@ const SupplierToolkit = () => {
         setSelectedRow,
         setFilter,
         filter,
+        setErrorMessage,
+        setSuccessMessage,
     } = useContext(SupplierTableContext);
 
     const openModal = (modalType) => {
@@ -24,11 +26,13 @@ const SupplierToolkit = () => {
 
     const handleDelete = async () => {
         try {
-            await dispatch(deleteSupplier({id: selectedRow})).unwrap().then(() => setSelectedRow([]))
-            return message.success('Operation executed')
+            await dispatch(deleteSupplier({id: selectedRow})).unwrap()
+            await setSelectedRow([])
+            await setCurrentPage(1)
+            await setSuccessMessage(["Data has been deleted"])
         } catch (e) {
-            setCurrentPage(1)
-            return message.error(e?.response?.data?.message ?? e.message)
+            await setCurrentPage(1)
+            await setErrorMessage([e?.response?.data?.message ?? e.message])
         }
     }
 
@@ -47,7 +51,7 @@ const SupplierToolkit = () => {
         onClick: async ({key}) => {
             if (key === "download_add_template"){
                 const columnTemplate = ["No", "Supplier", "Address", "Contact Person", "Contact Number"]
-                const dataTemplate = [[1, "CV Abadi Jaya Sentosa", "Jl Kenangan", "Suyanto", "089000000000"]]
+                const dataTemplate = [[1, "CV Abadi Jaya", "Jl", "Mike", "089000000000"]]
                 await exportExcel(columnTemplate, dataTemplate,  "Add Batch Supplier", "Add Batch Supplier")
             }
             if (key === "add_batch_data"){
@@ -64,7 +68,7 @@ const SupplierToolkit = () => {
         onClick:  async ({key}) => {
             try {
                 if (key === "download_edit_template" && selectedRow.length <= 1) {
-                    return message.error("Select at least 2 rows to download template");
+                    return  setErrorMessage(["Select at least 2 rows to download template"])
                 }
                 if (key === "download_edit_template") {
                     const selectedData = await dispatch(fetchTemplateSupplier({ ids: selectedRow })).unwrap();

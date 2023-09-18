@@ -3,8 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {Button, Dropdown, Input, message, Popconfirm, Space} from "antd";
 import {DeleteOutlined, DownloadOutlined, EditOutlined, ImportOutlined, PlusOutlined} from "@ant-design/icons";
 import {deleteUser, fetchDetailUsers, setUserFilter, setUserModalType, setUserModalVisible} from "../usersSlice";
-import {Debounce} from "../../../../config/helper/debounce";
-import {exportExcel} from "../../../../config/lib/exportExcel";
+import {exportExcel} from "../../../../config/exportExcel";
+import {Debounce} from "../../../../config";
 
 const UsersToolkit = ({form}) => {
     const dispatch = useDispatch();

@@ -3,8 +3,8 @@ import {Col, Form, Input, InputNumber, message, Row, TreeSelect} from "antd";
 import {fetchSupplier} from "../../supplier/supplierSlice";
 import {useDispatch, useSelector} from "react-redux";
 import DebounceSelect from "../../../../views/components/DebounceSelect";
-import {currencyFormatter, currencyParser} from "../../../../config/helper/currency";
 import {postProduct, setProductModalVisible} from "../productSlice";
+import {currencyFormatter, currencyParser} from "../../../../helper/currency";
 
 const ProductFormSingle = ({form}) => {
     const dispatch = useDispatch();

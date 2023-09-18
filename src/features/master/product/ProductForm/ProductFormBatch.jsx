@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {InboxOutlined} from "@ant-design/icons";
 import {Form, message, Upload} from "antd";
-import {importExcel} from "../../../../config/lib/importExcel";
 import {useDispatch, useSelector} from "react-redux";
 import {postProduct, setProductModalVisible, setProductStatus} from "../productSlice";
+import {importExcel} from "../../../../config/importExcel";
 
 const ProductFormBatch = () => {
     const dispatch = useDispatch()

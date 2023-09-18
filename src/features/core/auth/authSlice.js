@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import instance from "../../../config/lib/axios";
+import instance from "../../../config/axios";
 import jwtDecode from "jwt-decode";
 
 export const postLogin = createAsyncThunk(

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Line} from 'react-chartjs-2';
-import {LineChart} from "../../../../../config/lib/ReactChart";
+import {LineChart} from "../../../../../config/chart";
 
 const Index = (props) => {
     const {chartData, styles} = props

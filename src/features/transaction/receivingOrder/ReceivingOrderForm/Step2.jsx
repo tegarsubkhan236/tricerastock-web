@@ -1,8 +1,8 @@
 import React, {useContext} from 'react';
 import {Alert, Col, Form, Input, List, Row, Typography} from "antd";
-import {Debounce} from "../../../../config/helper/debounce";
 import {ReceivingOrderFormContext} from "./index";
 import {FooterCartList, ItemCartInput, ItemCartList} from "../../../../views/components/ProductCart";
+import {Debounce} from "../../../../config";
 
 const Step2 = () => {
     const {postData, postError, setPostError, cartItems, setCartItems, orderPrice, next} = useContext(ReceivingOrderFormContext);
@@ -38,6 +38,7 @@ const Step2 = () => {
                         <List grid={{gutter: 10, column: 3}}
                               dataSource={postData.receiving_order_products}
                               renderItem={(item) => <ItemCartInput
+                                  type={"BUY_TRANSACTION"}
                                   item={item}
                                   cartItems={cartItems}
                                   setCartItems={setCartItems}

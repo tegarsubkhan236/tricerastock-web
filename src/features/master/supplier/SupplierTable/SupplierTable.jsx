@@ -1,10 +1,10 @@
 import React, {useContext, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Switch, Table} from "antd";
-import {PaginationConfig} from "../../../../config/helper/tableConfig";
 import DynamicAlert from "../../../../views/components/Alert/DynamicAlert";
 import {fetchSupplier} from "../supplierSlice";
 import {SupplierTableContext} from "./index";
+import {PaginationConfig} from "../../../../config";
 
 const SupplierTable = () => {
     const dispatch = useDispatch();

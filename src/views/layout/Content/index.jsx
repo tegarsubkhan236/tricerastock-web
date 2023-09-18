@@ -14,7 +14,7 @@ const Index = () => {
     const appTitle = AppTitle()
     const appSubTitle = AppSubTitle(location)
     return (
-        <DocumentTitle title={`${appSubTitle} - ${appTitle}`}>
+        <DocumentTitle title={`${appTitle} - ${appSubTitle}`}>
             <Content style={{height: "calc(100% - 100px)"}}>
                 <SwitchTransition>
                     <CSSTransition

@@ -1,18 +1,20 @@
 import React from 'react';
 import {Button, Card, Col, InputNumber, List, Row, Space, Typography} from "antd";
-import {currencyFormatter, currencyParser} from "../../../config/helper/currency";
 import {AppstoreAddOutlined, DeleteOutlined} from "@ant-design/icons";
+import {currencyFormatter, currencyParser} from "../../../helper/currency";
+import {TRANSACTION_TYPE} from "../../../helper/constants";
 const {Text} = Typography
 
-export const ItemCartInput = ({item, cartItems, setCartItems, inputPriceReadOnly}) => {
-    const handleAddToCart = (product_id, product_name, buy_price, quantity) => {
-        if (quantity === 0 || buy_price === 0) return
+export const ItemCartInput = ({type, item, cartItems, setCartItems, inputPriceReadOnly}) => {
+    const handleAddToCart = (product_id, product_name, price, quantity) => {
+        console.log(cartItems)
+        if (quantity === 0 || price === 0) return
         const existingItem = cartItems.find((cartItem) => cartItem.product_id === product_id);
         if (existingItem) {
             const updatedCartItem = {
                 product_id: product_id,
                 product_name: product_name,
-                buy_price: buy_price,
+                price: price,
                 quantity: quantity,
             };
             setCartItems(cartItems.map((cartItem) => (cartItem.product_id === product_id ? updatedCartItem : cartItem)));
@@ -20,7 +22,7 @@ export const ItemCartInput = ({item, cartItems, setCartItems, inputPriceReadOnly
             const newItem = {
                 product_id: product_id,
                 product_name: product_name,
-                buy_price: buy_price,
+                price: price,
                 quantity: quantity,
             };
             setCartItems([...cartItems, newItem]);
@@ -44,7 +46,7 @@ export const ItemCartInput = ({item, cartItems, setCartItems, inputPriceReadOnly
     const defaultValueBuyPrice = (product_id) => {
         const existingItem = cartItems.find((cartItem) => cartItem.product_id === product_id);
         if (existingItem) {
-            return existingItem.buy_price
+            return existingItem.price
         } else {
             return item.buy_price
         }
@@ -60,7 +62,7 @@ export const ItemCartInput = ({item, cartItems, setCartItems, inputPriceReadOnly
         onChange: (value) => item.quantity = value
     }
 
-    const inputPriceConfig = {
+    const inputBuyPriceConfig = {
         addonBefore: "Buy Price",
         formatter: (value) => currencyFormatter(value),
         parser: (value) => currencyParser(value),
@@ -73,10 +75,27 @@ export const ItemCartInput = ({item, cartItems, setCartItems, inputPriceReadOnly
         readOnly: inputPriceReadOnly
     }
 
+    const inputSellPriceConfig = {
+        addonBefore: "Sell Price",
+        formatter: (value) => currencyFormatter(value),
+        parser: (value) => currencyParser(value),
+        prefix: "Rp",
+        defaultValue: item.sell_price,
+        size: "small",
+        readOnly: true
+    }
+
     const buttonAddConfig = {
         size: "small",
         icon : <AppstoreAddOutlined/>,
-        onClick: () => handleAddToCart(item.product_id, item.product_name, item.buy_price, item.quantity)
+        onClick: () => {
+            if (type === TRANSACTION_TYPE.BUY_TRANSACTION) {
+                handleAddToCart(item.product_id, item.product_name, item.buy_price, item.quantity)
+            }
+            if (type === TRANSACTION_TYPE.SELL_TRANSACTION) {
+                handleAddToCart(item.product_id, item.product_name, item.sell_price, item.quantity)
+            }
+        }
     }
 
     const buttonRemoveConfig = {
@@ -91,7 +110,8 @@ export const ItemCartInput = ({item, cartItems, setCartItems, inputPriceReadOnly
             <Card actions={[
                 <Space direction="vertical" style={{width: "200px"}}>
                     <InputNumber {...inputQuantityConfig}/>
-                    <InputNumber {...inputPriceConfig}/>
+                    {type === TRANSACTION_TYPE.BUY_TRANSACTION && <InputNumber {...inputBuyPriceConfig}/>}
+                    {type === TRANSACTION_TYPE.SELL_TRANSACTION && <InputNumber {...inputSellPriceConfig}/>}
                     <Space>
                         <Button {...buttonAddConfig}>Add</Button>
                         <Button {...buttonRemoveConfig}>Remove</Button>
@@ -112,7 +132,7 @@ export const ItemCartList = ({item}) => {
                     <Text>X</Text>
                     <Text strong>{item.quantity}</Text>
                 </Space>
-                <Text strong>Rp.{currencyFormatter(item.buy_price)}</Text>
+                <Text strong>Rp.{currencyFormatter(item.price)}</Text>
             </Space>
         ]}>
             <List.Item.Meta title={item.product_name}/>
@@ -126,25 +146,33 @@ export const FooterCartList = ({taxPercentage, discPercentage, subTotal, tax, di
             <Col span={8}>
                 <Text strong>Sub Total</Text>
             </Col>
-            <Col span={16} style={{display: 'flex', justifyContent: 'flex-end'}}>
+            <Col span={16} align="right">
                 <Text strong>Rp. {currencyFormatter(subTotal)}</Text>
             </Col>
-            <Col span={8}>
-                <Text strong>Tax ({taxPercentage}%)</Text>
-            </Col>
-            <Col span={16} style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <Text strong>Rp. {currencyFormatter(tax)}</Text>
-            </Col>
-            <Col span={8}>
-                <Text strong>Discount ({discPercentage}%)</Text>
-            </Col>
-            <Col span={16} style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <Text strong>Rp. {currencyFormatter(disc)}</Text>
-            </Col>
+            {taxPercentage !== 0 &&
+                <>
+                    <Col span={8}>
+                        <Text strong>Tax ({taxPercentage}%)</Text>
+                    </Col>
+                    <Col span={16} align="right">
+                        <Text strong>Rp. {currencyFormatter(tax)}</Text>
+                    </Col>
+                </>
+            }
+            {discPercentage !== 0 &&
+                <>
+                    <Col span={8}>
+                        <Text strong>Discount ({discPercentage}%)</Text>
+                    </Col>
+                    <Col span={16} align="right">
+                        <Text strong>Rp. {currencyFormatter(disc)}</Text>
+                    </Col>
+                </>
+            }
             <Col span={8}>
                 <Text strong>Total</Text>
             </Col>
-            <Col span={16} style={{display: 'flex', justifyContent: 'flex-end'}}>
+            <Col span={16} align="right">
                 <Text strong>Rp. {currencyFormatter(total)}</Text>
             </Col>
         </Row>

@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Modal, Table} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {PaginationConfig} from "../../../../config/helper/tableConfig";
 import {fetchPo, setPoCurrentPage, setPoPerPage} from "../purchaseOrderSlice";
-import {currencyFormatter} from "../../../../config/helper/currency";
 import {EyeOutlined} from "@ant-design/icons";
-import {generateTransactionStatus} from "../../../../config/helper/transactionStatus";
+import {PaginationConfig} from "../../../../config";
+import {currencyFormatter} from "../../../../helper/currency";
+import {transformTransactionStatus} from "../../../../helper/constants";
 
 const PurchaseOrderTable = () => {
     const dispatch = useDispatch();
@@ -90,7 +90,7 @@ const PurchaseOrderTable = () => {
         },
         {
             title: 'Status',
-            render: (_, { status }) => generateTransactionStatus(status),
+            render: (_, { status }) => transformTransactionStatus(status),
         },
     ];
 
@@ -135,7 +135,7 @@ const PurchaseOrderTable = () => {
                 },
                 {
                     title: 'Status',
-                    render: (_, { status }) => generateTransactionStatus(status),
+                    render: (_, { status }) => transformTransactionStatus(status),
                 },
             ];
 

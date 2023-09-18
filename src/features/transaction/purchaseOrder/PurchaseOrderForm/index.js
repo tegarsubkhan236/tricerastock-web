@@ -1,6 +1,6 @@
 import React, {createContext, useEffect, useState} from "react";
 import Parent from "./Parent";
-import {CountOrderPrice} from "../../../../config/helper/countOrderPrice";
+import {CountOrderPrice} from "../../../../helper/countOrderPrice";
 
 export const PurchaseOrderStepFormContext = createContext();
 
