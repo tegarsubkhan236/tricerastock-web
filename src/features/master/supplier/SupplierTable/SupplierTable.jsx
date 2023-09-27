@@ -4,7 +4,7 @@ import {Switch, Table} from "antd";
 import DynamicAlert from "../../../../views/components/Alert/DynamicAlert";
 import {fetchSupplier} from "../supplierSlice";
 import {SupplierTableContext} from "./index";
-import {PaginationConfig} from "../../../../config";
+import {PaginationConfig} from "../../../../config/tableConfig";
 
 const SupplierTable = () => {
     const dispatch = useDispatch();

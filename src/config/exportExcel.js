@@ -1,6 +1,6 @@
 import {saveAs} from "file-saver"
 import ExcelJS from 'exceljs';
-import {getStore} from "./index";
+import {getStore} from "../app/injectStore";
 
 export const exportExcel = async (column, data, fileName, reportTitle) => {
     const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";

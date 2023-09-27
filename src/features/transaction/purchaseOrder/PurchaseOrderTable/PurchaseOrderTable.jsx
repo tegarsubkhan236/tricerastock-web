@@ -3,7 +3,7 @@ import {Button, Modal, Table} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchPo, setPoCurrentPage, setPoPerPage} from "../purchaseOrderSlice";
 import {EyeOutlined} from "@ant-design/icons";
-import {PaginationConfig} from "../../../../config";
+import {PaginationConfig} from "../../../../config/tableConfig";
 import {currencyFormatter} from "../../../../helper/currency";
 import {transformTransactionStatus} from "../../../../helper/constants";
 

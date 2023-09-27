@@ -5,7 +5,7 @@ import DebounceSelect from "../../../../views/components/DebounceSelect";
 import {fetchSupplier} from "../../supplier/supplierSlice";
 import {fetchProductCategory} from "../../productCategory/productCategorySlice";
 import {setProductFilter} from "../productSlice";
-import {Debounce} from "../../../../config";
+import {Debounce} from "../../../../helper/debounce";
 
 const ProductFilter = () => {
     const dispatch = useDispatch()

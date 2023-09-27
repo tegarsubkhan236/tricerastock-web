@@ -4,7 +4,7 @@ import {Button, Dropdown, Input, message, Popconfirm, Space} from "antd";
 import {DeleteOutlined, DownloadOutlined, EditOutlined, ImportOutlined, PlusOutlined} from "@ant-design/icons";
 import {deleteUser, fetchDetailUsers, setUserFilter, setUserModalType, setUserModalVisible} from "../usersSlice";
 import {exportExcel} from "../../../../config/exportExcel";
-import {Debounce} from "../../../../config";
+import {Debounce} from "../../../../helper/debounce";
 
 const UsersToolkit = ({form}) => {
     const dispatch = useDispatch();

@@ -2,14 +2,14 @@ import React from 'react';
 import './index.css'
 import DocumentTitle from "react-document-title";
 import AuthForm from "../../../../features/core/auth/AuthForm";
-import LoginBackground from "../../../../assets/images/login_background.jpeg"
 import {Col, Row} from "antd";
+import {AppAuthBackground, AppTitle} from "../../../../config/app";
 
 const Index = () => {
     return (
-        <DocumentTitle title={"Login - RungkadApp"}>
+        <DocumentTitle title={`Login - ${AppTitle}`}>
             <div className="login-container">
-                <Row style={{ backgroundImage: `url(${LoginBackground})`, backgroundSize: 'cover', height: '100vh' }}>
+                <Row style={{ backgroundImage: `url(${AppAuthBackground})`, backgroundSize: 'cover', height: '100vh' }}>
                     <Col span={24}>
                         <AuthForm/>
                     </Col>

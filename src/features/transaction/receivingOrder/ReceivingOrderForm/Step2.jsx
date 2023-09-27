@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {Alert, Col, Form, Input, List, Row, Typography} from "antd";
 import {ReceivingOrderFormContext} from "./index";
 import {FooterCartList, ItemCartInput, ItemCartList} from "../../../../views/components/ProductCart";
-import {Debounce} from "../../../../config";
+import {Debounce} from "../../../../helper/debounce";
 
 const Step2 = () => {
     const {postData, postError, setPostError, cartItems, setCartItems, orderPrice, next} = useContext(ReceivingOrderFormContext);

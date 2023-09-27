@@ -7,7 +7,6 @@ const {Text} = Typography
 
 export const ItemCartInput = ({type, item, cartItems, setCartItems, inputPriceReadOnly}) => {
     const handleAddToCart = (product_id, product_name, price, quantity) => {
-        console.log(cartItems)
         if (quantity === 0 || price === 0) return
         const existingItem = cartItems.find((cartItem) => cartItem.product_id === product_id);
         if (existingItem) {
@@ -39,7 +38,7 @@ export const ItemCartInput = ({type, item, cartItems, setCartItems, inputPriceRe
         if (existingItem) {
             return existingItem.quantity
         } else {
-            return item.quantity
+            return 0
         }
     }
 
@@ -48,7 +47,7 @@ export const ItemCartInput = ({type, item, cartItems, setCartItems, inputPriceRe
         if (existingItem) {
             return existingItem.price
         } else {
-            return item.buy_price
+            return 0
         }
     }
 

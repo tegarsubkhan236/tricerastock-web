@@ -9,6 +9,7 @@ import productCategoriesReducer from "../features/master/productCategory/product
 import productsReducer from "../features/master/product/productSlice";
 import purchaseOrdersReducer from "../features/transaction/purchaseOrder/purchaseOrderSlice";
 import receivingOrdersReducer from "../features/transaction/receivingOrder/receivingOrderSlice";
+import salesOrdersReducer from "../features/transaction/salesOrder/salesOrderSlice";
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     products: productsReducer,
     purchaseOrders: purchaseOrdersReducer,
     receivingOrders: receivingOrdersReducer,
+    salesOrders: salesOrdersReducer,
 });
 
 const persistConfig = {

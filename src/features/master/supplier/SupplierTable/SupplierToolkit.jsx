@@ -5,7 +5,7 @@ import {useDispatch} from "react-redux";
 import {useContext} from "react";
 import {SupplierTableContext} from "./index";
 import {exportExcel} from "../../../../config/exportExcel";
-import {Debounce} from "../../../../config";
+import {Debounce} from "../../../../helper/debounce";
 
 const SupplierToolkit = () => {
     const dispatch = useDispatch()

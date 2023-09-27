@@ -3,9 +3,10 @@ import {Button, Form, Input, message} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {postLogin} from './authSlice';
 import {useNavigate} from "react-router-dom";
+import {AppAuthLogo} from "../../../config/app";
 
 const AuthForm = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const {isLoading, user} = useSelector((state) => state.auth);
 
@@ -37,7 +38,7 @@ const AuthForm = () => {
               className="content"
         >
             <div className="title">
-                <h2>RUNGKAD</h2>
+                <img src={AppAuthLogo} alt="logo" width={200} height={70}/>
             </div>
             <Form.Item name="identity"
                        rules={[

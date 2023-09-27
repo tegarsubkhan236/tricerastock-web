@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Descriptions, message, Space, Table, Tag} from "antd";
 import {fetchProducts, setProductCurrentPage, setProductPerPage, setProductSelectedRow} from "../productSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {PaginationConfig} from "../../../../config";
+import {PaginationConfig} from "../../../../config/tableConfig";
 import {currencyFormatter} from "../../../../helper/currency";
 
 const ProductList = () => {

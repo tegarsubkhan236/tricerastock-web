@@ -2,11 +2,10 @@ import React from "react";
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import "antd/dist/reset.css"
-import "./assets/css/App.css"
 import {Provider} from "react-redux";
 import {persistor, store} from "./app/store";
+import {injectStore} from "./app/injectStore";
 import {PersistGate} from "redux-persist/integration/react";
-import {injectStore} from "./config";
 
 injectStore(store)
 

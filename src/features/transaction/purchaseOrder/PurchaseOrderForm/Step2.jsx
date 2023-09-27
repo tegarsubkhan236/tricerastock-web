@@ -1,10 +1,10 @@
 import React, {useContext, useEffect} from 'react';
 import {Col, Form, Input, List, message, Row, Typography} from "antd";
 import {PurchaseOrderStepFormContext} from "./index";
-import {fetchProductsWithoutExtraReducers} from "../../../master/product/productSlice";
+import {fetchProducts} from "../../../master/product/productSlice";
 import {useDispatch} from "react-redux";
 import {FooterCartList, ItemCartInput, ItemCartList} from "../../../../views/components/ProductCart";
-import {Debounce} from "../../../../config";
+import {Debounce} from "../../../../helper/debounce";
 
 const Step2 = () => {
     const dispatch = useDispatch();
@@ -22,10 +22,10 @@ const Step2 = () => {
         next
     } = useContext(PurchaseOrderStepFormContext);
 
-    const fetchProducts = async ({supplier_id, search_text = ""}) => {
+    const getProducts = async ({supplier_id, search_text = ""}) => {
         try {
             setInitLoading(true);
-            const data = await dispatch(fetchProductsWithoutExtraReducers({
+            const data = await dispatch(fetchProducts({
                 page: 1, perPage: 999,
                 supplier_id: supplier_id,
                 search_text: search_text,
@@ -47,7 +47,7 @@ const Step2 = () => {
     useEffect(() => {
         const currentSupplierValue = postData.supplier.value;
         if (currentSupplierValue !== prevSupplierValue) {
-            fetchProducts({
+            getProducts({
                 supplier_id: currentSupplierValue
             });
             setCartItems([]);
@@ -55,12 +55,8 @@ const Step2 = () => {
         setPrevSupplierValue(currentSupplierValue);
     }, [postData])
 
-    useEffect(() => {
-        console.log("cartItems", cartItems)
-    }, [cartItems])
-
     const onSearch = async (value) => {
-        await fetchProducts({
+        await getProducts({
             supplier_id: postData.supplier.value,
             search_text: value.target.value
         })

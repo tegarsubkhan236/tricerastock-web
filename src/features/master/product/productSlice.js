@@ -21,26 +21,6 @@ export const fetchProducts = createAsyncThunk(
     }
 );
 
-export const fetchProductsWithoutExtraReducers = createAsyncThunk(
-    'Product/fetch',
-    async ({page, perPage, supplier_id, category_id, search_text}, thunkAPI) => {
-        try {
-            const response = await instance.get('/v1/master/product', {
-                params: {
-                    page: page,
-                    limit: perPage,
-                    supplier_id: supplier_id,
-                    product_category: category_id,
-                    search_text: search_text,
-                }
-            });
-            return response.data;
-        } catch (e) {
-            return thunkAPI.rejectWithValue(e)
-        }
-    }
-);
-
 export const detailProduct = createAsyncThunk(
     'Product/detail',
     async ({id, based_on}, thunkAPI) => {

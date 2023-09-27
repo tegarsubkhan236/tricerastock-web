@@ -4,12 +4,15 @@ import {Card, Typography} from "antd";
 import PanelGroup from "../../../components/PanelGroup";
 import Users from "./Users";
 import Permissions from "./Permissions";
+import Role from "./Role";
 
 const listCurrentData = [
     {
         type: "User", component: <Users/>, icon: "TeamOutlined", color: "#40c9c6",
     }, {
-        type: "Permission", component: <Permissions/>, icon: "TeamOutlined", color: "#40c9c6",
+        type: "Permission", component: <Permissions/>, icon: "TagOutlined", color: "#c94040",
+    }, {
+        type: "Role", component: <Role/>, icon: "TagsOutlined", color: "#45c940",
     },
 ]
 
