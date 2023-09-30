@@ -1,12 +1,15 @@
 import React, {useContext} from 'react';
 import {LayoutContext} from "../index";
-import {Layout} from "antd";
+import {Layout, theme } from "antd";
 import SiderLogo from "./Logo";
 import SiderMenu from "./Menu";
 
 const {Sider} = Layout
 
 const LayoutSider = () => {
+    const {
+        token: { colorBgContainer },
+    } = theme.useToken();
     const {setSidebarCollapsed, sidebarCollapsed} = useContext(LayoutContext)
     return (
         <Sider
@@ -22,10 +25,10 @@ const LayoutSider = () => {
             }}
             trigger={null}
             style={{
-                zIndex: "10"
+                background: colorBgContainer,
             }}
         >
-            <SiderLogo/>
+            {/*<SiderLogo/>*/}
             <SiderMenu/>
         </Sider>
     );

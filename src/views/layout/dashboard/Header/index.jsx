@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import Hamburger from "./Hamburger";
 import Fullscreen from "./Fullscreen";
 import {useDispatch} from "react-redux";
-import {logout} from "../../../features/core/auth/authSlice";
+import {logout} from "../../../../features/core/auth/authSlice";
 import {LayoutContext} from "../index";
 
 const {Header} = Layout
@@ -34,7 +34,7 @@ const LayoutHeader = () => {
     ];
 
     return (
-        <Header style={{width: "100%"}}>
+        <Header style={{width: "100%", height: "50px", alignItems: 'center'}}>
             <Hamburger setSidebarCollapsed={setSidebarCollapsed} sidebarCollapsed={sidebarCollapsed}/>
             <div className="right-menu">
                 <Fullscreen/>

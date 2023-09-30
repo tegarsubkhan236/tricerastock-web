@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.css'
-import {AppSidebarLogo} from "../../../../config/app";
+import {AppSidebarLogo} from "../../../../../config/app";
 
 const SiderLogo = () => {
     return (

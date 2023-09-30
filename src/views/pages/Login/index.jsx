@@ -1,8 +1,11 @@
 import React from 'react';
-import Page404 from "../../error/Page404";
 
 const Index = () => {
-    return <Page404/>;
+    return (
+        <div>
+
+        </div>
+    );
 };
 
 export default Index;

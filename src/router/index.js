@@ -1,13 +1,15 @@
 import React from "react";
 import {createBrowserRouter, createRoutesFromElements, Navigate, Route, useRouteError} from "react-router-dom";
 import {useSelector} from "react-redux";
-import MainLayout from "../views/layout";
+import MainLayout from "../views/layout/dashboard";
+import AuthLayout from "../views/layout/auth";
 import Login from "../views/pages/Auth/Login";
+import Register from "../views/pages/Auth/Register";
 import Dashboard from "../views/pages/Dashboard";
 import UserAuthority from "../views/pages/Master/UserAuthority";
 import CoreInventory from "../views/pages/Master/CoreInventory";
 import Report from "../views/pages/Report";
-import Page404 from "../views/Error/Page404";
+import Page404 from "../views/error/Page404";
 import PurchaseOrder from "../views/pages/Transaction/BuyTransaction/PurchaseOrder";
 import ReceivingOrder from "../views/pages/Transaction/BuyTransaction/ReceivingOrder";
 import BuyReturnOrder from "../views/pages/Transaction/BuyTransaction/BuyReturnOrder";
@@ -15,13 +17,13 @@ import SalesOrder from "../views/pages/Transaction/SellTransaction/SalesOrder";
 import SalesReturnOrder from "../views/pages/Transaction/SellTransaction/SalesReturnOrder";
 
 
-const ProtectedRoute = () => {
+const ProtectedLayout = () => {
     const {token, user} = useSelector((state) => state.auth);
     if (!token) {
-        return <Navigate to={"/login"} replace/>;
+        return <Navigate to={"/auth/login"} replace/>;
     }
     if (user && user.exp < new Date().getTime() / 1000) {
-        return <Navigate to={"/login"} replace/>;
+        return <Navigate to={"/auth/login"} replace/>;
     }
 
     return <MainLayout/>;
@@ -36,8 +38,11 @@ const ErrorBoundary = () => {
 export const router = createBrowserRouter(
     createRoutesFromElements(
         <Route>
-            <Route path="login" element={<Login/>}/>
-            <Route element={<ProtectedRoute/>} errorElement={<ErrorBoundary/>}>
+            <Route path="auth" element={<AuthLayout/>}>
+                <Route path={"login"} element={<Login/>}/>
+                <Route path={"register"} element={<Register/>}/>
+            </Route>
+            <Route element={<ProtectedLayout/>} errorElement={<ErrorBoundary/>}>
                 <Route index element={<Dashboard/>}/>
                 <Route path={"user_authority"} element={<UserAuthority/>}/>
                 <Route path={"core_inventory"} element={<CoreInventory/>}/>

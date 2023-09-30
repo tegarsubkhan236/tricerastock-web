@@ -1,11 +1,9 @@
 import React from 'react';
-import './index.css'
+import RegisterForm from "../../../../features/core/auth/RegisterForm";
 
 const Index = () => {
     return (
-        <div>
-            <h1>Register Page</h1>
-        </div>
+        <RegisterForm/>
     );
 };
 
